@@ -1,7 +1,7 @@
 import { AfterContentInit, DoCheck, Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import axios from 'axios';
+import axios, { formToJSON } from 'axios';
 
 
 @Component({
@@ -28,7 +28,7 @@ export class TableListComponent implements OnInit{
     public listaTiposDocumentos = [];
     public listaOcupantes = [];
     public listaMunicipios = [];
-    public listaMunicipiosEvento = [];
+    public listaMunicipiosEvento:Array <{}> = [];
     public inputNomeEvento: string = '';
     public inputDataInicio: string = '';
     public inputDataFim: string = '';
@@ -39,9 +39,10 @@ export class TableListComponent implements OnInit{
     public idEvento = '';
     public cargoSelect = '';
     public estadoSelect = '';
+    public municipioSelect = '';
     public documentoSelect = '';
 
-    public num = '1';
+    public num = '';
 
     constructor() {}
 
@@ -51,7 +52,6 @@ export class TableListComponent implements OnInit{
 
     public cadastrar(){
         this.novoCadastro = !this.novoCadastro;
-        this.getOcupantes();
     }
 
     public async getEventos(){
@@ -150,7 +150,7 @@ export class TableListComponent implements OnInit{
     }
 
     public async getOcupantes(){
-        const urlGetOcupantes = `${this.baseUrl}/ccoevento`
+        const urlGetOcupantes = `${this.baseUrl}/ccoevento/i${this.idEvento}&t${this.tenant}`
 
         let getOcupantes = await axios.get(urlGetOcupantes, this.setToken);
 
@@ -161,24 +161,34 @@ export class TableListComponent implements OnInit{
         if(this.num == '1'){
             this.num = '2';
         }
-
-        this.getMunicipio();
-        this.getMunicipiosEvento();
     }
 
     public async getMunicipio(){
         let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
 
-        let municipioEvento = await axios.get(url, this.setToken);
+        let municipio = await axios.get(url, this.setToken);
 
-        this.listaMunicipios = municipioEvento.data.data;
+        this.listaMunicipios = municipio.data.data;
+    }
+
+    public async cadastrarNovoMunicipio(){
+        const urlSendMunicipioEvento = `${this.baseUrl}/municipioevento`;
+        
+        const formMunicipioEvento = new FormData();
+        formMunicipioEvento.append('id_evento', this.idEvento);
+        formMunicipioEvento.append('id_municipio', this.municipioSelect);
+        formMunicipioEvento.append('id_tenant', this.tenant);
+
+        let sendMunicipioEvento = await axios.post(urlSendMunicipioEvento, formMunicipioEvento, this.setToken);
+
+        this.getMunicipiosEvento();
     }
 
     public async getMunicipiosEvento(){
         let url = `${this.baseUrl}/municipioevento/i${this.idEvento}&t${this.tenant}`;
 
         let municipioEvento = await axios.get(url, this.setToken);
-
+        
         this.listaMunicipiosEvento = municipioEvento.data.data;
     }
 }

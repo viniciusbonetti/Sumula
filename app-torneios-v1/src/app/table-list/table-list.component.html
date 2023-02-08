@@ -121,7 +121,7 @@
                                                 <td class="cadastrar-ocupante">
                                                     <mat-form-field appearance="fill">
                                                         <mat-label>Cargo</mat-label>
-                                                        <select matNativeControl required name="nm_cargo" [(ngModel)]="cargoSelect">
+                                                        <select matNativeControl name="nm_cargo" [(ngModel)]="cargoSelect">
                                                             <option disabled value="">Selecione o cargo</option>
                                                             <option *ngFor="let item of listaCargosCco" value="{{ item.id }}"> {{ item.nm_cargo }}</option>
                                                         </select>
@@ -135,7 +135,7 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Tipo de Documento</mat-label>
-                                                        <select matNativeControl required name="tp_documento" [(ngModel)]="documentoSelect">
+                                                        <select matNativeControl name="tp_documento" [(ngModel)]="documentoSelect">
                                                             <option disabled value="">Selecione o documento</option>
                                                             <option value="C">Cpf</option>
                                                             <option value="R">Rg</option>
@@ -165,8 +165,20 @@
                                                 <td>
                                                     {{ item.nm_ocupante }}
                                                 </td>
-                                                <td>
-                                                    {{ item.tp_documento }}
+                                                <td [ngSwitch]="item.tp_documento">
+                                                    <!-- {{ item.tp_documento }} -->
+                                                    <p *ngSwitchCase="'C'">
+                                                        CPF
+                                                    </p>
+                                                    <p *ngSwitchCase="'R'">
+                                                        RG
+                                                    </p>
+                                                    <p *ngSwitchCase="'H'">
+                                                        HABILITAÇÃO
+                                                    </p>
+                                                    <p *ngSwitchCase="'O'">
+                                                        OUTRO
+                                                    </p>
                                                 </td>
                                                 <td>
                                                     {{ item.nr_documento }}
@@ -222,8 +234,9 @@
                                                     </mat-form-field>
                                                 </td>
                                                 <td>
-                                                    <button (click)="cadastrarNovoOcupante()">confirmar</button>
-                                                    <button (click)="limparFormOcupante()">X</button>
+                                                    <button (click)="cadastrarNovoMunicipio()">confirmar</button>
+                                                    <button (click)="getMunicipiosEvento()">get</button>
+                                                    <button (click)="limparFormMunicipio()">X</button>
                                                 </td>
                                             </tr>
 
@@ -232,10 +245,10 @@
                                                     {{ item.id }}
                                                 </td>
                                                 <td>
-                                                    {{ item.nm_estado }}
+                                                    {{ item.id_municipio.estado.nm_estado }}
                                                 </td>
                                                 <td>
-                                                    {{ item.nm_municipio }}
+                                                    {{ item.id_municipio.nm_municipio }}
                                                 </td>
                                                 <td>
                                                     <button>editar</button>
