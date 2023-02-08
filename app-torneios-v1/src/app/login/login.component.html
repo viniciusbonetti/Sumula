@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div > <!-- *ngIf="!cadastrarUsuarioActive" -->
+        <main class="" > <!-- *ngIf="!validatedLogin" --> 
+            <div class="container-login-card" >
+        
+                <i class="fas fa-id-card-alt fa-3x"></i>
+                <header>LOGIN</header>
+                
+                <section>
+                    <div>
+                        <i class="fa-solid fa-envelope fa-2x"></i>
+                        <input type="text" name="ds_email" placeholder="user" [(ngModel)]="inputUserLogin">
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-keyboard fa-2x"></i>
+                        <input type="password" name="sn_usuario" placeholder="password" [(ngModel)]="inputUserPassword" (keyup.enter)="sendLogin() ">
+                    </div>
+                    <button class="button-login" (click)="sendLogin()" >Login</button>
+        
+                    <p>
+                        Cadastre-se
+                        <button class="button-cadastrar" (click)="mostrarCadastrarUsuario()">
+                            aqui <i class="fa-duotone fa-arrow-right-to-bracket"></i>
+                        </button>
+                    </p>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- <div class="container-cadastrar-usuarios" *ngIf="cadastrarUsuarioActive">
+        <app-cadastrar-usuarios></app-cadastrar-usuarios>
+    </div>
+    
+    <main class="container-menu-nav" *ngIf="validatedLogin">
+        <section class="container-menu-nav-card">
+            <app-menu-nav-bar [setConfig]="config"></app-menu-nav-bar>
+        </section>
+    
+        <section class="container-page-content">
+            <app-page-content [setConfig]="config"></app-page-content>
+        </section>
+    </main> -->
+  </div>

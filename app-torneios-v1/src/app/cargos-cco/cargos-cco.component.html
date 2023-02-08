@@ -1,0 +1,56 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Simple Table</h4>
+                        <p class="card-category">Here is a subtitle for this table</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <table class="table text-center">
+                                <thead class="text-primary">
+                                    <th class="col-md-1">ID</th>
+                                    <th class="col-md-2">Cargo</th>
+                                    <th class="col-md-1"></th>
+                                </thead>
+                                
+                                <tbody >
+                                    <tr *ngIf="novoCadastro" >
+                                        <td></td>
+                                        <td class="p-0">
+                                            <input placeholder="" type="text" name="nm_cargo" [(ngModel)]="inputNomeCargo"/>
+                                        </td>
+                                        <td>
+                                            <button (click)="sendCargo()">confirmar</button>
+                                            <button (click)="cancelarCadastro()">cancelar</button>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let item of listaCargosCco; let i = index">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+                                        <td >
+                                            <p *ngIf="!item.mostrarEditarCargo">
+                                                {{ item.nm_cargo }}
+                                            </p>
+                                            <input type="text" name="nm_cargo" id="" *ngIf="item.mostrarEditarCargo" [(ngModel)]="item.nm_cargo">
+                                        </td>
+
+                                        <td >
+                                            <button (click)="mostrarEdicaoCargo(item)" *ngIf="!item.mostrarEditarCargo">editar</button>
+                                            <button (click)="editarCargo(item)" *ngIf="item.mostrarEditarCargo">confirmar</button>
+                                            <button>excluir</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

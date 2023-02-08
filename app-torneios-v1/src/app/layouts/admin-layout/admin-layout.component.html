@@ -1,0 +1,127 @@
+<div class="wrapper" *ngIf="logadoTenant">
+    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="main-panel">
+        <app-navbar></app-navbar>
+        <router-outlet></router-outlet>
+        <div *ngIf="isMaps('maps')">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!validatedLogin">
+    <div *ngIf="!cadastrarUsuarioActive">
+        <main class="container-login">
+            <div class="container-login-card bg-danger">
+                <i class="fas fa-id-card-alt fa-4x"></i>
+                <header>LOGIN</header>
+
+                <section>
+                    <div>
+                        <i class="fa-solid fa-envelope fa-3x"></i>
+                        <input class="input-login" type="text" name="ds_email" placeholder="user" [(ngModel)]="inputUserLogin" />
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-keyboard fa-3x"></i>
+                        <input class="input-login" type="password" name="sn_usuario" placeholder="password" [(ngModel)]="inputUserPassword" (keyup.enter)="sendLogin()" />
+                    </div>
+                    <button class="button-login" (click)="sendLogin($event)">Login</button>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<div *ngIf="cadastrarUsuarioActive">
+    <div class="container-cadastrar-usuarios" >
+        <main class="container-singup-card bg-danger">
+            <div>
+                <div>
+                    <header>TENANT</header>
+                    <h4>Escolha o Tenant que deseja logar:</h4>
+                </div>
+                <div appearance="fill">
+                    <select [(ngModel)]="tenantSelect" name="lista-tenant" matNativeControl required>
+                        <option selected disabled value="">&#xf0d7;</option>
+                        <option *ngFor="let item of tenantList" value="{{ item.id_tenant }}">{{ item.nm_tenant }}</option>
+                    </select>
+                </div>
+            </div>
+            <button (click)="enviar()">Enviar</button>
+        </main>
+    </div>
+</div>
+
+<!-- Buy-Modal-angular
+<div class="modal modal-angular fade" id="buy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-body text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="margin-top">
+                Free Version
+            </h4>
+            <div class="separator"></div>
+            <a href="https://www.creative-tim.com/product/material-dashboard" class="modal-button" target="_blank">
+                <div class="wrapper-card">
+                    <div class="image-container">
+                        <img src="./assets/img/html.png" alt="unloaded">
+                    </div>
+                    Html5
+                    <div class="separator"></div>
+                    <div class="product-type">
+                        FREE
+                    </div>
+                </div>
+            </a>
+            <a href="https://www.creative-tim.com/product/material-dashboard-angular2" class="modal-button" target="_blank">
+                <div class="wrapper-card">
+                    <div class="image-container image-angular-cli">
+                        <img src="./assets/img/angular.png" alt="unloaded">
+                    </div>
+                    Angular
+                    <div class="separator"></div>
+                    <div class="product-type">
+                        FREE
+                    </div>
+                </div>
+            </a>
+            <h4>
+                PRO Version
+            </h4>
+            <div class="separator"></div>
+            <a href="https://www.creative-tim.com/product/material-dashboard-pro" class="modal-button" target="_blank">
+                <div class="image-container">
+                    <img src="./assets/img/html.png" alt="unloaded">
+                </div>
+                Html5
+                <div class="separator"></div>
+                <div class="price">
+                    from
+                    <span>
+                        49
+                        <i class="fa fa-usd" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </a>
+            <a href="https://www.creative-tim.com/product/material-dashboard-pro-angular2" class="modal-button" target="_blank">
+                <div class="image-container image-angular-cli">
+                    <img src="./assets/img/angular.png" alt="unloaded">
+                </div>
+                Angular
+                <div class="separator"></div>
+                <div class="price">
+                    from
+                    <span>
+                        59
+                        <i class="fa fa-usd" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+</div> -->

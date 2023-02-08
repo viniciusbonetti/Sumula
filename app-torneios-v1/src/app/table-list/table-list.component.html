@@ -1,0 +1,255 @@
+<div class="main-content" *ngIf="!novoCadastro">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Eventos</h4>
+                        <p class="card-category">Acidionar e editar eventos</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Evento</th>
+                                    <th>Inicio</th>
+                                    <th>Fim</th>
+                                    <th>Empresa Gestora</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listaEventos">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+                                        <td>
+                                            {{ item.nm_evento }}
+                                        </td>
+                                        <td>
+                                            {{ item.dt_inicio }}
+                                        </td>
+                                        <td>
+                                            {{ item.dt_fim }}
+                                        </td>
+                                        <td>
+                                            {{ item.id_tenant.nm_tenant }}
+                                        </td>
+                                        <td>
+                                            <button (click)="mostrarEdicaoEventos(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
+                                            <button (click)="editarEventos(item)" *ngIf="item.mostrarEditarEventos">confirmar</button>
+                                            <button>excluir</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="novoCadastro">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card" [ngSwitch]="num">
+                        <div *ngSwitchCase="''">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Adicionar eventos</h4>
+                                <!-- <p class="card-category"></p> -->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <th>Evento</th>
+                                            <th>Inicio</th>
+                                            <th>Fim</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" />
+                                                    </mat-form-field>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-between p-3">
+                                        <button (click)="cancelarCadastro()">voltar</button>
+                                        <button (click)="sendEventos()">proximo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'1'">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Encarregados</h4>
+                                <p class="card-category">Adicionar encarregados para este evento</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-primary col-md-12">
+                                            <th class="col-md-1">ID</th>
+                                            <th class="col-md-2">Cargo</th>
+                                            <th class="col-md-2">Ocupante</th>
+                                            <th class="col-md-2">Documento</th>
+                                            <th class="col-md-2">Número do documento</th>
+                                            <th class="col-md-2"></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tabela-ocupante">
+                                                <td></td>
+                                                <td class="cadastrar-ocupante">
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Cargo</mat-label>
+                                                        <select matNativeControl required name="nm_cargo" [(ngModel)]="cargoSelect">
+                                                            <option disabled value="">Selecione o cargo</option>
+                                                            <option *ngFor="let item of listaCargosCco" value="{{ item.id }}"> {{ item.nm_cargo }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nm_ocupante" [(ngModel)]="inputNomeOcupante" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Tipo de Documento</mat-label>
+                                                        <select matNativeControl required name="tp_documento" [(ngModel)]="documentoSelect">
+                                                            <option disabled value="">Selecione o documento</option>
+                                                            <option value="C">Cpf</option>
+                                                            <option value="R">Rg</option>
+                                                            <option value="H">Carteira de Habilitação</option>
+                                                            <option value="O">Outro</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumento" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <button (click)="cadastrarNovoOcupante()">confirmar</button>
+                                                    <button (click)="limparFormOcupante()">X</button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let item of listaOcupantes">
+                                                <td>
+                                                    {{ item.id }}
+                                                </td>
+                                                <td>
+                                                    {{ item.id_cargocco.nm_cargo }}
+                                                </td>
+                                                <td>
+                                                    {{ item.nm_ocupante }}
+                                                </td>
+                                                <td>
+                                                    {{ item.tp_documento }}
+                                                </td>
+                                                <td>
+                                                    {{ item.nr_documento }}
+                                                </td>
+                                                <td>
+                                                    <button>editar</button>
+                                                    <button>excluir</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button>voltar</button>
+                                        <button (click)="botaoAvancar()" >avançar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'2'">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Municipios</h4>
+                                <p class="card-category">Adicionar os municipios que acontecerão este evento</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-primary col-md-12">
+                                            <th>ID</th>
+                                            <th>Estados</th>
+                                            <th>Municipios</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tabela-ocupante">
+                                                <td></td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Estado</mat-label>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()">
+                                                            <option disabled value="">Selecione o estado</option>
+                                                            <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Municipio</mat-label>
+                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
+                                                            <option disabled value="">Selecione o Municipio</option>
+                                                            <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <button (click)="cadastrarNovoOcupante()">confirmar</button>
+                                                    <button (click)="limparFormOcupante()">X</button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let item of listaMunicipiosEvento">
+                                                <td>
+                                                    {{ item.id }}
+                                                </td>
+                                                <td>
+                                                    {{ item.nm_estado }}
+                                                </td>
+                                                <td>
+                                                    {{ item.nm_municipio }}
+                                                </td>
+                                                <td>
+                                                    <button>editar</button>
+                                                    <button>excluir</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

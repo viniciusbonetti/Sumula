@@ -1,0 +1,95 @@
+import { Component, OnInit } from "@angular/core";
+import axios from "axios";
+
+@Component({
+    selector: "delegacao",
+    templateUrl: "./delegacao.component.html",
+    styleUrls: ["./delegacao.component.css"],
+})
+export class DelegacaoComponent implements OnInit {
+    public getToken = localStorage.getItem("Authorization");
+    public tenant = localStorage.getItem("tenant");
+    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
+    public url = `${this.baseUrl}/delegacao`;
+
+    public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
+    public setToken = { headers: this.headers };
+
+    public listaDelegacoes: Array<{ id: string; nm_delegacao: string}> = [];
+    public listaMunicipios = [];
+    public listaEstado = JSON.parse(localStorage.getItem('listaEstados'));
+    
+    public inputNomeDelegacao: string = "";
+    public inputTipoDelegacao: string = "";
+    public idDelegacao = "";
+    public estadoSelect = '';
+    public municipioSelect = '';
+
+    public novoCadastro = false;
+    public mostrarEditarDelegacao = false;
+    
+    constructor() {}
+
+    ngOnInit(): void {
+        this.getDelegacao();
+    }
+
+    public async getMunicipio(){
+        let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
+
+        let municipioDelegacao = await axios.get(url, this.setToken);
+
+        this.listaMunicipios = municipioDelegacao.data.data;
+    }
+
+    public cadastrar() {
+        this.novoCadastro = !this.novoCadastro;
+    }
+
+    public async getDelegacao() {
+        let getInfo = await axios.get(this.url, this.setToken);
+
+        this.listaDelegacoes = getInfo.data.data;
+    }
+
+    public async sendDelegacao() {
+        let formDelegacao = new FormData();
+        formDelegacao.append("nm_delegacao", this.inputNomeDelegacao.toUpperCase());
+        formDelegacao.append("id_tenant", this.tenant.toUpperCase());
+        formDelegacao.append("id_municipio", this.municipioSelect.toUpperCase());
+
+        let sendInfo = await axios.post(this.url, formDelegacao, this.setToken);
+
+        this.getDelegacao();
+
+        this.cancelarCadastro();
+    }
+
+    public cancelarCadastro() {
+        this.inputNomeDelegacao = "";
+        this.estadoSelect = "";
+        this.municipioSelect = "";
+        this.novoCadastro = !this.novoCadastro;
+    }
+
+    public mostrarEdicaoDelegacao(item) {
+        item.mostrarEditarDelegacao = true;
+    }
+
+    public async editarDelegacao(item) {
+        try {
+            this.idDelegacao = item.id;
+
+            let urlPut = `${this.baseUrl}/delegacao/${this.idDelegacao}`;
+
+            const formEditarDelegacao = new FormData();
+            formEditarDelegacao.append("nm_delegacao", item.nm_delegacao.toUpperCase());
+
+            let putInfo = await axios.put(urlPut, formEditarDelegacao, this.setToken);
+
+            this.getDelegacao();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}

@@ -1,0 +1,49 @@
+<div class="main-content " >
+    <div class="container-fluid ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card ">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Edit Profile</h4>
+                        <p class="card-category">Complete your profile</p>
+                    </div>
+                    <div class="card-body ">
+                        <form class="" id="formusuario">
+                            <div class="">
+                                <div class="col-md-7">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Nome completo" type="text" name="nm_usuario" [(ngModel)]="inputNome"/>
+                                    </mat-form-field>
+                                    <span class="form-error"></span>
+                                </div>
+                                <div class="col-md-7">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="email@email.com" type="email" name="ds_email" [(ngModel)]="inputEmail"/>
+                                    </mat-form-field>
+                                    <span class="form-error"></span>
+                                </div>
+                            </div>
+                            <div class="div-input" *ngIf="showSenha">
+                                <div class="col-md-7">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Senha" type="text" name="sn_usuario" [(ngModel)]="inputSenha"/>
+                                    </mat-form-field>
+                                    <span class="form-error"></span>
+                                </div>
+                                <div class="col-md-7">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Confirme sua senha" type="text" name="c_sn_usuario" [(ngModel)]="inputConfirmaSenha"/>
+                                    </mat-form-field>
+                                    <span class="form-error"></span>
+                                </div>
+                                <!-- <button (click)="getUsuarios()">teste</button> -->
+                            </div>                            
+                            <button class="linha-vermelha" (click)="sendForm()">teste form</button>
+                            <button (click)="mostrarSenha()">teste senha</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Atleta</h4>
+                        <p class="card-category">Inscrever um atleta</p>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Nome Completo" type="text" name="nm_atleta" [(ngModel)]="inputNomeCompletoAtleta" required />
+                                    </mat-form-field>
+                                    <span class="form-error nm_atleta"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Apelido" name="nm_apelido" [(ngModel)]="inputApelidoAtleta" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Data de Nascimento" type="text" name="dt_nascimento" [(ngModel)]="inputDataNascimentoAtleta" required />
+                                    </mat-form-field>
+                                    <span class="form-error dt_nascimento"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Genero</mat-label>
+                                            <select  matNativeControl required name="tp_genero" [(ngModel)]="generoSelect">
+                                                <option disabled value="">Selecione o genero</option>
+                                                <option value="m">Masculino</option>
+                                                <option value="f">Feminino</option>
+                                            </select>
+                                        </mat-form-field>
+                                        <span class="form-error tp_genero"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Endereço" type="text" name="ds_endereco" [(ngModel)]="enderecoAtleta" required>
+                                    </mat-form-field>
+                                    <span class="form-error ds_endereco"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Numero" type="text" name="nr_endereco" [(ngModel)]="nmrEnderecoAtleta" required />
+                                    </mat-form-field>
+                                    <span class="form-error nr_endereco"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="CEP" type="text" name="nr_cep" [(ngModel)]="cepAtleta"/>
+                                    </mat-form-field>
+                                    <span class="form-error nr_cep"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Estado</mat-label>
+                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()">
+                                            <option disabled value="">Selecione o estado</option>
+                                            <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
+                                        </select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Municipio</mat-label>
+                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
+                                            <option disabled value="">Selecione o municipio</option>
+                                            <option *ngFor="let item of municipioList" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
+                                        </select>
+                                    </mat-form-field>
+                                    <span class="form-error id_municipio"></span>
+                                </div>
+                            </div>
+                            <button (click)="sendFormAtleta()">teste atleta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
