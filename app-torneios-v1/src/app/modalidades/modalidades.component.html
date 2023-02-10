@@ -21,11 +21,17 @@
                                 <tbody>
                                     <tr *ngIf="novoCadastro">
                                         <td></td>
-                                        <td class="p-0">
-                                            <input matInput placeholder="" type="text" name="nm_modalidade" [(ngModel)]="inputNomeModalidade" />
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input name="nm_modalidade" matInput placeholder="" type="text" name="nm_modalidade" [(ngModel)]="inputNomeModalidade" />
+                                            </mat-form-field>
+                                            <span class="form-error nm_modalidade"></span>
                                         </td>
-                                        <td class="p-0">
-                                            <input matInput placeholder="" type="text" name="tp_modalidade" [(ngModel)]="inputTipoModalidade" />
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input name="tp_modalidade" matInput placeholder="" type="text" name="tp_modalidade" [(ngModel)]="inputTipoModalidade" />
+                                            </mat-form-field>
+                                            <span class="form-error tp_modalidade"></span>
                                         </td>
                                         <td>
                                             <button (click)="sendModalidade()">confirmar</button>
@@ -47,7 +53,7 @@
                                             <p *ngIf="!item.mostrarEditarModalidade">
                                                 {{ item.tp_modalidade }}
                                             </p>
-                                            <input type="text" name="nm_cargo" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.tp_modalidade" />
+                                            <input type="text" name="tp_modalidade" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.tp_modalidade" />
                                         </td>
                                         <td>
                                             <button (click)="mostrarEdicaoModalidade(item)" *ngIf="!item.mostrarEditarModalidade">editar</button>

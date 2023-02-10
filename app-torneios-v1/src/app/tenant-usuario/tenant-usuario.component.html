@@ -1,0 +1,117 @@
+<div class="main-content" *ngIf="!novoCadastro">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Tenant usuarios</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">Cadastrar novo usuario</button>
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Tenant</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listaTenantUsuario">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+                                        <td>
+                                            {{ item.id_usuario.nm_usuario }}
+                                        </td>
+                                        <td>
+                                            {{ item.id_tenant.nm_tenant }}
+                                        </td>
+                                        <td>
+                                            <button (click)="mostrarEdicaoEventos(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
+                                            <button (click)="editarEventos(item)" *ngIf="item.mostrarEditarEventos">confirmar</button>
+                                            <button>excluir</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="novoCadastro">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card" [ngSwitch]="num">
+                        <div *ngSwitchCase="''">
+                            <div class="card-header card-header-danger d-flex align-items-center">
+                                <h4 class="card-title p-2">Usuario</h4>
+                                <!-- <p class="card-category">Selecione os tenant</p> -->
+                            </div>
+                            <div class="card-body">
+                                <div class="col-md-12 d-flex flex-column align-items-center">
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Nome completo" type="text" name="nm_usuario" [(ngModel)]="inputNome" />
+                                        </mat-form-field>
+                                        <span class="form-error nm_usuario"></span>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="email@email.com" type="email" name="ds_email" [(ngModel)]="inputEmail" />
+                                        </mat-form-field>
+                                        <span class="form-error ds_email"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-flex flex-column align-items-center">
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Senha" type="text" name="sn_usuario" [(ngModel)]="inputSenha" />
+                                        </mat-form-field>
+                                        <span class="form-error sn_usuario"></span>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Confirme sua senha" type="text" name="c_sn_usuario" [(ngModel)]="inputConfirmaSenha" />
+                                        </mat-form-field>
+                                        <span class="form-error c_sn_usuario"></span>
+                                    </div>
+                                </div>
+                                <button (click)="limparSendForm()">voltar</button>
+                                <button (click)="botaoAvancar()">proximo</button>
+                            </div>
+                        </div>
+    
+                        <div *ngSwitchCase="'1'">
+                            <div class="card-header card-header-danger d-flex align-items-center">
+                                <h4 class="card-title p-2">Tenant</h4>
+                                <!-- <p class="card-category">Selecione os tenant</p> -->
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <mat-label>Tenant</mat-label>
+                                    <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
+                                        <li class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
+                                            <mat-checkbox name="id_tenant" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_tenant }}</mat-checkbox>
+                                        </li>
+                                    </ul>
+                                    <span class="form-error id_tenant"></span>
+                                </div>
+                                <div>
+                                    <button>voltar</button>
+                                    <button (click)="botaoAvancar()">confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

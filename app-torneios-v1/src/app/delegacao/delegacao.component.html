@@ -23,7 +23,10 @@
                                     <tr *ngIf="novoCadastro">
                                         <td></td>
                                         <td class="p-0">
-                                            <input placeholder="" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" />
+                                            <mat-form-field class="example-full-width">
+                                                <input name="nm_delegacao" matInput placeholder="" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" />
+                                            </mat-form-field>
+                                            <span class="form-error nm_delegacao"></span>
                                         </td>
                                         <td>
                                             <mat-form-field class="" appearance="fill">
@@ -33,6 +36,7 @@
                                                     <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
                                                 </select>
                                             </mat-form-field>
+                                            <span class="form-error id_estado"></span>
                                         </td>
                                         <td>
                                             <mat-form-field class="" appearance="fill">
@@ -42,6 +46,7 @@
                                                     <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
                                                 </select>
                                             </mat-form-field>
+                                            <span class="form-error id_municipio"></span>
                                         </td>
                                         <td>
                                             <button (click)="sendDelegacao()">confirmar</button>

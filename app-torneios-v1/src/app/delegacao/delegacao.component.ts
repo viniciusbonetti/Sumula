@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import axios from "axios";
+declare var $: any;
 
 @Component({
     selector: "delegacao",
@@ -15,26 +16,26 @@ export class DelegacaoComponent implements OnInit {
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken = { headers: this.headers };
 
-    public listaDelegacoes: Array<{ id: string; nm_delegacao: string}> = [];
+    public listaDelegacoes: Array<{ id: string; nm_delegacao: string }> = [];
     public listaMunicipios = [];
-    public listaEstado = JSON.parse(localStorage.getItem('listaEstados'));
-    
+    public listaEstado = JSON.parse(localStorage.getItem("listaEstados"));
+
     public inputNomeDelegacao: string = "";
     public inputTipoDelegacao: string = "";
     public idDelegacao = "";
-    public estadoSelect = '';
-    public municipioSelect = '';
+    public estadoSelect = "";
+    public municipioSelect = "";
 
     public novoCadastro = false;
     public mostrarEditarDelegacao = false;
-    
+
     constructor() {}
 
     ngOnInit(): void {
         this.getDelegacao();
     }
 
-    public async getMunicipio(){
+    public async getMunicipio() {
         let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
 
         let municipioDelegacao = await axios.get(url, this.setToken);
@@ -53,23 +54,27 @@ export class DelegacaoComponent implements OnInit {
     }
 
     public async sendDelegacao() {
-        let formDelegacao = new FormData();
-        formDelegacao.append("nm_delegacao", this.inputNomeDelegacao.toUpperCase());
-        formDelegacao.append("id_tenant", this.tenant.toUpperCase());
-        formDelegacao.append("id_municipio", this.municipioSelect.toUpperCase());
+        this.formError();
 
-        let sendInfo = await axios.post(this.url, formDelegacao, this.setToken);
+        try {
+            const formDelegacao = new FormData();
+            formDelegacao.append("nm_delegacao", this.inputNomeDelegacao.toUpperCase());
+            formDelegacao.append("id_tenant", this.tenant.toUpperCase());
+            formDelegacao.append("id_municipio", this.municipioSelect.toUpperCase());
 
-        this.getDelegacao();
+            let sendInfo = await axios.post(this.url, formDelegacao, this.setToken);
 
-        this.cancelarCadastro();
+            this.getDelegacao();
+            this.cancelarCadastro();
+        } catch (error) {
+            this.mostrarErros(error);
+        }
     }
 
     public cancelarCadastro() {
         this.inputNomeDelegacao = "";
         this.estadoSelect = "";
         this.municipioSelect = "";
-        this.novoCadastro = !this.novoCadastro;
     }
 
     public mostrarEdicaoDelegacao(item) {
@@ -91,5 +96,42 @@ export class DelegacaoComponent implements OnInit {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    public formError() {
+        var formError = document.getElementsByClassName("form-error");
+
+        for (let i = 0; i < formError.length; i++) {
+            formError[i].classList.remove("text-danger");
+            formError[i].innerHTML = "";
+        }
+    }
+
+    public mostrarErros(error) {
+        var erros = error.response.data.data;
+        for (let i = 0; i < erros.length; i++) {
+            var span = document.getElementsByClassName(erros[i].campo)[0];
+
+            span.innerHTML = erros[i].mensagem;
+            span.classList.add("text-danger");
+        }
+        this.showNotification("bottom", "center", error.response.data.message, "danger");
+    }
+
+    public showNotification(from, align, message, type) {
+        $.notify(
+            {
+                icon: "add_alert",
+                message: message,
+            },
+            {
+                type: type,
+                timer: 4000,
+                placement: {
+                    from: from,
+                    align: align,
+                },
+            }
+        );
     }
 }

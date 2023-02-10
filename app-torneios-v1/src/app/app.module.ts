@@ -15,6 +15,7 @@ import { CargosCcoComponent } from './cargos-cco/cargos-cco.component';
 import { ModalidadesComponent } from './modalidades/modalidades.component';
 import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { DelegacaoComponent } from './delegacao/delegacao.component';
+import { TenantUsuarioComponent } from './tenant-usuario/tenant-usuario.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { DelegacaoComponent } from './delegacao/delegacao.component';
     ListaAtletaComponent,
     CargosCcoComponent,
     ModalidadesComponent,
-    DelegacaoComponent
+    DelegacaoComponent,
+    TenantUsuarioComponent
 
   ],
   exports: [

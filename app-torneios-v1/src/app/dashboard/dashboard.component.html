@@ -1,5 +1,3 @@
-
-
 <div class="main-content">
     <div class="container-fluid">
         <div class="row">
@@ -12,21 +10,40 @@
 
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table">
-                                <thead class="text-primary text-center">
-                                    <th>
-                                        
-                                    </th>
-                                    <th>
-                                      Empresa
-                                    </th>
-                                    <th>
-                                      editar
-                                    </th>
+                            <button (click)="adicionarEmpresa()">Adicionar nova empresa</button>
+                            <table class="table text-center">
+                                <thead class="text-primary">
+                                    <th class="col-1">ID</th>
+                                    <th class="col-4">Imagem</th>
+                                    <th class="col-4">Tenant</th>
+                                    <th class="col-3"></th>
                                 </thead>
 
                                 <tbody>
-                                    <tr class=" tabela-paginator text-center" *ngFor="let item of listaEmpresas | paginate: { itemsPerPage: itensPagina, currentPage: pagAtual }">
+                                    <tr *ngIf="novoCadastro">
+                                        <td></td>
+                                        <td>
+                                            <button type="button" mat-raised-button (click)="fileInput.click()">Escolher arquivo</button>
+                                            <input hidden (change)="cadastrarImagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileTenant"/>
+                                            {{ inputFileTenant }} <br>
+                                            <span class="form-error ds_midia"></span>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput type="text" placeholder="Nome da empresa" name="nm_tenant" [(ngModel)]="novaEmpresaNome" required/>
+                                            </mat-form-field>
+                                            <span class="form-error nm_tenant"></span>
+                                        </td>
+                                        <td>
+                                            <button (click)="confirmarNovoTenant()">confirmar</button>
+                                            <button (click)="limparCadastroTenant()">X</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="" *ngFor="let item of listaEmpresas | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
                                         <td>
                                             <img src="data:image/{{ item.ds_midia.extension }}; base64, {{ item.ds_midia.image }}" alt="" />
                                         </td>
@@ -43,15 +60,7 @@
                         </div>
 
                         <div class="text-right">
-                            <pagination-controls (pageChange)="pagAtual  = $event" previousLabel="Anterior"
-                            nextLabel="Próximo"></pagination-controls>
-                        </div>
-
-                        <button (click)="adicionarEmpresa()">Adicionar nova empresa</button>
-                        <div *ngIf="novaEmpresa">
-                            <input type="text" placeholder="Nome da empresa" [(ngModel)]="novaEmpresaNome" />
-                            <input type="file" placeholder="imagem" (change)="AdicionarNovaEmpresa($event)" />
-                            <button (click)="confirmarNovaEmpresa()">teste</button>
+                            <pagination-controls (pageChange)="pagAtual = $event" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
                         </div>
                     </div>
                 </div>

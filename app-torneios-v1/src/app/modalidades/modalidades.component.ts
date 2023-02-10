@@ -1,6 +1,6 @@
-import { UpperCasePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import axios from "axios";
+declare var $: any;
 
 @Component({
     selector: "modalidades",
@@ -41,7 +41,10 @@ export class ModalidadesComponent implements OnInit {
     }
 
     public async sendModalidade(){
-        let formModalidade = new FormData();
+        this.formError();
+
+        try{
+            const formModalidade = new FormData();
         formModalidade.append('nm_modalidade', this.inputNomeModalidade.toUpperCase());
         formModalidade.append('tp_modalidade', this.inputTipoModalidade.toUpperCase());
 
@@ -49,14 +52,18 @@ export class ModalidadesComponent implements OnInit {
 
         this.inputNomeModalidade = '';
         this.inputTipoModalidade = '';
-
+        
+        this.cancelarCadastro();
         this.getModalidades();
+        }catch (error){
+            this.mostrarErros(error);
+        }
+        
     }
 
     public cancelarCadastro(){
         this.inputNomeModalidade = '';
         this.inputTipoModalidade = '';
-        this.novoCadastro = !this.novoCadastro;
     }
 
     public mostrarEdicaoModalidade(item){
@@ -80,5 +87,42 @@ export class ModalidadesComponent implements OnInit {
         catch (error) {
             console.log(error);
         }
+    }
+
+    public formError() {
+        var formError = document.getElementsByClassName("form-error");
+
+        for (let i = 0; i < formError.length; i++) {
+            formError[i].classList.remove("text-danger");
+            formError[i].innerHTML = "";
+        }
+    }
+
+    public mostrarErros(error) {
+        var erros = error.response.data.data;
+        for (let i = 0; i < erros.length; i++) {
+            var span = document.getElementsByClassName(erros[i].campo)[0];
+
+            span.innerHTML = erros[i].mensagem;
+            span.classList.add("text-danger");
+        }
+        this.showNotification("bottom", "center", error.response.data.message, "danger");
+    }
+
+    public showNotification(from, align, message, type) {
+        $.notify(
+            {
+                icon: "add_alert",
+                message: message,
+            },
+            {
+                type: type,
+                timer: 4000,
+                placement: {
+                    from: from,
+                    align: align,
+                },
+            }
+        );
     }
 }
