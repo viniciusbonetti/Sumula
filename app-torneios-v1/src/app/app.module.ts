@@ -16,6 +16,7 @@ import { ModalidadesComponent } from './modalidades/modalidades.component';
 import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { DelegacaoComponent } from './delegacao/delegacao.component';
 import { TenantUsuarioComponent } from './tenant-usuario/tenant-usuario.component';
+import { ControllerComponent } from './controller/controller.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { TenantUsuarioComponent } from './tenant-usuario/tenant-usuario.componen
     CargosCcoComponent,
     ModalidadesComponent,
     DelegacaoComponent,
-    TenantUsuarioComponent
+    TenantUsuarioComponent,
+    ControllerComponent
 
   ],
   exports: [

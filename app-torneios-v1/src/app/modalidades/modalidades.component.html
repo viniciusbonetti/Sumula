@@ -58,7 +58,7 @@
                                         <td>
                                             <button (click)="mostrarEdicaoModalidade(item)" *ngIf="!item.mostrarEditarModalidade">editar</button>
                                             <button (click)="editarModalidade(item)" *ngIf="item.mostrarEditarModalidade">confirmar</button>
-                                            <button>excluir</button>
+                                            <button (click)="excluir(item)">excluir</button>
                                         </td>
                                     </tr>
                                 </tbody>

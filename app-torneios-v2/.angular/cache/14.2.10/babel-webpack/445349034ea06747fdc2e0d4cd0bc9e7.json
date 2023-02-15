@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { TimelineComponent } from './timeline.component';\nexport const TimelineRoutes = [{\n  path: '',\n  children: [{\n    path: 'pages/timeline',\n    component: TimelineComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

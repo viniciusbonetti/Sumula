@@ -16,7 +16,6 @@
                                     <th>Evento</th>
                                     <th>Inicio</th>
                                     <th>Fim</th>
-                                    <th>Empresa Gestora</th>
                                     <th></th>
                                 </thead>
                                 <tbody>
@@ -34,11 +33,7 @@
                                             {{ item.dt_fim }}
                                         </td>
                                         <td>
-                                            {{ item.id_tenant.nm_tenant | uppercase }}
-                                        </td>
-                                        <td>
-                                            <button (click)="mostrarEdicaoEventos(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
-                                            <button (click)="editarEventos(item)" *ngIf="item.mostrarEditarEventos">confirmar</button>
+                                            <button (click)="editarEvento(item)">editar</button>
                                             <button>excluir</button>
                                         </td>
                                     </tr>
@@ -156,7 +151,7 @@
                                                     <span class="form-error tp_naipe"></span>
                                                 </td>
                                                 <td>
-                                                    <button (click)="sendModalidadesEvento()">Confirmar</button>
+                                                    <button (click)="sendModalidadesEvento('post')">Confirmar</button>
                                                     <button (click)="limparFormModalidade()">X</button>
                                                 </td>
                                             </tr>
@@ -165,21 +160,60 @@
                                                 <td>
                                                     {{ item.id }}
                                                 </td>
-                                                <td>
-                                                    {{ item.nm_modalidadeevento | uppercase }}
+                                                <td *ngIf="!item.editarModalidadeEvento">
+                                                    {{ item.id_modalidade.nm_modalidade | uppercase }}
                                                 </td>
-                                                <td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Modalidade</mat-label>
+                                                        <select matNativeControl required name="id_modalidade" [(ngModel)]="editarModalidadeSelect" required>
+                                                            <option disabled value="">Selecione a modalidade</option>
+                                                            <option *ngFor="let itemSelect of listaModalidades" value="{{ itemSelect.id }}">{{ itemSelect.nm_modalidade | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_modalidade"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
                                                     {{ item.nr_idadeinicio }}
                                                 </td>
-                                                <td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputEditarIdadeInicial" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadeinicio"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
                                                     {{ item.nr_idadefinal }}
                                                 </td>
-                                                <td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputEditarIdadeFinal" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadefinal"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
                                                     {{ item.tp_naipe }}
                                                 </td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Naipe</mat-label>
+                                                        <select matNativeControl required name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
+                                                            <option disabled value="">Selecione o naipe</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
+                                                            <option value="X">Misto</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_naipe"></span>
+                                                </td>
+
                                                 <td>
-                                                    <button>editar</button>
-                                                    <button>excluir</button>
+                                                    <button (click)="mostrarEditarModalidade(item)" *ngIf="!item.editarModalidadeEvento">editar</button>
+                                                    <button (click)="sendModalidadesEvento('put', item)" *ngIf="item.editarModalidadeEvento">confirmar</button>
+                                                    <button (click)="excluir(item)">excluir</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -219,7 +253,7 @@
                                                             <option *ngFor="let item of listaCargosCco" value="{{ item.id }}"> {{ item.nm_cargo | uppercase }}</option>
                                                         </select>
                                                     </mat-form-field>
-                                                    <span class="form-error nm_cargo"></span>
+                                                    <span class="form-error id_cargocco"></span>
                                                 </td>
                                                 <td>
                                                     <mat-form-field>
@@ -332,7 +366,7 @@
                                                     <span class="form-error id_municipio"></span>
                                                 </td>
                                                 <td>
-                                                    <button (click)="cadastrarNovoMunicipio()">confirmar</button>
+                                                    <button (click)="cadastrarNovoMunicipio('post')">confirmar</button>
                                                     <button (click)="limparFormMunicipio()">X</button>
                                                 </td>
                                             </tr>
@@ -348,7 +382,7 @@
                                                     {{ item.id_municipio.nm_municipio | uppercase }}
                                                 </td>
                                                 <td>
-                                                    <button>editar</button>
+                                                    <button (click)="cadastrarNovoMunicipio('put', item)">editar</button>
                                                     <button>excluir</button>
                                                 </td>
                                             </tr>

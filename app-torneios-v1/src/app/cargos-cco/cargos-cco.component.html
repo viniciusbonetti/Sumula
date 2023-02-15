@@ -40,12 +40,14 @@
                                                 {{ item.nm_cargo }}
                                             </p>
                                             <input type="text" name="nm_cargo" id="" *ngIf="item.mostrarEditarCargo" [(ngModel)]="item.nm_cargo">
+                                            <span class="form-error nm_cargo"></span>
                                         </td>
 
                                         <td >
-                                            <button (click)="mostrarEdicaoCargo(item)" *ngIf="!item.mostrarEditarCargo">editar</button>
+                                            <button (click)="mostrarEdicaoCargo(item, listaCargosCco)" *ngIf="!item.mostrarEditarCargo">editar</button>
                                             <button (click)="editarCargo(item)" *ngIf="item.mostrarEditarCargo">confirmar</button>
-                                            <button>excluir</button>
+                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditarCargo">excluir</button>
+                                            <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarCargo">cancelar</button>
                                         </td>
                                     </tr>
                                 </tbody>

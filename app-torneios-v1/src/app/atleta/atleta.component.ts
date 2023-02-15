@@ -1,14 +1,13 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { ControllerComponent } from "app/controller/controller.component";
 import axios from "axios";
-import { url } from "inspector";
-declare var $: any;
 
 @Component({
     selector: "atleta",
     templateUrl: "./atleta.component.html",
     styleUrls: ["./atleta.component.css"],
 })
-export class AtletaComponent implements OnInit, OnChanges {
+export class AtletaComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
@@ -27,7 +26,8 @@ export class AtletaComponent implements OnInit, OnChanges {
     public inputCepAtleta: string = "";
     public inputNumeroDocumentoAtleta: string = "";
     public inputContatoAtleta: string = "";
-
+    
+    public listaAtletas: Array<{ id: string; nm_atleta: string; nm_apelido: string; dt_nascimento: string; tp_genero: string; ds_endereco: string; nr_endereco: string; nr_cep: string; id_estado: string; id_municipio: string }> = [];
     public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
     public listaMunicipio: Array<{}> = [];
     public listaModalidades: Array<{}> = [];
@@ -42,63 +42,23 @@ export class AtletaComponent implements OnInit, OnChanges {
     public documentoAtletaSelect = "";
     public contatoSelect = "";
 
+    public novoCadastro:boolean = false;
+
     public num = "";
     public idAtleta: string = "";
-    public documentoAtletaImg = "";
+    public extension = '';
+    public image = '';
 
-    constructor() {}
-
-    ngOnInit(): void {}
-
-    ngOnChanges(changes: SimpleChanges): void {
-        this.getMunicipio();
+    ngOnInit(): void {
+        this.getListaAtletas();
     }
 
-    public async getMunicipio() {
-        console.log(this.estadoSelect);
-
-        let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
-
-        let municipioAtleta = await axios.get(url, this.setToken);
-
-        this.listaMunicipio = municipioAtleta.data.data;
+    public async getListaAtletas() {
+        this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
     }
 
-    public async sendFormAtleta() {
-        let url = `${this.baseUrl}/atleta`;
-        this.formError();
-
-        try {
-            const formAtleta = new FormData();
-            formAtleta.append("nm_atleta", this.inputNomeCompletoAtleta);
-            formAtleta.append("nm_apelido", this.inputApelidoAtleta);
-            formAtleta.append("tp_genero", this.generoSelect);
-            formAtleta.append("dt_nascimento", this.inputDataNascimentoAtleta);
-            formAtleta.append("ds_endereco", this.inputEnderecoAtleta);
-            formAtleta.append("nr_endereco", this.inputNmrEnderecoAtleta);
-            formAtleta.append("id_municipio", this.municipioSelect);
-            formAtleta.append("nr_cep", this.inputCepAtleta);
-            let sendAtleta = await axios.post(url, formAtleta, this.setToken);
-
-            this.idAtleta = sendAtleta.data.data.id;
-
-            this.showNotification("bottom", "center", sendAtleta.data.message, "success");
-            this.getModalidades();
-
-            this.num = "1";
-        } catch (error) {
-            this.mostrarErros(error);
-        }
-    }
-
-    public cancelarCadastro() {
-        this.inputApelidoAtleta = "";
-        this.inputEmailAtleta = "";
-        this.inputNomeCompletoAtleta = "";
-        this.inputDataNascimentoAtleta = "";
-        this.inputEnderecoAtleta = "";
-        this.inputNmrEnderecoAtleta = "";
-        this.inputCepAtleta = "";
+    public cadastrar(){
+        this.novoCadastro = true;
     }
 
     public botaoAvancar() {
@@ -106,6 +66,7 @@ export class AtletaComponent implements OnInit, OnChanges {
             this.sendFormAtleta();
         } else if (this.num == "1") {
             if(this.checkboxAtleta.length > 0){
+                this.sendModalidadesAtleta();
                 this.num = '2';
             }else {
                 this.sendModalidadesAtleta();
@@ -119,18 +80,45 @@ export class AtletaComponent implements OnInit, OnChanges {
         }
     }
 
+    public async getListaMunicipio() {
+        const path = this.paths.municipio + `/${this.estadoSelect}`;
+        this.listaMunicipio = await this.getInfo(path, this.setToken);
+    }
+
+    public async sendFormAtleta() {
+        const formAtleta = new FormData();
+        formAtleta.append("nm_atleta", this.inputNomeCompletoAtleta);
+        formAtleta.append("nm_apelido", this.inputApelidoAtleta);
+        formAtleta.append("tp_genero", this.generoSelect);
+        formAtleta.append("dt_nascimento", this.inputDataNascimentoAtleta);
+        formAtleta.append("ds_endereco", this.inputEnderecoAtleta);
+        formAtleta.append("nr_endereco", this.inputNmrEnderecoAtleta);
+        formAtleta.append("id_municipio", this.municipioSelect);
+        formAtleta.append("nr_cep", this.inputCepAtleta);
+        let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
+
+        this.idAtleta = sendAtleta.id;
+        this.getModalidades();
+        this.num = "1";
+    }
+
+    public cancelarCadastro() {
+        this.inputApelidoAtleta = "";
+        this.inputEmailAtleta = "";
+        this.inputNomeCompletoAtleta = "";
+        this.inputDataNascimentoAtleta = "";
+        this.inputEnderecoAtleta = "";
+        this.inputNmrEnderecoAtleta = "";
+        this.inputCepAtleta = "";
+    }
+
     public async getModalidades() {
-        const urlGetModalidades = `${this.baseUrl}/modalidade`;
-
-        let getInfoModalidade = await axios.get(urlGetModalidades, this.setToken);
-
-        this.listaModalidades = getInfoModalidade.data.data;
+        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
     }
 
     public setCheckbox(id, isChecked) {
         if (isChecked.checked) {
             this.checkboxAtleta.push(id);
-            console.log(this.checkboxAtleta.toString());
         } else {
             let index = this.checkboxAtleta.findIndex((x) => x == id);
             this.checkboxAtleta.splice(index, 1);
@@ -138,129 +126,76 @@ export class AtletaComponent implements OnInit, OnChanges {
     }
 
     public async sendModalidadesAtleta() {
-        const urlSendModalidadeAtleta = `${this.baseUrl}/modalidadeatleta`;
-        this.formError();
+        const formModalidadeAtleta = new FormData();
+        formModalidadeAtleta.append("id_modalidade", this.checkboxAtleta.toString());
+        formModalidadeAtleta.append("id_atleta", this.idAtleta);
+        formModalidadeAtleta.append("st_ativo", "true");
 
-        try {
-            const formModalidadeAtleta = new FormData();
-            formModalidadeAtleta.append("id_modalidade", this.checkboxAtleta.toString());
-            formModalidadeAtleta.append("id_atleta", this.idAtleta);
-            formModalidadeAtleta.append("st_ativo", "true");
-
-            let sendinfoModalidadesAtleta = await axios.post(urlSendModalidadeAtleta, formModalidadeAtleta, this.setToken);
-
-            this.num = "2";
-        } catch (error) {
-            this.mostrarErros(error);
-        }
+        await this.postInfo(this.paths.modalidadeatleta, formModalidadeAtleta, this.setToken);
     }
 
     public adicionarFotoDocumento(event) {
-        const file = event.target.files[0];
-        this.documentoAtletaImg = file;
-    }
+        let file = event.target.files[0];
+        this.extension = file.type.split('/')[1];
 
-    public async sendDocumentoAtleta() {
-        const urlSendDocumentoAtleta = `${this.baseUrl}/documentoatleta`;
-        this.formError();
+        if (file) {
+            var reader = new FileReader();
 
-        try {
-            const formDocumentoAtleta = new FormData();
-            formDocumentoAtleta.append("id_atleta", this.idAtleta);
-            formDocumentoAtleta.append("tp_documento", this.documentoAtletaSelect);
-            formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
-            formDocumentoAtleta.append("ds_midia", this.documentoAtletaImg);
+            reader.onload = this._handleReaderLoaded.bind(this);
 
-            let sendInfoDocumentoAtleta = await axios.post(urlSendDocumentoAtleta, formDocumentoAtleta, this.setToken2);
-            this.limparFormDocumentoAtleta();
-            this.getDocumentoAtleta();
-        } catch (error) {
-            this.mostrarErros(error);
+            reader.readAsBinaryString(file);
         }
     }
 
+    public _handleReaderLoaded(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        this.image = btoa(binaryString);
+    }
+
+    public async sendDocumentoAtleta() {
+        const formDocumentoAtleta = new FormData();
+        formDocumentoAtleta.append("id_atleta", this.idAtleta);
+        formDocumentoAtleta.append("tp_documento", this.documentoAtletaSelect);
+        formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
+        formDocumentoAtleta.append("image", this.image);
+
+        await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
+        this.limparFormDocumentoAtleta();
+        this.getDocumentoAtleta();
+    }
+
     public async getDocumentoAtleta() {
-        const urlGetDocumentoAtleta = `${this.baseUrl}/documentoatleta/t${this.idAtleta}`;
-
-        let getInfoDocumentoAtleta = await axios.get(urlGetDocumentoAtleta, this.setToken);
-
-        this.listaDocumentoAtleta = getInfoDocumentoAtleta.data.data;
-        console.log(this.listaDocumentoAtleta);
+        const urlGetDocumentoAtleta = this.paths.documentoatleta + `/t${this.idAtleta}`;
+        console.log(urlGetDocumentoAtleta);
         
+        this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
     public limparFormDocumentoAtleta() {
         this.documentoAtletaSelect = "";
         this.inputNumeroDocumentoAtleta = "";
-        this.documentoAtletaImg = "";
+        this.image = "";
     }
 
     public async sendContatoAtleta() {
-        const urlSendContatoAtleta = `${this.baseUrl}/contatoatleta`;
-        this.formError();
+        const formContatoAtleta = new FormData();
+        formContatoAtleta.append("id_atleta", this.idAtleta);
+        formContatoAtleta.append("tp_contato", this.contatoSelect);
+        formContatoAtleta.append("ds_contato", this.inputContatoAtleta);
 
-        try {
-            const formContatoAtleta = new FormData();
-            formContatoAtleta.append("id_atleta", this.idAtleta);
-            formContatoAtleta.append("tp_contato", this.contatoSelect);
-            formContatoAtleta.append("ds_contato", this.inputContatoAtleta);
-
-            let sendInfoContatoAtleta = await axios.post(urlSendContatoAtleta, formContatoAtleta, this.setToken);
-            
-            this.limparFormContatoAtleta();
-            this.getContatoAtleta();
-        } catch (error) {
-            this.mostrarErros(error);
-        }
+        await this.postInfo(this.paths.contatoatleta, formContatoAtleta, this.setToken);
+        
+        this.limparFormContatoAtleta();
+        this.getContatoAtleta();
     }
 
     public async getContatoAtleta(){
-        const urlGetContatoAtleta = `${this.baseUrl}/contatoatleta/t${this.idAtleta}`
-
-        let getInfoContatoAtleta = await axios.get(urlGetContatoAtleta, this.setToken);
-
-        this.listaContatoAtleta = getInfoContatoAtleta.data.data
+        const urlGetContatoAtleta = this.paths.contatoatleta + `/t${this.idAtleta}`
+        this.listaContatoAtleta = await this.getInfo(urlGetContatoAtleta, this.setToken);
     }
 
     public limparFormContatoAtleta() {
         this.contatoSelect = "";
         this.inputContatoAtleta = "";
-    }
-
-    public formError() {
-        var formError = document.getElementsByClassName("form-error");
-
-        for (let i = 0; i < formError.length; i++) {
-            formError[i].classList.remove("text-danger");
-            formError[i].innerHTML = "";
-        }
-    }
-
-    public mostrarErros(error) {
-        var erros = error.response.data.data;
-        for (let i = 0; i < erros.length; i++) {
-            var span = document.getElementsByClassName(erros[i].campo)[0];
-
-            span.innerHTML = erros[i].mensagem;
-            span.classList.add("text-danger");
-        }
-        this.showNotification("bottom", "center", error.response.data.message, "danger");
-    }
-
-    public showNotification(from, align, message, type) {
-        $.notify(
-            {
-                icon: "add_alert",
-                message: message,
-            },
-            {
-                type: type,
-                timer: 4000,
-                placement: {
-                    from: from,
-                    align: align,
-                },
-            }
-        );
     }
 }

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { UserComponent } from './user.component';\nexport const UserRoutes = [{\n  path: '',\n  children: [{\n    path: 'pages/user',\n    component: UserComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

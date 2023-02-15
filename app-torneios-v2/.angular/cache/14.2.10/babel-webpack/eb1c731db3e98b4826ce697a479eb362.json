@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { WidgetsComponent } from './widgets.component';\nexport const WidgetsRoutes = [{\n  path: '',\n  children: [{\n    path: '',\n    component: WidgetsComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

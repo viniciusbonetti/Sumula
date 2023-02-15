@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, Output } from "@angular/core";
 import { Router } from "@angular/router";
+import { ControllerComponent } from "app/controller/controller.component";
 import axios from "axios";
+import * as path from "path";
+import { async } from "rxjs";
 declare var $: any;
 
 @Component({
@@ -8,36 +11,40 @@ declare var $: any;
     templateUrl: "./dashboard.component.html",
     styleUrls: ["./dashboard.component.css"],
 })
-export class DashboardComponent implements OnInit {
-    constructor(private router: Router) {}
+export class DashboardComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
-    public headers = { Authorization: this.getToken };
+    // public headers = { Authorization: this.getToken };
+    public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken: any = { headers: this.headers };
 
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public listaEmpresas: Array<string> = [];
 
     public novoCadastro: boolean = false;
+    public mostrarEditar: boolean = false;
     public novaEmpresaNome: string = "";
+    public idRegistroTenant: string = "";
     public novaEmpresaImg: any = "";
     public inputFileTenant = "";
+    public editarInputFileTenant = "";
+    public image = "";
+    public extension = "";
 
     public itensPagina = 5;
     public pagAtual = 1;
 
     public listaEstados = {};
+    public pathTenant = `/tenant`;
 
     ngOnInit() {
-        this.getEmpresas();
+        this.getListaEmpresas();
         this.getEstado();
     }
 
-    public async getEmpresas() {
-        const url = `${this.baseUrl}/tenant`;
+    public async getListaEmpresas() {
+        const path = this.pathTenant;
 
-        let getInfo = await axios.get(url, this.setToken);
-
-        this.listaEmpresas = getInfo.data.data;
+        this.listaEmpresas = await this.getInfo(path, this.setToken);
     }
 
     public async adicionarEmpresa() {
@@ -45,42 +52,15 @@ export class DashboardComponent implements OnInit {
     }
 
     public async confirmarNovoTenant() {
-        const url = `${this.baseUrl}/tenant`;
-        var formError = document.getElementsByClassName("form-error");
+        const formData = new FormData();
+        formData.append("image", this.image);
+        formData.append("extension", this.extension);
+        formData.append("nm_tenant", this.novaEmpresaNome);
 
-        for (let i = 0; i < formError.length; i++) {
-            formError[i].classList.remove("text-danger");
-            formError[i].innerHTML = "";
-        }
+        await this.postInfo(this.pathTenant, formData, this.setToken);
 
-        try {
-            const formData = new FormData();
-            formData.append("ds_midia", this.novaEmpresaImg);
-            formData.append("nm_tenant", this.novaEmpresaNome.toUpperCase());
-
-            let sendInfoNovaEmpresa = await axios.post(url, formData, this.setToken);
-
-            this.getEmpresas();
-            this.limparCadastroTenant();
-
-            this.showNotification("bottom", "center", sendInfoNovaEmpresa.data.message, "success");
-
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
-        }
-    }
-
-    public cadastrarImagemTenant(event) {
-        const file = event.target.files[0];
-        this.novaEmpresaImg = file;
+        this.getListaEmpresas();
+        this.limparCadastroTenant();
     }
 
     public limparCadastroTenant() {
@@ -90,29 +70,65 @@ export class DashboardComponent implements OnInit {
     }
 
     public async getEstado() {
-        let url = `${this.baseUrl}/estado`;
-
-        let estados = await axios.get(url, this.setToken);
-
-        this.listaEstados = estados.data.data;
-
+        this.listaEstados = await this.getInfo(this.paths.estado, this.setToken);
         localStorage.setItem("listaEstados", JSON.stringify(this.listaEstados));
     }
 
-    public showNotification(from, align, message, type) {
-        $.notify(
-            {
-                icon: "add_alert",
-                message: message,
-            },
-            {
-                type: type,
-                timer: 1000,
-                placement: {
-                    from: from,
-                    align: align,
-                },
-            }
-        );
+    public botaoMostrarEditar(item) {
+        item.mostrarEditar = true;
+    }
+
+    public async editar(item) {
+        this.idRegistroTenant = item.id;
+        const path = this.pathTenant + `/${this.idRegistroTenant}`;
+
+        const formEditarTenant = new FormData();
+        formEditarTenant.append("image", this.image);
+        formEditarTenant.append("extension", this.extension);
+        formEditarTenant.append("nm_tenant", item.nm_tenant);
+
+        let putInfo = await this.putInfo(path, formEditarTenant, this.setToken);
+
+        if (putInfo.data.success) {
+            item.mostrarEditar = false;
+            this.idRegistroTenant = "";
+        }
+
+        this.extension = '';
+        this.image = '';
+        this.getListaEmpresas();
+    }
+
+    public imagemTenant(event) {
+        let file = event.target.files[0];
+        this.extension = file.type.split('/')[1];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = this._handleReaderLoaded.bind(this);
+
+            reader.readAsBinaryString(file);
+        }
+    }
+
+    public _handleReaderLoaded(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        this.image = btoa(binaryString);
+    }
+
+    public async excluir(item){
+        this.idRegistroTenant = item.id;
+        
+        const path = this.paths.tenant + `/${this.idRegistroTenant}`
+
+        await this.deleteInfo(path, this.setToken);
+
+        this.idRegistroTenant = '';
+        this.getListaEmpresas();
+    }
+
+    public cancelarEdicao(item){
+        item.mostrarEditar = false;
     }
 }

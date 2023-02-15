@@ -1,7 +1,9 @@
 import { AfterContentInit, DoCheck, Input } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { ControllerComponent } from "app/controller/controller.component";
 import axios, { formToJSON } from "axios";
+import * as path from "path";
 declare var $: any;
 
 @Component({
@@ -9,7 +11,7 @@ declare var $: any;
     templateUrl: "./table-list.component.html",
     styleUrls: ["./table-list.component.css"],
 })
-export class TableListComponent implements OnInit {
+export class TableListComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
@@ -20,7 +22,8 @@ export class TableListComponent implements OnInit {
     public setToken = { headers: this.headers };
 
     public novoCadastro = false;
-    public mostrarEditarModalidade = false;
+    public editar = false;
+    public editarModalidadeEvento = false;
 
     public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
     public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
@@ -41,6 +44,8 @@ export class TableListComponent implements OnInit {
     public inputNumeroDocumento: string = "";
     public inputIdadeInicial: string = "";
     public inputIdadeFinal: string = "";
+    public inputEditarIdadeInicial: string = "";
+    public inputEditarIdadeFinal: string = "";
 
     public cargoSelect = "";
     public estadoSelect = "";
@@ -48,15 +53,14 @@ export class TableListComponent implements OnInit {
     public documentoSelect = "";
     public modalidadeSelect = "";
     public naipeSelect = "";
+    public editarModalidadeSelect = "";
+    public editarNaipeSelect = "";
 
-    public idEditEvento = "";
+    public idEditarEvento = "";
     public idEvento = "";
+    public idRegistroModalidade = "";
 
     public num = "";
-
-    public formError = document.getElementsByClassName("form-error");
-
-    constructor() {}
 
     ngOnInit(): void {
         this.getEventos();
@@ -66,49 +70,53 @@ export class TableListComponent implements OnInit {
         this.novoCadastro = !this.novoCadastro;
     }
 
-    public async getEventos() {
-        let getInfo = await axios.get(this.urlGet, this.setToken);
+    public botaoAvancar() {
+        if (this.num == "") {
+            if(this.editar){
+                this.editarNomeEvento();
+            }else {
+                this.sendEventos();
+            }
+            this.getCargosCco();
+        } else if (this.num == "1") {
+            if(this.listaModalidadesEvento.length > 0){
+                this.num = '2';
+            }else {
+                alert('cadastre uma modalidade')
+            }
+            this.getOcupantes();
+        }else if(this.num == "2"){
+            if(this.listaOcupantes.length > 0){
+                this.num = '3';
+            }else{
+                this.sendNovoOcupante();
+            }
+            this.getMunicipiosEvento();
+        }
+    }
 
-        this.listaEventos = getInfo.data.data;
+    public async getEventos() {
+        const path = this.paths.evento + `/t${this.tenant}`
+        this.listaEventos = await this.getInfo(path, this.setToken);
     }
 
     public async sendEventos() {
-        for (let i = 0; i < this.formError.length; i++) {
-            this.formError[i].classList.remove("text-danger");
-            this.formError[i].innerHTML = "";
-        }
+        const formEventos = new FormData();
+        formEventos.append("nm_evento", this.inputNomeEvento);
+        formEventos.append("dt_inicio", this.inputDataInicio);
+        formEventos.append("dt_fim", this.inputDataFim);
+        formEventos.append("id_tenant", this.tenant);
 
-        try {
-            const formEventos = new FormData();
-            formEventos.append("nm_evento", this.inputNomeEvento);
-            formEventos.append("dt_inicio", this.inputDataInicio);
-            formEventos.append("dt_fim", this.inputDataFim);
-            formEventos.append("id_tenant", this.tenant);
+        let sendInfoEvento = await this.postInfo(this.paths.evento, formEventos, this.setToken);
 
-            let sendInfoEventos = await axios.post(this.urlPost, formEventos, this.setToken);
-
-            this.idEvento = sendInfoEventos.data.data.id;
-
-            this.inputNomeEvento = "";
-            this.inputDataInicio = "";
-            this.inputDataFim = "";
-            this.inputNomeTenant = "";
-
-            
-            this.getModalidades();
-            this.getCargosCco();
-            this.num = "1";
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
-        }
+        this.idEvento = sendInfoEvento.id;
+        this.inputNomeEvento = "";
+        this.inputDataInicio = "";
+        this.inputDataFim = "";
+        this.inputNomeTenant = "";
+        
+        this.getModalidades();
+        this.num = "1";
     }
 
     public cancelarCadastro() {
@@ -119,77 +127,12 @@ export class TableListComponent implements OnInit {
         this.novoCadastro = !this.novoCadastro;
     }
 
-    public mostrarEdicaoEventos(item) {
-        item.mostrarEditarEventos = true;
-    }
-
-    public async editarEventos(item) {
-        for (let i = 0; i < this.formError.length; i++) {
-            this.formError[i].classList.remove("text-danger");
-            this.formError[i].innerHTML = "";
-        }
-
-        try {
-            this.idEditEvento = item.id;
-
-            let urlPut = `${this.baseUrl}/modalidade/${this.idEditEvento}`;
-
-            const formEditarModalidade = new FormData();
-            formEditarModalidade.append("nm_evento", item.nm_evento);
-            formEditarModalidade.append("dt_inicio", item.dt_inicio);
-            formEditarModalidade.append("dt_fim", item.dt_fim);
-            formEditarModalidade.append("nm_tenant", item.nm_tenant);
-
-            let putInfo = await axios.put(urlPut, formEditarModalidade, this.setToken);
-
-            this.getEventos();
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
-        }
-    }
-
-    public botaoAvancar() {
-        if (this.num == "") {
-            this.sendEventos();
-        } else if (this.num == "1") {
-            if(this.listaModalidadesEvento.length > 0){
-                this.num = '2';
-            }else {
-                this.sendModalidadesEvento();
-            }
-        }else if(this.num == "2"){
-            if(this.listaOcupantes.length > 0){
-                this.num = '3';
-            }else{
-                this.sendNovoOcupante();
-            }
-        }
-    }
-
     public async getModalidades() {
-        const urlGetModalidades = `${this.baseUrl}/modalidade`;
-
-        let getInfoModalidade = await axios.get(urlGetModalidades, this.setToken);
-
-        this.listaModalidades = getInfoModalidade.data.data;
+        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
     }
 
-    public async sendModalidadesEvento() {
-        const urlSendModalidadeEvento = `${this.baseUrl}/modalidadeevento`;
-        for (let i = 0; i < this.formError.length; i++) {
-            this.formError[i].classList.remove("text-danger");
-            this.formError[i].innerHTML = "";
-        }
-
-        try {
+    public async sendModalidadesEvento(metodo, item) {        
+        if (metodo == 'post'){
             const formModalidadeEvento = new FormData();
             formModalidadeEvento.append("id_tenant", this.tenant);
             formModalidadeEvento.append("id_evento", this.idEvento);
@@ -197,70 +140,50 @@ export class TableListComponent implements OnInit {
             formModalidadeEvento.append("nr_idadeinicio", this.inputIdadeInicial);
             formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
             formModalidadeEvento.append("tp_naipe", this.naipeSelect);
-
-            let sendInfoModalidade = await axios.post(urlSendModalidadeEvento, formModalidadeEvento, this.setToken);
-
-            this.getModalidadesEvento();
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
+            await this.postInfo(this.paths.modalidadeevento, formModalidadeEvento, this.setToken);
+        } else if (metodo == 'put'){
+            const formEditarModaidadeEvento = new FormData();
+            formEditarModaidadeEvento.append("id_tenant", this.tenant);
+            formEditarModaidadeEvento.append("id_evento", this.idEvento);
+            formEditarModaidadeEvento.append("id_modalidade", this.editarModalidadeSelect);
+            formEditarModaidadeEvento.append("nr_idadeinicio", this.inputEditarIdadeInicial);
+            formEditarModaidadeEvento.append("nr_idadefinal", this.inputEditarIdadeFinal);
+            formEditarModaidadeEvento.append("tp_naipe", this.editarNaipeSelect);
+            const path = this.paths.modalidadeevento + `/${item.id}`
+            await this.putInfo(path, formEditarModaidadeEvento, this.setToken)
         }
+
+        this.modalidadeSelect = '';
+        this.inputIdadeInicial = '';
+        this.inputIdadeFinal = '';
+        this.naipeSelect = '';
+        this.getModalidadesEvento();
     }
 
     public async getModalidadesEvento() {
-        const urlGetModalidadeEvento = `${this.baseUrl}/modalidadeevento/i${this.idEvento}&t${this.tenant}`;
+        const path = this.paths.modalidadeevento + `/i${this.idEvento}&t${this.tenant}`;
 
-        let getInfoModalidadeEvento = await axios.get(urlGetModalidadeEvento, this.setToken);
-
-        this.listaModalidadesEvento = getInfoModalidadeEvento.data.data;
+        this.listaModalidadesEvento = await this.getInfo(path, this.setToken);
     }
 
     public async getCargosCco() {
-        const urlGetCargos = `${this.baseUrl}/cargocco/t${this.tenant}`;
+        const path = this.paths.cargocco + `/t${this.tenant}`;
 
-        let getInfo = await axios.get(urlGetCargos, this.setToken);
-
-        this.listaCargosCco = getInfo.data.data;
+        this.listaCargosCco = await this.getInfo(path, this.setToken);
     }
 
     public async sendNovoOcupante() {
-        const urlSendOcupante = `${this.baseUrl}/ccoevento`;
-        for (let i = 0; i < this.formError.length; i++) {
-            this.formError[i].classList.remove("text-danger");
-            this.formError[i].innerHTML = "";
-        }
+        const formOcupante = new FormData();
+        formOcupante.append("id_tenant", this.tenant);
+        formOcupante.append("id_evento", this.idEvento);
+        formOcupante.append("id_cargocco", this.cargoSelect);
+        formOcupante.append("nm_ocupante", this.inputNomeOcupante);
+        formOcupante.append("tp_documento", this.documentoSelect);
+        formOcupante.append("nr_documento", this.inputNumeroDocumento);
 
-        try {
-            const formOcupante = new FormData();
-            formOcupante.append("id_tenant", this.tenant);
-            formOcupante.append("id_evento", this.idEvento);
-            formOcupante.append("id_cargocco", this.cargoSelect);
-            formOcupante.append("nm_ocupante", this.inputNomeOcupante);
-            formOcupante.append("tp_documento", this.documentoSelect);
-            formOcupante.append("nr_documento", this.inputNumeroDocumento);
+        await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
 
-            let postOcupantes = await axios.post(urlSendOcupante, formOcupante, this.setToken);
-
-            this.limparFormOcupante();
-            this.getOcupantes();
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
-        }
+        this.limparFormOcupante();
     }
 
     public limparFormOcupante() {
@@ -271,72 +194,83 @@ export class TableListComponent implements OnInit {
     }
 
     public async getOcupantes() {
-        const urlGetOcupantes = `${this.baseUrl}/ccoevento/i${this.idEvento}&t${this.tenant}`;
-
-        let getOcupantes = await axios.get(urlGetOcupantes, this.setToken);
-
-        this.listaOcupantes = getOcupantes.data.data;
+        const path = this.paths.ccoevento + `/i${this.idEvento}&t${this.tenant}`;
+        this.listaOcupantes = await this.getInfo(path, this.setToken);
     }
 
     public async getMunicipio() {
-        let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
-
-        let municipio = await axios.get(url, this.setToken);
-
-        this.listaMunicipios = municipio.data.data;
+        const path = this.paths.municipio + `/${this.estadoSelect}`;
+        this.listaMunicipios = await this.getInfo(path, this.setToken);
     }
 
-    public async cadastrarNovoMunicipio() {
-        const urlSendMunicipioEvento = `${this.baseUrl}/municipioevento`;
-        for (let i = 0; i < this.formError.length; i++) {
-            this.formError[i].classList.remove("text-danger");
-            this.formError[i].innerHTML = "";
+    public async cadastrarNovoMunicipio(metodo, item) {
+        const formMunicipioEvento = new FormData();
+        formMunicipioEvento.append("id_evento", this.idEvento);
+        formMunicipioEvento.append("id_municipio", this.municipioSelect);
+        formMunicipioEvento.append("id_tenant", this.tenant);
+
+        if(metodo == 'post'){
+            await this.postInfo(this.paths.municipioevento, formMunicipioEvento, this.setToken);
+        } else if(metodo == 'put'){
+            const path = this.paths.municipioevento + `/${item.id}`;
+            await this.putInfo(path, formMunicipioEvento, this.setToken);
         }
 
-        try {
-            const formMunicipioEvento = new FormData();
-            formMunicipioEvento.append("id_evento", this.idEvento);
-            formMunicipioEvento.append("id_municipio", this.municipioSelect);
-            formMunicipioEvento.append("id_tenant", this.tenant);
-
-            let sendMunicipioEvento = await axios.post(urlSendMunicipioEvento, formMunicipioEvento, this.setToken);
-
-            this.getMunicipiosEvento();
-        } catch (error) {
-            var erros = error.response.data.data;
-
-            for (let i = 0; i < erros.length; i++) {
-                var span = document.getElementsByClassName(erros[i].campo)[0];
-
-                span.innerHTML = erros[i].mensagem;
-                span.classList.add("text-danger");
-            }
-            this.showNotification("bottom", "center", error.response.data.message, "danger");
-        }
+        this.getMunicipiosEvento();
     }
 
     public async getMunicipiosEvento() {
-        let url = `${this.baseUrl}/municipioevento/i${this.idEvento}&t${this.tenant}`;
+        const path = this.paths.municipioevento + `/i${this.idEvento}&t${this.tenant}`;
 
-        let municipioEvento = await axios.get(url, this.setToken);
-
-        this.listaMunicipiosEvento = municipioEvento.data.data;
+        this.listaMunicipiosEvento = await this.getInfo(path, this.setToken);
     }
 
-    public showNotification(from, align, message, type) {
-        $.notify(
-            {
-                icon: "add_alert",
-                message: message,
-            },
-            {
-                type: type,
-                timer: 1000,
-                placement: {
-                    from: from,
-                    align: align,
-                },
-            }
-        );
+    public async editarEvento(item){
+        this.novoCadastro = true;
+        this.editar = true;
+        this.idEvento = item.id;
+        
+        const path = this.paths.evento + `/i${item.id}&t${this.tenant}`
+
+        let getInfoEvento = await this.getInfo(path, this.setToken)
+
+        this.inputNomeEvento = getInfoEvento[0].nm_evento;
+        this.inputDataInicio = getInfoEvento[0].dt_inicio;
+        this.inputDataFim = getInfoEvento[0].dt_fim;
+    }
+
+    public async editarNomeEvento(){
+        const path = this.paths.evento + `/${this.idEvento}`;
+
+        const formEditarEvento = new FormData();
+        formEditarEvento.append('nm_evento', this.inputNomeEvento);
+        formEditarEvento.append("dt_inicio", this.inputDataInicio);
+        formEditarEvento.append("dt_fim", this.inputDataFim);
+        formEditarEvento.append("id_tenant", this.tenant);
+
+        await this.putInfo(path, formEditarEvento, this.setToken);
+        this.num = "1";
+
+        this.getModalidades();
+        this.getModalidadesEvento();
+    }
+
+    public mostrarEditarModalidade(item) {
+        item.editarModalidadeEvento = true;
+        this.editarModalidadeSelect = item.id_modalidade.id;
+        this.inputEditarIdadeInicial = item.nr_idadeinicio;
+        this.inputEditarIdadeFinal = item.nr_idadefinal;
+        this.editarNaipeSelect = item.tp_naipe;
+    }
+
+    public async excluir(item){
+        this.idRegistroModalidade = item.id;
+        
+        const path = this.paths.modalidadeevento + `/${this.idRegistroModalidade}`
+
+        await this.deleteInfo(path, this.setToken);
+
+        this.idRegistroModalidade = '';
+        this.getModalidadesEvento();
     }
 }

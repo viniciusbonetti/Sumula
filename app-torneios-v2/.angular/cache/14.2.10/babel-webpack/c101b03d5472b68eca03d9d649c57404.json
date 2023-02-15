@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { ChartsComponent } from './charts.component';\nexport const ChartsRoutes = [{\n  path: '',\n  children: [{\n    path: '',\n    component: ChartsComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

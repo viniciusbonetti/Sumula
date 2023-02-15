@@ -1,5 +1,68 @@
-<div>
-    <!-- vai ter um ng if-->
+<div *ngIf="!novoCadastro">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-danger d-flex align-items-center">
+                            <h4 class="card-title p-2">Simple Table</h4>
+                            <p class="card-category">Here is a subtitle for this table</p>
+                        </div>
+                        <div class="card-body">
+                            <button (click)="cadastrar()">adicionar novo atleta</button>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="text-primary text-center">
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Apelido</th>
+                                        <th>Data de nascimento</th>
+                                        <th>Genero</th>
+                                        <!-- <th>Endereço</th>
+                                        <th>Número</th>
+                                        <th>CEP</th> -->
+                                        <th>Cidade</th>
+                                    </thead>
+                                    <tbody *ngFor="let item of listaAtletas">
+                                        <tr class="tabela-paginator text-center">
+                                            <td>
+                                                {{ item.id }}
+                                            </td>
+                                            <td class=" col-md-3">
+                                                {{ item.nm_atleta }}
+                                            </td>
+                                            <td>
+                                                {{ item.nm_apelido }}
+                                            </td>
+                                            <td>
+                                                {{ item.dt_nascimento }}
+                                            </td>
+                                            <td>
+                                                {{ item.tp_genero }}
+                                            </td>
+                                            <!-- <td>
+                                                {{ item.ds_endereco }}
+                                            </td>
+                                            <td>
+                                                {{ item.nr_endereco }}
+                                            </td>
+                                            <td>
+                                                {{ item.nr_cep }}
+                                            </td> -->
+                                            <td>{{ item.id_municipio.nm_municipio }} / {{ item.id_municipio.estado.sg_estado }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="novoCadastro">
     <div class="main-content">
         <div class="container-fluid">
             <div class="row">
@@ -70,7 +133,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field appearance="fill">
                                                 <mat-label>Estado</mat-label>
-                                                <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()">
+                                                <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getListaMunicipio()">
                                                     <option disabled value="">Selecione o estado</option>
                                                     <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
                                                 </select>

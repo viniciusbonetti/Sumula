@@ -24,7 +24,7 @@
                                         <td></td>
                                         <td>
                                             <button type="button" mat-raised-button (click)="fileInput.click()">Escolher arquivo</button>
-                                            <input hidden (change)="cadastrarImagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileTenant"/>
+                                            <input hidden (change)="imagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileTenant"/>
                                             {{ inputFileTenant }} <br>
                                             <span class="form-error ds_midia"></span>
                                         </td>
@@ -45,14 +45,30 @@
                                             {{ item.id }}
                                         </td>
                                         <td>
-                                            <img src="data:image/{{ item.ds_midia.extension }}; base64, {{ item.ds_midia.image }}" alt="" />
+                                            <div *ngIf="item.mostrarEditar">
+                                                <button type="button" mat-raised-button (click)="fileInput.click()">Escolher arquivo</button>
+                                                <input hidden (change)="imagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="editarInputFileTenant"/>
+                                                {{ editarInputFileTenant }} <br>
+                                                <span class="form-error ds_midia"></span>
+                                            </div>
+                                            <img src="data:image/{{ item.ds_midia.extension }}; base64, {{ item.ds_midia.image }}" alt="" *ngIf="!item.mostrarEditar"/>
                                         </td>
                                         <td>
-                                            {{ item.nm_tenant }}
+                                            <div *ngIf="item.mostrarEditar">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput type="text" placeholder="Nome da empresa" name="nm_tenant" [(ngModel)]="item.nm_tenant" required/>
+                                                </mat-form-field>
+                                                <span class="form-error nm_tenant"></span>
+                                            </div>                                        
+                                            <p *ngIf="!item.mostrarEditar">
+                                                {{ item.nm_tenant }}
+                                            </p>    
                                         </td>
                                         <td>
-                                            <button>editar</button>
-                                            <button>excluir</button>
+                                            <button (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditar">editar</button>
+                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditar">excluir</button>
+                                            <button (click)="editar(item)" *ngIf="item.mostrarEditar">confirmar</button>
+                                            <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditar">cancelar</button>
                                         </td>
                                     </tr>
                                 </tbody>

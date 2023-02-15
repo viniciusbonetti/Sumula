@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { DashboardComponent } from './dashboard.component';\nexport const DashboardRoutes = [{\n  path: '',\n  children: [{\n    path: 'dashboard',\n    component: DashboardComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

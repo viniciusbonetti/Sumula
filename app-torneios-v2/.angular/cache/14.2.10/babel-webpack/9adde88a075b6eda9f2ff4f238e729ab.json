@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { CalendarComponent } from './calendar.component';\nexport const CalendarRoutes = [{\n  path: '',\n  children: [{\n    path: '',\n    component: CalendarComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

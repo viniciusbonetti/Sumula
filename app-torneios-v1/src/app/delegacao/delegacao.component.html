@@ -31,7 +31,7 @@
                                         <td>
                                             <mat-form-field class="" appearance="fill">
                                                 <mat-label>Estado</mat-label>
-                                                <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()">
+                                                <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio(estadoSelect)">
                                                     <option disabled value="">Selecione o estado</option>
                                                     <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
                                                 </select>
@@ -58,22 +58,47 @@
                                         <td>
                                             {{ item.id }}
                                         </td>
-                                        <td>
-                                            <p *ngIf="!item.mostrarEditarDelegacao">
-                                                {{ item.nm_delegacao }}
-                                            </p>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
                                             <input type="text" name="nm_delegacao" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
                                         </td>
-                                        <td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
+                                            {{ item.nm_delegacao }}
+                                        </td>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
+                                            <mat-form-field class="" appearance="fill" >
+                                                <mat-label>Estado</mat-label>
+                                                <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id">
+                                                    <option disabled value="">Selecione o estado</option>
+                                                    <option *ngFor="let itemSelectEstado of listaEstado" value="{{ itemSelectEstado.id }}">{{ itemSelectEstado.nm_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_estado"></span>                                            
+                                        </td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
                                             {{ item.id_municipio.estado.nm_estado }}
                                         </td>
-                                        <td>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
+                                            <mat-form-field class="" appearance="fill" >
+                                                <mat-label>Municipio</mat-label>
+                                                <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id">
+                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option *ngFor="let itemSelectMunicipio of listaMunicipios" value="{{ itemSelectMunicipio.id }}">{{ itemSelectMunicipio.nm_municipio }} / {{ itemSelectMunicipio.id_estado.sg_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_municipio"></span>
+                                        </td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">                                            
                                             {{ item.id_municipio.nm_municipio }}
                                         </td>
+                                        
                                         <td class="col-md-2">
-                                            <button (click)="mostrarEdicaoDelegacao(item)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
+                                            <button (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
                                             <button (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao">confirmar</button>
-                                            <button>excluir</button>
+                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao">excluir</button>
+                                            <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao">cancelar</button>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { ControllerComponent } from "app/controller/controller.component";
 import axios from "axios";
+import * as path from "path";
 declare var $: any;
 
 @Component({
@@ -7,7 +9,7 @@ declare var $: any;
     templateUrl: "./delegacao.component.html",
     styleUrls: ["./delegacao.component.css"],
 })
-export class DelegacaoComponent implements OnInit {
+export class DelegacaoComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
@@ -21,26 +23,25 @@ export class DelegacaoComponent implements OnInit {
     public listaEstado = JSON.parse(localStorage.getItem("listaEstados"));
 
     public inputNomeDelegacao: string = "";
-    public inputTipoDelegacao: string = "";
+    public inputEditarDelegacao: string = "";
+
     public idDelegacao = "";
+
     public estadoSelect = "";
     public municipioSelect = "";
+    public editarEstadoSelect = "";
+    public editarMunicipioSelect = "";
 
     public novoCadastro = false;
     public mostrarEditarDelegacao = false;
-
-    constructor() {}
 
     ngOnInit(): void {
         this.getDelegacao();
     }
 
-    public async getMunicipio() {
-        let url = `${this.baseUrl}/municipio/${this.estadoSelect}`;
-
-        let municipioDelegacao = await axios.get(url, this.setToken);
-
-        this.listaMunicipios = municipioDelegacao.data.data;
+    public async getMunicipio(select) {
+        let path = this.paths.municipio + `/${select}`;
+        this.listaMunicipios = await this.getInfo(path, this.setToken);
     }
 
     public cadastrar() {
@@ -48,27 +49,19 @@ export class DelegacaoComponent implements OnInit {
     }
 
     public async getDelegacao() {
-        let getInfo = await axios.get(this.url, this.setToken);
-
-        this.listaDelegacoes = getInfo.data.data;
+        this.listaDelegacoes = await this.getInfo(this.paths.delegacao, this.setToken);
     }
 
     public async sendDelegacao() {
-        this.formError();
+        const formDelegacao = new FormData();
+        formDelegacao.append("nm_delegacao", this.inputNomeDelegacao);
+        formDelegacao.append("id_tenant", this.tenant);
+        formDelegacao.append("id_municipio", this.municipioSelect);
 
-        try {
-            const formDelegacao = new FormData();
-            formDelegacao.append("nm_delegacao", this.inputNomeDelegacao.toUpperCase());
-            formDelegacao.append("id_tenant", this.tenant.toUpperCase());
-            formDelegacao.append("id_municipio", this.municipioSelect.toUpperCase());
+        await this.postInfo(this.paths.delegacao, formDelegacao, this.setToken);
 
-            let sendInfo = await axios.post(this.url, formDelegacao, this.setToken);
-
-            this.getDelegacao();
-            this.cancelarCadastro();
-        } catch (error) {
-            this.mostrarErros(error);
-        }
+        this.getDelegacao();
+        this.cancelarCadastro();
     }
 
     public cancelarCadastro() {
@@ -77,61 +70,46 @@ export class DelegacaoComponent implements OnInit {
         this.municipioSelect = "";
     }
 
-    public mostrarEdicaoDelegacao(item) {
+    public cancelarEdicao(item){
+        item.mostrarEditarDelegacao = false;
+    }
+
+    public mostrarEdicaoDelegacao(item, listaDelegacoes) {
+        listaDelegacoes.forEach(element => {
+            element.mostrarEditarDelegacao = false
+        });
         item.mostrarEditarDelegacao = true;
+        // this.inputEditarDelegacao = item.nm_delegacao;
+        // this.editarEstadoSelect = item.id_municipio.estado.id;
+        // this.editarMunicipioSelect = item.id_municipio.id;
+        
+        // this.getMunicipio(this.editarEstadoSelect);
+        this.getMunicipio(item.id_municipio.estado.id);
     }
 
     public async editarDelegacao(item) {
-        try {
-            this.idDelegacao = item.id;
+        this.idDelegacao = item.id;
+        const path = this.paths.delegacao + `/${this.idDelegacao}`;
 
-            let urlPut = `${this.baseUrl}/delegacao/${this.idDelegacao}`;
+        const formEditarDelegacao = new FormData();
+        formEditarDelegacao.append("nm_delegacao", item.nm_delegacao);
+        formEditarDelegacao.append("id_tenant", this.tenant);
+        formEditarDelegacao.append("id_municipio", item.id_municipio.id);
 
-            const formEditarDelegacao = new FormData();
-            formEditarDelegacao.append("nm_delegacao", item.nm_delegacao.toUpperCase());
+        await this.putInfo(path, formEditarDelegacao, this.setToken);
 
-            let putInfo = await axios.put(urlPut, formEditarDelegacao, this.setToken);
-
-            this.getDelegacao();
-        } catch (error) {
-            console.log(error);
-        }
+        this.idDelegacao = '';
+        this.getDelegacao();
     }
 
-    public formError() {
-        var formError = document.getElementsByClassName("form-error");
+    public async excluir(item){
+        this.idDelegacao = item.id;
+        
+        const path = this.paths.delegacao + `/${this.idDelegacao}`
 
-        for (let i = 0; i < formError.length; i++) {
-            formError[i].classList.remove("text-danger");
-            formError[i].innerHTML = "";
-        }
-    }
+        await this.deleteInfo(path, this.setToken);
 
-    public mostrarErros(error) {
-        var erros = error.response.data.data;
-        for (let i = 0; i < erros.length; i++) {
-            var span = document.getElementsByClassName(erros[i].campo)[0];
-
-            span.innerHTML = erros[i].mensagem;
-            span.classList.add("text-danger");
-        }
-        this.showNotification("bottom", "center", error.response.data.message, "danger");
-    }
-
-    public showNotification(from, align, message, type) {
-        $.notify(
-            {
-                icon: "add_alert",
-                message: message,
-            },
-            {
-                type: type,
-                timer: 4000,
-                placement: {
-                    from: from,
-                    align: align,
-                },
-            }
-        );
+        this.idDelegacao = '';
+        this.getDelegacao();
     }
 }
