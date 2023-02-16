@@ -4,6 +4,12 @@
     height: 100vh;
 }
 
+.sidebar-mini{
+    .logo{
+        background: center/contain url("/assets/img/logo-pequeno.png") no-repeat !important;
+    }
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -15,11 +21,11 @@
     @include shadow-big();
 
     .logo-img{
-        width: 42px;
+        // width: 40%;
         max-height: 42px;
-
+        
         img{
-            width: 42px;
+            width: 90%;
             top: 13px;
             left: 18px;
             position: absolute;
@@ -39,7 +45,7 @@
     }
 
     &[data-background-color="black"]{
-        background-color: #191919;
+        background-color: #30302f;
     }
 
     &[data-background-color="red"]{
@@ -241,11 +247,13 @@
     }
 
     .logo{
-        padding: 15px 0px;
         margin: 0;
         display: block;
         position: relative;
         z-index: 4;
+        width: 100%;
+        height: 90px;
+        background: center/contain url("/assets/img/logo-grande.png") no-repeat;
 
         a.logo-mini,
         a.logo-normal{
@@ -408,8 +416,8 @@
     }
 
     &[data-color="white"]{
-        @include set-background-color-button($white-color);
-        @include sidebar-active-color($black-color);
+        @include set-background-color-button($orange-color);
+        @include sidebar-active-color($white-color);
     }
 
     &[data-background-color="red"]{

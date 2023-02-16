@@ -27,7 +27,23 @@ export const ComponentsRoutes: Routes = [
         path: 'icons',
         component: IconsComponent
         }]
-    }, {
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    , {
         path: '',
         children: [ {
             path: 'notifications',

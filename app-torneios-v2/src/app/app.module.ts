@@ -48,7 +48,6 @@ import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
-import { ControllersComponent } from './controllers/controllers.component';
 
 @NgModule({
   exports: [
@@ -84,7 +83,6 @@ import { ControllersComponent } from './controllers/controllers.component';
     MatNativeDateModule
   ],
   declarations: [
-    ControllersComponent
   ]
 })
 export class MaterialModule {}

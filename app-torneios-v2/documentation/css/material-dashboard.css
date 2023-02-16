@@ -5674,7 +5674,7 @@ h2.title {
   opacity: .8;
 }
 .sidebar[data-background-color="red"] {
-  background-color: #e53935;
+  background-color: #30302f;
 }
 .sidebar[data-background-color="red"] .nav li > a {
   color: #FFFFFF;
@@ -5695,7 +5695,7 @@ h2.title {
   color: #FFFFFF;
 }
 .sidebar[data-background-color="red"] .sidebar-background:after {
-  background: #d50000;
+  background: #30302f;
   opacity: .8;
 }
 .sidebar[data-background-color="red"] .user:after,
