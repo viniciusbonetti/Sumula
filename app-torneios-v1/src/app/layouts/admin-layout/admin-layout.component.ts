@@ -150,9 +150,9 @@ export class AdminLayoutComponent implements OnInit {
     public inputUserLogin: string = "";
     public inputUserPassword: string = "";
     
-    public validatedLogin: boolean = true;
+    public validatedLogin: boolean = false;
     public cadastrarUsuarioActive: boolean = false;
-    public logadoTenant = true;
+    public logadoTenant = false;
 
     public tenantList = [];
     public tenantSelect = '';

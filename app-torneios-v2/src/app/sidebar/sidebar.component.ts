@@ -41,7 +41,8 @@ export const ROUTES: RouteInfo[] = [
         icontype: "apps",
         collapse: "projeto-x",
         children: [
-            { path: "tenant", title: "tenant", ab: "t" },            
+            { path: "tenant", title: "Tenant", ab: "t" },
+            { path: "usuarios-tenant", title: "Usuários Tenant", ab: "ut" },
         ],
     },
     // {
@@ -111,21 +112,21 @@ export const ROUTES: RouteInfo[] = [
     //     type: 'link',
     //     icontype: 'date_range'
     // },
-    {
-        path: '/pages',
-        title: 'Pages',
-        type: 'sub',
-        icontype: 'image',
-        collapse: 'pages',
-        children: [
-            {path: 'pricing', title: 'Pricing', ab:'P'},
-            {path: 'timeline', title: 'Timeline Page', ab:'TP'},
-            {path: 'login', title: 'Login Page', ab:'LP'},
-            {path: 'register', title: 'Register Page', ab:'RP'},
-            {path: 'lock', title: 'Lock Screen Page', ab:'LSP'},
-            {path: 'user', title: 'User Page', ab:'UP'}
-        ]
-    }
+    // {
+    //     path: '/pages',
+    //     title: 'Pages',
+    //     type: 'sub',
+    //     icontype: 'image',
+    //     collapse: 'pages',
+    //     children: [
+    //         {path: 'pricing', title: 'Pricing', ab:'P'},
+    //         {path: 'timeline', title: 'Timeline Page', ab:'TP'},
+    //         {path: 'login', title: 'Login Page', ab:'LP'},
+    //         {path: 'register', title: 'Register Page', ab:'RP'},
+    //         {path: 'lock', title: 'Lock Screen Page', ab:'LSP'},
+    //         {path: 'user', title: 'User Page', ab:'UP'}
+    //     ]
+    // }
 ];
 @Component({
     selector: "app-sidebar-cmp",

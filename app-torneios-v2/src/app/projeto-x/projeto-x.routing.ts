@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { TenantComponent } from "./tenant/tenant.component";
+import { UsuariosTenantComponent } from "./usuarios-tenant/usuarios-tenant.component";
 
 
 export const ProjetoXRoutes: Routes = [
@@ -8,5 +9,11 @@ export const ProjetoXRoutes: Routes = [
       children: [ {
         path: 'tenant',
         component: TenantComponent
+    }]},
+    {
+      path: '',
+      children: [ {
+        path: 'usuarios-tenant',
+        component: UsuariosTenantComponent
     }]},
 ];

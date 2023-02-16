@@ -6,6 +6,8 @@ import { MaterialModule } from '../app.module';
 
 import { ProjetoXRoutes } from './projeto-x.routing';
 import { TenantComponent } from './tenant/tenant.component';
+import { UsuariosTenantComponent } from './usuarios-tenant/usuarios-tenant.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -13,10 +15,12 @@ import { TenantComponent } from './tenant/tenant.component';
       CommonModule,
       RouterModule.forChild(ProjetoXRoutes),
       FormsModule,
-      MaterialModule
+      MaterialModule,
+      NgxPaginationModule
     ],
     declarations: [
-        TenantComponent
+        TenantComponent,
+        UsuariosTenantComponent
     ]
   })
   

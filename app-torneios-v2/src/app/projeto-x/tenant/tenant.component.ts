@@ -1,13 +1,10 @@
 import { AfterViewInit, Component, Input, OnInit, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import axios from "axios";
-import { async } from "rxjs";
 import { ControllerComponent } from "src/app/controller/controller.component";
 declare var $: any;
 
 @Component({
-    selector: "app-Tenant",
-    templateUrl: "./Tenant.component.html",
+    selector: "app-tenant",
+    templateUrl: "./tenant.component.html",
     styleUrls: ["./tenant.component.scss"],
 })
 export class TenantComponent extends ControllerComponent implements OnInit, AfterViewInit {

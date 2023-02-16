@@ -46,6 +46,7 @@ import { NavbarModule} from './shared/navbar/navbar.module';
 import { FixedpluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutes } from './app.routing';
 
@@ -101,7 +102,8 @@ export class MaterialModule {}
         SidebarModule,
         NavbarModule,
         FooterModule,
-        FixedpluginModule
+        FixedpluginModule,
+        NgxPaginationModule
     ],
     declarations: [
         AppComponent,
