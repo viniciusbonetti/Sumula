@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { LoginComponent } from './login.component';\nexport const LoginRoutes = [{\n  path: '',\n  children: [{\n    path: 'login',\n    component: LoginComponent\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}
