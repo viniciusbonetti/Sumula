@@ -133,6 +133,7 @@ export class ControllerComponent implements OnInit {
                 }
             }
         }
+        //volta a linha
        // Repassa no array para retirar duplicatas 
         listaFiltrada = Array.from(new Set(listaFiltrada));
 
