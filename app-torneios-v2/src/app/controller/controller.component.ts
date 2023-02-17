@@ -118,4 +118,24 @@ export class ControllerComponent implements OnInit {
             }
         );
     }
+
+    public filterTable(columns, listaOriginal, searchContent){
+        let listaFiltrada = [];
+
+        if(searchContent == ""){
+            listaFiltrada = [];
+            listaFiltrada = listaOriginal;
+        }
+        else{
+            for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
+                if(listaOriginal[i]['nm_tenant'].match(searchContent)){
+                    listaFiltrada.push(listaOriginal[i]);
+                }
+            }
+        }
+       // Repassa no array para retirar duplicatas 
+        listaFiltrada = Array.from(new Set(listaFiltrada));
+
+        return listaFiltrada;
+    }
 }

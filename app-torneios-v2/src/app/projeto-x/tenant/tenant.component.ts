@@ -39,21 +39,10 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     }
 
     public searchTable(event: any){
-        this.listaEmpresasFiltrada = [];
         const conteudo = event.target.value.toUpperCase();
-        if(conteudo == ""){
-            this.listaEmpresasFiltrada = [];
-            this.listaEmpresasFiltrada = this.listaEmpresas;
-        }
-        else{
-            for (var i = 0, iLen = this.listaEmpresas.length; i < iLen; i++) {
-                if(this.listaEmpresas[i]['nm_tenant'].match(conteudo)){
-                    this.listaEmpresasFiltrada.push(this.listaEmpresas[i]);
-                }
-            }
-        }
-       // Repassa no array para retirar duplicatas 
-        this.listaEmpresasFiltrada = Array.from(new Set(this.listaEmpresasFiltrada));
+        const columns = ['id', 'nm_tenant'];
+
+        this.listaEmpresasFiltrada = this.filterTable(columns, this.listaEmpresas, conteudo);
     }
 
     public async getListaEmpresas() {
