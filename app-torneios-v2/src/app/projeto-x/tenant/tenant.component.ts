@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit, Output } from "@angular/core";
 import { ControllerComponent } from "src/app/controller/controller.component";
 declare var $: any;
 
@@ -7,7 +7,7 @@ declare var $: any;
     templateUrl: "./tenant.component.html",
     styleUrls: ["./tenant.component.scss"],
 })
-export class TenantComponent extends ControllerComponent implements OnInit, AfterViewInit {
+export class TenantComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     // public headers = { Authorization: this.getToken };
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
@@ -15,6 +15,7 @@ export class TenantComponent extends ControllerComponent implements OnInit, Afte
 
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public listaEmpresas: Array<string> = [];
+    public listaEmpresasFiltrada: Array<string> = [];
 
     public novoCadastro: boolean = false;
     public mostrarEditar: boolean = false;
@@ -32,61 +33,39 @@ export class TenantComponent extends ControllerComponent implements OnInit, Afte
     public listaEstados = {};
     public pathTenant = `/tenant`;
 
-    ngAfterViewInit() {
-        $("#datatables").DataTable({
-            pagingType: "full_numbers",
-            bLengthChange: false,
-            lengthMenu: [
-                [5],
-                // [10, 25, 50, -1],
-                // [10, 25, 50, "All"]
-            ],
-            responsive: true,
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
-            },
-        });
-
-        const table = $("#datatables").DataTable();
-
-        // Edit record
-        table.on("click", ".edit", function (e) {
-            let $tr = $(this).closest("tr");
-            if ($($tr).hasClass("child")) {
-                $tr = $tr.prev(".parent");
-            }
-
-            var data = table.row($tr).data();
-            alert("You press on Row: " + data[0] + " " + data[1] + " " + data[2] + "'s row.");
-            e.preventDefault();
-        });
-
-        // Delete a record
-        table.on("click", ".remove", function (e) {
-            const $tr = $(this).closest("tr");
-            table.row($tr).remove().draw();
-            e.preventDefault();
-        });
-
-        //Like record
-        table.on("click", ".like", function (e) {
-            alert("You clicked on Like button");
-            e.preventDefault();
-        });
-
-        $(".card .material-datatables label").addClass("form-group");
-    }
-
     ngOnInit() {
         this.getListaEmpresas();
         this.getEstado();
+    }
+
+    public searchTable(event: any){
+        this.listaEmpresasFiltrada = [];
+        const conteudo = event.target.value.toUpperCase();
+        if(conteudo == ""){
+            this.listaEmpresasFiltrada = [];
+            this.listaEmpresasFiltrada = this.listaEmpresas;
+        }
+        else{
+            for (var i = 0, iLen = this.listaEmpresas.length; i < iLen; i++) {
+                if(this.listaEmpresas[i]['nm_tenant'].match(conteudo)){
+                    this.listaEmpresasFiltrada.push(this.listaEmpresas[i]);
+                }
+            }
+        }
+       // Repassa no array para retirar duplicatas 
+        this.listaEmpresasFiltrada = Array.from(new Set(this.listaEmpresasFiltrada));
     }
 
     public async getListaEmpresas() {
         const path = this.pathTenant;
 
         this.listaEmpresas = await this.getInfo(path, this.setToken);
+        // Repassa no array para transformar tudo em letra maiuscula
+        this.listaEmpresas.forEach(lista => {
+            lista['nm_tenant'] = lista['nm_tenant'].toUpperCase();
+        });
+
+        this.listaEmpresasFiltrada = this.listaEmpresas;
     }
 
     public async adicionarEmpresa() {
