@@ -40,7 +40,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
 
     public searchTable(event: any){
         const conteudo = event.target.value.toUpperCase();
-        const columns = ['id', 'nm_tenant'];
+        const columns = ['nm_tenant'];
 
         this.listaEmpresasFiltrada = this.filterTable(columns, this.listaEmpresas, conteudo);
     }

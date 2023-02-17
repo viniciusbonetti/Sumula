@@ -121,19 +121,24 @@ export class ControllerComponent implements OnInit {
 
     public filterTable(columns, listaOriginal, searchContent){
         let listaFiltrada = [];
+        searchContent = searchContent.toString();
 
         if(searchContent == ""){
-            listaFiltrada = [];
             listaFiltrada = listaOriginal;
         }
         else{
-            for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
-                if(listaOriginal[i]['nm_tenant'].match(searchContent)){
-                    listaFiltrada.push(listaOriginal[i]);
+            // Passa por todas as colunas procurando o conteudo informado
+            columns.forEach(value => {
+                for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
+                    listaOriginal.findIndex(function(obj) {
+                        obj[value] = obj[value].toString();
+                        if(obj[value].match(searchContent)){
+                            listaFiltrada.push(obj);
+                        }
+                    });
                 }
-            }
+            });
         }
-        //volta a linha
        // Repassa no array para retirar duplicatas 
         listaFiltrada = Array.from(new Set(listaFiltrada));
 

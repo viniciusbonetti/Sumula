@@ -21,6 +21,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
   public editarModalidadeEvento = false;
 
   public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
+  public listaEventosFiltrado: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
   public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
   public listaCargosCco: Array<{}> = [];
   public listaTiposDocumentos: Array<{}> = [];
@@ -56,6 +57,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
   public idRegistroModalidade = "";
 
   public num = "";
+  public itensPagina = 5;
+  public pagAtual = 1;
 
   ngOnInit(): void {
       this.getEventos();
@@ -90,9 +93,18 @@ export class EventosComponent extends ControllerComponent implements OnInit {
       }
   }
 
+  public searchTable(event: any){
+    const conteudo = event.target.value.toUpperCase();
+    const columns = ['nm_evento', 'dt_inicio', 'dt_fim'];
+
+    this.listaEventosFiltrado = this.filterTable(columns, this.listaEventos, conteudo);
+}
+
   public async getEventos() {
       const path = this.paths.evento + `/t${this.tenant}`
       this.listaEventos = await this.getInfo(path, this.setToken);
+
+      this.listaEventosFiltrado = this.listaEventos;
   }
 
   public async sendEventos() {
