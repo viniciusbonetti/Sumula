@@ -41,8 +41,31 @@ export const ROUTES: RouteInfo[] = [
         icontype: "apps",
         collapse: "projeto-x",
         children: [
-            { path: "tenant", title: "Tenant", ab: "t" },
-            { path: "usuarios-tenant", title: "Usuários Tenant", ab: "ut" },
+            { path: "tenant", title: "Tenant", ab: "T" },
+            { path: "usuarios-tenant", title: "Usuários Tenant", ab: "UT" },
+        ],
+    },
+    {
+        path: "/cco",
+        title: "Cco",
+        type: "sub",
+        icontype: "grid_on",
+        collapse: "cco",
+        children: [
+            { path: "cargos", title: "Cargos", ab: "C" },
+            { path: "modalidades", title: "Modalidades", ab: "M" },
+            { path: "eventos", title: "Eventos", ab: "E" },
+        ],
+    },
+    {
+        path: "/tecnico",
+        title: "Tecnico",
+        type: "sub",
+        icontype: "grid_on",
+        collapse: "tecnico",
+        children: [
+            { path: "delegacao", title: "Delegação", ab: "D" },
+            { path: "atleta", title: "Atleta", ab: "A" },
         ],
     },
     // {

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const TecnicoRoutes = [{\n  path: '',\n  children: [{\n    path: 'delegacao' // component: CargosComponent\n\n  }]\n}, {\n  path: '',\n  children: [{\n    path: 'atleta' // component: ModalidadesComponent\n\n  }]\n}];","map":null,"metadata":{},"sourceType":"module"}

@@ -49,6 +49,7 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutes } from './app.routing';
+import { CargosComponent } from './cco/cargos/cargos.component';
 
 @NgModule({
   exports: [

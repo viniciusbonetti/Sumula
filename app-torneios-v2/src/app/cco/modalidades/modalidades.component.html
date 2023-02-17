@@ -1,0 +1,72 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Simple Table</h4>
+                        <p class="card-category">Here is a subtitle for this table</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <table class="table text-center">
+                                <thead class="text-primary">
+                                    <th class="col-md-1">ID</th>
+                                    <th class="col-md-2">Modalidade</th>
+                                    <th class="col-md-2">Tipo</th>
+                                    <th class="col-md-1"></th>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngIf="novoCadastro">
+                                        <td></td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input name="nm_modalidade" matInput placeholder="" type="text" name="nm_modalidade" [(ngModel)]="inputNomeModalidade" />
+                                            </mat-form-field>
+                                            <span class="form-error nm_modalidade"></span>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input name="tp_modalidade" matInput placeholder="" type="text" name="tp_modalidade" [(ngModel)]="inputTipoModalidade" />
+                                            </mat-form-field>
+                                            <span class="form-error tp_modalidade"></span>
+                                        </td>
+                                        <td>
+                                            <button (click)="sendModalidade()">confirmar</button>
+                                            <button (click)="cancelarCadastro()">cancelar</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr *ngFor="let item of listaModalidades; let i = index">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+                                        <td>
+                                            <p *ngIf="!item.mostrarEditarModalidade">
+                                                {{ item.nm_modalidade }}
+                                            </p>
+                                            <input type="text" name="nm_modalidade" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.nm_modalidade" />
+                                        </td>
+                                        <td>
+                                            <p *ngIf="!item.mostrarEditarModalidade">
+                                                {{ item.tp_modalidade }}
+                                            </p>
+                                            <input type="text" name="tp_modalidade" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.tp_modalidade" />
+                                        </td>
+                                        <td>
+                                            <button (click)="mostrarEdicaoModalidade(item)" *ngIf="!item.mostrarEditarModalidade">editar</button>
+                                            <button (click)="editarModalidade(item)" *ngIf="item.mostrarEditarModalidade">confirmar</button>
+                                            <button (click)="excluir(item)">excluir</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,399 @@
+<div class="main-content" *ngIf="!novoCadastro">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Eventos</h4>
+                        <p class="card-category">Acidionar e editar eventos</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Evento</th>
+                                    <th>Inicio</th>
+                                    <th>Fim</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listaEventos">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+                                        <td>
+                                            {{ item.nm_evento | uppercase }}
+                                        </td>
+                                        <td>
+                                            {{ item.dt_inicio }}
+                                        </td>
+                                        <td>
+                                            {{ item.dt_fim }}
+                                        </td>
+                                        <td>
+                                            <button (click)="editarEvento(item)">editar</button>
+                                            <button>excluir</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="novoCadastro">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card" [ngSwitch]="num">
+                        <div *ngSwitchCase="''">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Adicionar eventos</h4>
+                                <!-- <p class="card-category"></p> -->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <th>Evento</th>
+                                            <th>Inicio</th>
+                                            <th>Fim</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nm_evento"></span>
+                                                </td>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error dt_inicio"></span>
+                                                </td>
+                                                <td class="col-md-3">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error dt_fim"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-between p-3">
+                                        <button (click)="cancelarCadastro()">voltar</button>
+                                        <button (click)="botaoAvancar()">proximo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'1'">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Modalidades</h4>
+                                <p class="card-category">Adicionar as modalidades que farão parte do evento</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-primary col-md-12">
+                                            <th>ID</th>
+                                            <th>Modalidade</th>
+                                            <th>Idade mínima</th>
+                                            <th>Idade máxima</th>
+                                            <th>Naipe</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tabela-ocupante">
+                                                <td></td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Modalidade</mat-label>
+                                                        <select matNativeControl required name="id_modalidade" [(ngModel)]="modalidadeSelect" required>
+                                                            <option disabled value="">Selecione a modalidade</option>
+                                                            <option *ngFor="let item of listaModalidades" value="{{ item.id }}">{{ item.nm_modalidade | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_modalidade"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputIdadeInicial" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadeinicio"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputIdadeFinal" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadefinal"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Naipe</mat-label>
+                                                        <select matNativeControl required name="tp_naipe" [(ngModel)]="naipeSelect" required>
+                                                            <option disabled value="">Selecione o naipe</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
+                                                            <option value="X">Misto</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_naipe"></span>
+                                                </td>
+                                                <td>
+                                                    <button (click)="sendModalidadesEvento('post')">Confirmar</button>
+                                                    <button (click)="limparFormModalidade()">X</button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let item of listaModalidadesEvento">
+                                                <td>
+                                                    {{ item.id }}
+                                                </td>
+                                                <td *ngIf="!item.editarModalidadeEvento">
+                                                    {{ item.id_modalidade.nm_modalidade | uppercase }}
+                                                </td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Modalidade</mat-label>
+                                                        <select matNativeControl required name="id_modalidade" [(ngModel)]="editarModalidadeSelect" required>
+                                                            <option disabled value="">Selecione a modalidade</option>
+                                                            <option *ngFor="let itemSelect of listaModalidades" value="{{ itemSelect.id }}">{{ itemSelect.nm_modalidade | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_modalidade"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
+                                                    {{ item.nr_idadeinicio }}
+                                                </td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputEditarIdadeInicial" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadeinicio"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
+                                                    {{ item.nr_idadefinal }}
+                                                </td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputEditarIdadeFinal" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_idadefinal"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.editarModalidadeEvento">
+                                                    {{ item.tp_naipe }}
+                                                </td>
+                                                <td *ngIf="item.editarModalidadeEvento">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Naipe</mat-label>
+                                                        <select matNativeControl required name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
+                                                            <option disabled value="">Selecione o naipe</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
+                                                            <option value="X">Misto</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_naipe"></span>
+                                                </td>
+
+                                                <td>
+                                                    <button (click)="mostrarEditarModalidade(item)" *ngIf="!item.editarModalidadeEvento">editar</button>
+                                                    <button (click)="sendModalidadesEvento('put', item)" *ngIf="item.editarModalidadeEvento">confirmar</button>
+                                                    <button (click)="excluir(item)">excluir</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button>voltar</button>
+                                        <button (click)="botaoAvancar()" >avançar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'2'">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Encarregados</h4>
+                                <p class="card-category">Adicionar encarregados para este evento</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-primary col-md-12">
+                                            <th class="col-md-1">ID</th>
+                                            <th class="col-md-2">Cargo</th>
+                                            <th class="col-md-2">Ocupante</th>
+                                            <th class="col-md-2">Documento</th>
+                                            <th class="col-md-2">Número do documento</th>
+                                            <th class="col-md-2"></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tabela-ocupante">
+                                                <td></td>
+                                                <td class="cadastrar-ocupante">
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Cargo</mat-label>
+                                                        <select matNativeControl name="nm_cargo" [(ngModel)]="cargoSelect" required>
+                                                            <option disabled value="">Selecione o cargo</option>
+                                                            <option *ngFor="let item of listaCargosCco" value="{{ item.id }}"> {{ item.nm_cargo | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_cargocco"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nm_ocupante" [(ngModel)]="inputNomeOcupante" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nm_ocupante"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Tipo de Documento</mat-label>
+                                                        <select matNativeControl name="tp_documento" [(ngModel)]="documentoSelect" required>
+                                                            <option disabled value="">Selecione o documento</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="R">RG</option>
+                                                            <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="O">OUTRO</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_documento"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumento" required/>
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_documento"></span>
+                                                </td>
+                                                <td>
+                                                    <button (click)="sendNovoOcupante()">confirmar</button>
+                                                    <button (click)="limparFormOcupante()">X</button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let item of listaOcupantes">
+                                                <td>
+                                                    {{ item.id }}
+                                                </td>
+                                                <td>
+                                                    {{ item.id_cargocco.nm_cargo | uppercase }}
+                                                </td>
+                                                <td>
+                                                    {{ item.nm_ocupante | uppercase }}
+                                                </td>
+                                                <td [ngSwitch]="item.tp_documento">
+                                                    <p *ngSwitchCase="'C'">
+                                                        CPF
+                                                    </p>
+                                                    <p *ngSwitchCase="'R'">
+                                                        RG
+                                                    </p>
+                                                    <p *ngSwitchCase="'H'">
+                                                        HABILITAÇÃO
+                                                    </p>
+                                                    <p *ngSwitchCase="'O'">
+                                                        OUTRO
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    {{ item.nr_documento }}
+                                                </td>
+                                                <td>
+                                                    <button>editar</button>
+                                                    <button>excluir</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <button>voltar</button>
+                                        <button (click)="botaoAvancar()" >avançar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="'3'">
+                            <div class="card-header card-header-danger d-flex align-items-center" >
+                                <h4 class="card-title p-2">Municipios</h4>
+                                <p class="card-category">Adicionar os municipios que acontecerão este evento</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-primary col-md-12">
+                                            <th>ID</th>
+                                            <th>Estados</th>
+                                            <th>Municipios</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tabela-ocupante">
+                                                <td></td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Estado</mat-label>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()" required>
+                                                            <option disabled value="">Selecione o estado</option>
+                                                            <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_estado"></span>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Municipio</mat-label>
+                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" required>
+                                                            <option disabled value="">Selecione o Municipio</option>
+                                                            <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio | uppercase }} / {{ item.id_estado.sg_estado }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_municipio"></span>
+                                                </td>
+                                                <td>
+                                                    <button (click)="cadastrarNovoMunicipio('post')">confirmar</button>
+                                                    <button (click)="limparFormMunicipio()">X</button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let item of listaMunicipiosEvento">
+                                                <td>
+                                                    {{ item.id }}
+                                                </td>
+                                                <td>
+                                                    {{ item.id_municipio.estado.nm_estado | uppercase }}
+                                                </td>
+                                                <td>
+                                                    {{ item.id_municipio.nm_municipio | uppercase }}
+                                                </td>
+                                                <td>
+                                                    <button (click)="cadastrarNovoMunicipio('put', item)">editar</button>
+                                                    <button>excluir</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
