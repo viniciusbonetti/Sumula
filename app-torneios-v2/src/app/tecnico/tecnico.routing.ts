@@ -1,4 +1,6 @@
 import { Routes } from "@angular/router";
+import { DelegacaoComponent } from "./delegacao/delegacao.component";
+import { AtletaComponent } from "./atleta/atleta.component";
 
 
 export const TecnicoRoutes: Routes = [
@@ -6,12 +8,12 @@ export const TecnicoRoutes: Routes = [
       path: '',
       children: [ {
         path: 'delegacao',
-        // component: CargosComponent
+        component: DelegacaoComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'atleta',
-        // component: ModalidadesComponent
+        component: AtletaComponent
     }]},
 ];

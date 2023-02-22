@@ -17,7 +17,16 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of listaTenantUsuario">
+                                    <tr
+                                        *ngFor="
+                                            let item of listaTenantUsuario
+                                                | paginate
+                                                    : {
+                                                          itemsPerPage: itensPagina,
+                                                          currentPage: pagAtual
+                                                      }
+                                        "
+                                    >
                                         <td>
                                             {{ item.id }}
                                         </td>
@@ -28,13 +37,16 @@
                                             {{ item.id_tenant.nm_tenant }}
                                         </td>
                                         <td>
-                                            <button (click)="mostrarEdicaoEventos(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
-                                            <button (click)="editarEventos(item)" *ngIf="item.mostrarEditarEventos">confirmar</button>
+                                            <button (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
+                                            <!-- <button (click)="editar(item)" *ngIf="item.mostrarEditarEventos">confirmar</button> -->
                                             <button>excluir</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="text-right">
+                            <pagination-controls (pageChange)="pagAtual = $event" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
                         </div>
                     </div>
                 </div>
@@ -69,7 +81,7 @@
                                         <span class="form-error ds_email"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-12 d-flex flex-column align-items-center">
+                                <div class="col-md-12 d-flex flex-column align-items-center" *ngIf="!editar">
                                     <div class="col-md-7">
                                         <mat-form-field class="example-full-width">
                                             <input matInput placeholder="Senha" type="text" name="sn_usuario" [(ngModel)]="inputSenha" />
@@ -84,10 +96,11 @@
                                     </div>
                                 </div>
                                 <button (click)="limparSendForm()">voltar</button>
-                                <button (click)="botaoAvancar()">proximo</button>
+                                <button (click)="botaoAvancar('post')" *ngIf="!editar">proximo</button>
+                                <button (click)="botaoAvancar('put')" *ngIf="editar">proximo</button>
                             </div>
                         </div>
-    
+
                         <div *ngSwitchCase="'1'">
                             <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Tenant</h4>
@@ -97,14 +110,16 @@
                                 <div>
                                     <mat-label>Tenant</mat-label>
                                     <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
-                                        <li class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
-                                            <mat-checkbox name="id_tenant" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_tenant }}</mat-checkbox>
+                                        <li style="list-style: none" class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
+                                            <mat-checkbox type="checkbox" name="id_tenant" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event)">
+                                                {{ item.nm_tenant }}
+                                            </mat-checkbox>
                                         </li>
                                     </ul>
                                     <span class="form-error id_tenant"></span>
                                 </div>
                                 <div>
-                                    <button (click)="botaoAvancar()">confirmar</button>
+                                    <button (click)="botaoAvancar('put')">confirmar</button>
                                 </div>
                             </div>
                         </div>

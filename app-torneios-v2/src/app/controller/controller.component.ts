@@ -30,6 +30,7 @@ export class ControllerComponent implements OnInit {
         tenant: "/tenant",
         tenantusuario: "/tenantusuario",
         user: "/user",
+        geral:"/geral"
     }
 
     ngOnInit(): void {}

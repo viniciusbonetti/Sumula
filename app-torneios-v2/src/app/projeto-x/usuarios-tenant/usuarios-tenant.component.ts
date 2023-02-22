@@ -1,154 +1,149 @@
-import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
+import { Component, OnInit } from "@angular/core";
+import axios from "axios";
+import { post } from "jquery";
+import { ControllerComponent } from "src/app/controller/controller.component";
 declare var $: any;
 
 @Component({
-  selector: 'app-usuarios-tenant',
-  templateUrl: './usuarios-tenant.component.html',
-  styleUrls: ['./usuarios-tenant.component.css']
+    selector: "app-usuarios-tenant",
+    templateUrl: "./usuarios-tenant.component.html",
+    styleUrls: ["./usuarios-tenant.component.css"],
 })
-export class UsuariosTenantComponent implements OnInit {
-  public getToken = localStorage.getItem("Authorization");
-  public tenant = localStorage.getItem("tenant");
-  public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
+export class UsuariosTenantComponent extends ControllerComponent implements OnInit {
+    public getToken = localStorage.getItem("Authorization");
+    public tenant = localStorage.getItem("tenant");
+    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
 
-  public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
-  public setToken = { headers: this.headers };
+    public headers = {
+        Authorization: this.getToken,
+        "Content-Type": "application/json",
+    };
+    public setToken = { headers: this.headers };
 
-  public listaTenantUsuario: Array<{}> = [];
-  public listaTenant: Array<{}> = [];
-  public checkboxTenant: Array<{}> = [];
+    public listaTenantUsuario: Array<{}> = [];
+    public listaTenant: Array<{}> = [];
+    public checkboxTenant: Array<{}> = [];
 
-  public inputNome: string = "";
-  public inputEmail: string = "";
-  public inputSenha: string = "";
-  public inputConfirmaSenha: string = "";
+    public inputNome: string = "";
+    public inputEmail: string = "";
+    public inputSenha: string = "";
+    public inputConfirmaSenha: string = "";
 
-  public novoCadastro = false;
+    public novoCadastro = false;
+    public mostrarEditarUsuariosTenant = false;
+    public editar = false;
 
-  public num = "";
-  public idUsuario = "";
+    public num = "";
+    public idUsuario = "";
+    public usuariosTenant = "";
+    public idRegistroUsuario = "";
 
-  constructor() {}
+    public itensPagina = 5;
+    public pagAtual = 1;
 
-  ngOnInit(): void {
-      this.getTenantUsuarios();
-  }
+    ngOnInit(): void {
+        this.getTenantUsuarios();
+    }
 
-  public async getTenantUsuarios() {
-      const urlGetTenantUsuarios = `${this.baseUrl}/tenantusuario`;
+    public async getTenantUsuarios() {
+        this.listaTenantUsuario = await this.getInfo(this.paths.tenantusuario, this.setToken);
+    }
 
-      let getInfoTenantUsuarios = await axios.get(urlGetTenantUsuarios, this.setToken);
+    public cadastrar() {
+        this.novoCadastro = !this.novoCadastro;
+    }
 
-      this.listaTenantUsuario = getInfoTenantUsuarios.data.data;
-  }
+    public botaoAvancar(metodo) {
+        if (this.num == "") {
+            this.sendNovoUsuario(metodo);
+        } else if (this.num == "1") {
+            this.sendTenantUsuario(metodo);
+        }
+    }
 
-  public cadastrar() {
-      this.novoCadastro = !this.novoCadastro;
-  }
+    public async sendNovoUsuario(metodo) {
+        const formNovoUsuario = new FormData();
+        formNovoUsuario.append("nm_usuario", this.inputNome);
+        formNovoUsuario.append("ds_email", this.inputEmail);
+        formNovoUsuario.append("sn_usuario", this.inputSenha);
+        formNovoUsuario.append("c_sn_usuario", this.inputConfirmaSenha);
 
-  public botaoAvancar() {
-      if (this.num == "") {
-          this.sendNovoUsuario();
-      } else if (this.num == "1") {
-          this.sendTenantUsuario();
-      }
-  }
+        let sendInfoNovoUsuario;
+        if (metodo == "post") {
+            sendInfoNovoUsuario = await this.postInfo(this.paths.user, formNovoUsuario, this.setToken);
 
-  public async sendNovoUsuario() {
-      const urlSendNovoUsuario = `${this.baseUrl}/user`;
+            this.idUsuario = sendInfoNovoUsuario.id;
+            this.num = "1";
+        } else if (metodo == "put") {
+            const path = this.paths.user + `/${this.idRegistroUsuario}`;
+            await this.putInfo(path, formNovoUsuario, this.setToken);
+            this.getTenantRegistro();
+            this.num = "1";
+        }
+    }
 
-      this.formError();
+    public async getTenant() {
+        this.listaTenant = await this.getInfo(this.paths.tenant, this.setToken);
+        console.log(this.listaTenant);
+    }
 
-      try {
-          const formNovoUsuario = new FormData();
-          formNovoUsuario.append("nm_usuario", this.inputNome);
-          formNovoUsuario.append("ds_email", this.inputEmail);
-          formNovoUsuario.append("sn_usuario", this.inputSenha);
-          formNovoUsuario.append("c_sn_usuario", this.inputConfirmaSenha);
+    public setCheckbox(id, isChecked) {
+        console.log(id);
+        console.log(isChecked.checked);
+        console.log(isChecked);
 
-          let sendInfoNovoUsuario = await axios.post(urlSendNovoUsuario, formNovoUsuario, this.setToken);
+        if (isChecked.checked) {
+            this.checkboxTenant.push(id);
+            console.log(this.checkboxTenant);
+        } else {
+            let index = this.checkboxTenant.findIndex((x) => x == id);
+            this.checkboxTenant.splice(index, 1);
+        }
+    }
 
-          this.idUsuario = sendInfoNovoUsuario.data.data.id;
+    public async sendTenantUsuario(metodo) {
+        const formTenantUsuario = new FormData();
+        formTenantUsuario.append("id_tenant", this.checkboxTenant.toString());
+        formTenantUsuario.append("st_ativo", "true");
 
-          this.num = "1";
+        if (metodo == "post") {
+            formTenantUsuario.append("id_usuario", this.idUsuario);
+            await this.postInfo(this.paths.tenantusuario, formTenantUsuario, this.setToken);
+        } else if (metodo == "put") {
+            const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
+            formTenantUsuario.append("id_usuario", this.idRegistroUsuario);
+            await this.putInfo(path, formTenantUsuario, this.setToken);
+        }
+    }
 
-          this.getTenant();
-      } catch (error) {
-          this.mostrarErros(error);
-      }
-  }
+    public async botaoMostrarEditar(item) {
+        this.novoCadastro = true;
+        this.editar = true;
+        this.idUsuario = item.id;
 
-  public async getTenant() {
-      const urlGetTenant = `${this.baseUrl}/tenant`;
+        const path = this.paths.tenantusuario + `/i${item.id}&t${this.tenant}`;
 
-      let getInfoTenant = await axios.get(urlGetTenant, this.setToken);
+        let getInfoEvento = await this.getInfo(path, this.setToken);
 
-      this.listaTenant = getInfoTenant.data.data;
-      console.log(this.listaTenant);
-  }
+        this.idRegistroUsuario = getInfoEvento[0].id_usuario.id;
+        this.inputNome = getInfoEvento[0].id_usuario.nm_usuario;
+        this.inputEmail = getInfoEvento[0].id_usuario.ds_email;
+        this.getTenant();
+    }
 
-  public setCheckbox(id, isChecked) {
-      if (isChecked.checked) {
-          this.checkboxTenant.push(id);
-          console.log(this.checkboxTenant.toString());
-      } else {
-          let index = this.checkboxTenant.findIndex((x) => x == id);
-          this.checkboxTenant.splice(index, 1);
-      }
-  }
-
-  public async sendTenantUsuario() {
-      const urlSendTenantUsuario = `${this.baseUrl}/tenantusuario`;
-
-      this.formError();
-
-      try {
-          const formTenantUsuario = new FormData();
-          formTenantUsuario.append("id_usuario", this.idUsuario);
-          formTenantUsuario.append("id_tenant", this.checkboxTenant.toString());
-          formTenantUsuario.append("st_ativo", "true");
-
-          let sendInfoTenantUsuario = await axios.post(urlSendTenantUsuario, formTenantUsuario, this.setToken);
-      } catch (error) {
-          this.mostrarErros(error);
-      }
-  }
-
-  public formError() {
-      var formError = document.getElementsByClassName("form-error");
-
-      for (let i = 0; i < formError.length; i++) {
-          formError[i].classList.remove("text-danger");
-          formError[i].innerHTML = "";
-      }
-  }
-
-  public mostrarErros(error) {
-      var erros = error.response.data.data;
-      for (let i = 0; i < erros.length; i++) {
-          var span = document.getElementsByClassName(erros[i].campo)[0];
-
-          span.innerHTML = erros[i].mensagem;
-          span.classList.add("text-danger");
-      }
-      this.showNotification("bottom", "center", error.response.data.message, "danger");
-  }
-
-  public showNotification(from, align, message, type) {
-      $.notify(
-          {
-              icon: "add_alert",
-              message: message,
-          },
-          {
-              type: type,
-              timer: 4000,
-              placement: {
-                  from: from,
-                  align: align,
-              },
-          }
-      );
-  }
+    public async getTenantRegistro() {
+        const formMostrarTenantRegistro = new FormData();
+        formMostrarTenantRegistro.append("tipo_request", "tenantUser");
+        formMostrarTenantRegistro.append("id_usuario", this.idRegistroUsuario);
+        let listaTenantRegistro = await this.postInfo(this.paths.geral, formMostrarTenantRegistro, this.setToken);
+        listaTenantRegistro.forEach((element) => {
+            this.listaTenant.forEach((element2) => {
+                if (element2["id"] == element.id_tenant) {
+                    element2["checked"] = true;
+                    this.checkboxTenant.push(element.id_tenant);
+                    console.log(this.checkboxTenant);
+                }
+            });
+        });
+    }
 }

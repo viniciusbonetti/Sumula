@@ -1,0 +1,112 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Simple Table</h4>
+                        <p class="card-category">Here is a subtitle for this table</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <table class="table text-center">
+                                <thead class="text-primary">
+                                    <th class="col-md-1">ID</th>
+                                    <th class="col-md-2">Delegação</th>
+                                    <th class="col-md-2">Estado</th>
+                                    <th class="col-md-2">Municipio</th>
+                                    <th class="col-md-1"></th>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngIf="novoCadastro">
+                                        <td></td>
+                                        <td class="p-0">
+                                            <mat-form-field class="example-full-width">
+                                                <input name="nm_delegacao" matInput placeholder="" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" />
+                                            </mat-form-field>
+                                            <span class="form-error nm_delegacao"></span>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="" appearance="fill">
+                                                <mat-label>Estado</mat-label>
+                                                <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio(estadoSelect)">
+                                                    <option disabled value="">Selecione o estado</option>
+                                                    <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_estado"></span>
+                                        </td>
+                                        <td>
+                                            <mat-form-field class="" appearance="fill">
+                                                <mat-label>Municipio</mat-label>
+                                                <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
+                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_municipio"></span>
+                                        </td>
+                                        <td>
+                                            <button (click)="sendDelegacao()">confirmar</button>
+                                            <button (click)="cancelarCadastro()">cancelar</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr *ngFor="let item of listaDelegacoes; let i = index">
+                                        <td>
+                                            {{ item.id }}
+                                        </td>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
+                                            <input type="text" name="nm_delegacao" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
+                                        </td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
+                                            {{ item.nm_delegacao }}
+                                        </td>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
+                                            <mat-form-field class="" appearance="fill" >
+                                                <mat-label>Estado</mat-label>
+                                                <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id">
+                                                    <option disabled value="">Selecione o estado</option>
+                                                    <option *ngFor="let itemSelectEstado of listaEstado" value="{{ itemSelectEstado.id }}">{{ itemSelectEstado.nm_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_estado"></span>                                            
+                                        </td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
+                                            {{ item.id_municipio.estado.nm_estado }}
+                                        </td>
+
+                                        <td *ngIf="item.mostrarEditarDelegacao">
+                                            <mat-form-field class="" appearance="fill" >
+                                                <mat-label>Municipio</mat-label>
+                                                <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id">
+                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option *ngFor="let itemSelectMunicipio of listaMunicipios" value="{{ itemSelectMunicipio.id }}">{{ itemSelectMunicipio.nm_municipio }} / {{ itemSelectMunicipio.id_estado.sg_estado }}</option>
+                                                </select>
+                                            </mat-form-field>
+                                            <span class="form-error id_municipio"></span>
+                                        </td>
+                                        <td *ngIf="!item.mostrarEditarDelegacao">                                            
+                                            {{ item.id_municipio.nm_municipio }}
+                                        </td>
+                                        
+                                        <td class="col-md-2">
+                                            <button (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
+                                            <button (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao">confirmar</button>
+                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao">excluir</button>
+                                            <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao">cancelar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
