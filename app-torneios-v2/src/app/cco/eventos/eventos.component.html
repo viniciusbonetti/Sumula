@@ -16,9 +16,9 @@
                             <table class="table">
                                 <thead class="text-primary">
                                     <th>ID</th>
-                                    <th>Evento</th>
-                                    <th>Inicio</th>
-                                    <th>Fim</th>
+                                    <th>Evento <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'ASC')">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'DESC')">arrow_downward</mat-icon></th>
+                                    <th>Inicio <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'ASC')">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'DESC')">arrow_downward</mat-icon></th>
+                                    <th>Fim <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'ASC')">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'DESC')">arrow_downward</mat-icon></th>
                                     <th></th>
                                 </thead>
                                 <tbody>

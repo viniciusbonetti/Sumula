@@ -119,6 +119,11 @@ export class ControllerComponent implements OnInit {
         );
     }
 
+    /** Função para filtrar conteúdo da tabela
+     * @params columns       (array)  -> colunas onde deverá ser buscado
+     * @params listaOriginal (array)  -> lista com os dados para ser buscado
+     * @params searchContent (string) -> conteúdo que deverá ser buscado
+     */
     public filterTable(columns, listaOriginal, searchContent){
         let listaFiltrada = [];
         searchContent = searchContent.toString();
@@ -142,6 +147,26 @@ export class ControllerComponent implements OnInit {
        // Repassa no array para retirar duplicatas 
         listaFiltrada = Array.from(new Set(listaFiltrada));
 
+        return listaFiltrada;
+    }
+
+    /** Função para ordenar a tabela
+     * @params column        (string) -> coluna desejada para ordenar
+     * @params listaOriginal (array)  -> lista com os dados para ser ordenado
+     * @params order         (string) -> ordem a ser utilizada (ASC/DESC)
+     */
+    public sortTable(column, listaOriginal, order){
+        let listaFiltrada = [];
+        if(order === "ASC"){
+            listaFiltrada = listaOriginal.sort(function(a, b) {
+                return a[column].localeCompare(b[column]);
+            });
+        }
+        else if(order === "DESC"){
+            listaFiltrada = listaOriginal.sort(function(a, b) {
+                return b[column].localeCompare(a[column]);
+            });
+        }
         return listaFiltrada;
     }
 }
