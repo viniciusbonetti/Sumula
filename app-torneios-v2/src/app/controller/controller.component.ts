@@ -120,6 +120,11 @@ export class ControllerComponent implements OnInit {
         );
     }
 
+    /** Função para filtrar conteúdo da tabela
+     * @params columns       (array)  -> colunas onde deverá ser buscado
+     * @params listaOriginal (array)  -> lista com os dados para ser buscado
+     * @params searchContent (string) -> conteúdo que deverá ser buscado
+     */
     public filterTable(columns, listaOriginal, searchContent){
         let listaFiltrada = [];
         searchContent = searchContent.toString();
@@ -143,6 +148,34 @@ export class ControllerComponent implements OnInit {
        // Repassa no array para retirar duplicatas 
         listaFiltrada = Array.from(new Set(listaFiltrada));
 
+        return listaFiltrada;
+    }
+
+    /** Função para ordenar a tabela
+     * @params column        (string) -> coluna desejada para ordenar
+     * @params listaOriginal (array)  -> lista com os dados para ser ordenado
+     * @params order         (string) -> ordem a ser utilizada (ASC/DESC)
+     * @params event         (array)  -> dados do elemento
+     */
+    public sortTable(column, listaOriginal, order, event){
+        // Passa por todos os elementos de setas, para limpar as classes e colocar a classe de ativo apenas no elemento clicado
+        let sortIcon = document.getElementsByClassName('sort-icon');
+        [].forEach.call(sortIcon, function(el) {
+            el.classList.remove('si-active');
+        });
+        event.srcElement.classList.add('si-active');
+
+        let listaFiltrada = [];
+        if(order === "ASC"){
+            listaFiltrada = listaOriginal.sort(function(a, b) {
+                return a[column].localeCompare(b[column]);
+            });
+        }
+        else if(order === "DESC"){
+            listaFiltrada = listaOriginal.sort(function(a, b) {
+                return b[column].localeCompare(a[column]);
+            });
+        }
         return listaFiltrada;
     }
 }
