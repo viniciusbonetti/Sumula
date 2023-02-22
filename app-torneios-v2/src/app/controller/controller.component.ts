@@ -154,8 +154,16 @@ export class ControllerComponent implements OnInit {
      * @params column        (string) -> coluna desejada para ordenar
      * @params listaOriginal (array)  -> lista com os dados para ser ordenado
      * @params order         (string) -> ordem a ser utilizada (ASC/DESC)
+     * @params event         (array)  -> dados do elemento
      */
-    public sortTable(column, listaOriginal, order){
+    public sortTable(column, listaOriginal, order, event){
+        // Passa por todos os elementos de setas, para limpar as classes e colocar a classe de ativo apenas no elemento clicado
+        let sortIcon = document.getElementsByClassName('sort-icon');
+        [].forEach.call(sortIcon, function(el) {
+            el.classList.remove('si-active');
+        });
+        event.srcElement.classList.add('si-active');
+
         let listaFiltrada = [];
         if(order === "ASC"){
             listaFiltrada = listaOriginal.sort(function(a, b) {

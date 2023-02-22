@@ -66,6 +66,19 @@
             margin-top: -2px;
         }
     }
+
+    .sort-icon{
+        opacity: 0.5;
+        font-size: 15px;
+    }
+    .si-active{
+        opacity: 1;
+    }
+    .si-down{
+        position: relative;
+        top: 15px;
+        left: -15px;
+    }
 }
 .table-sales{
     margin-top: 40px;
