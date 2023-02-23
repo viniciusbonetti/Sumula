@@ -117,6 +117,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             this.listaEventos,
             conteudo
         );
+        this.pagAtual = 1;
     }
 
     public async getEventos() {
