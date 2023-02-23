@@ -39,7 +39,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_cargo"];
+        const columns = ["nm_delegacao", "id_municipio.estado.nm_estado", "id_municipio.nm_municipio"];
 
         this.listaDelegacoesFiltrada = this.filterTable(columns, this.listaDelegacoes, conteudo);
         this.pagAtual = 1;
