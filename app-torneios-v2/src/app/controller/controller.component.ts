@@ -132,6 +132,7 @@ export class ControllerComponent implements OnInit {
     public filterTable(columns, listaOriginal, searchContent){
         let listaFiltrada = [];
         searchContent = searchContent.toString();
+        let regex = new RegExp(searchContent, "i");
 
         if(searchContent == ""){
             listaFiltrada = listaOriginal;
@@ -142,7 +143,7 @@ export class ControllerComponent implements OnInit {
                 for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
                     listaOriginal.findIndex(function(obj) {
                         obj[value] = obj[value].toString();
-                        if(obj[value].match(searchContent)){
+                        if(obj[value].match(regex)){
                             listaFiltrada.push(obj);
                         }
                     });

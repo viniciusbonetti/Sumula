@@ -109,6 +109,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         const columns = ["nm_evento", "dt_inicio", "dt_fim"];
 
         this.listaEventosFiltrado = this.filterTable(columns, this.listaEventos, conteudo);
+        this.pagAtual = 1;
     }
 
     public async getEventos() {

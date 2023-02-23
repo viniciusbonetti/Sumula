@@ -43,6 +43,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         const columns = ['nm_tenant'];
 
         this.listaEmpresasFiltrada = this.filterTable(columns, this.listaEmpresas, conteudo);
+        this.pagAtual = 1;
     }
 
     public async getListaEmpresas() {
