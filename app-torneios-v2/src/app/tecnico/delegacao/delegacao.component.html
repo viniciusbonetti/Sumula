@@ -10,6 +10,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <button (click)="cadastrar()">teste novo cadastro</button>
+                            <mat-form-field class="float-right col-md-3">
+                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
+                            </mat-form-field>
                             <table class="table text-center">
                                 <thead class="text-primary">
                                     <th class="col-md-1">ID</th>
@@ -54,7 +57,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr *ngFor="let item of listaDelegacoes | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
+                                    <tr *ngFor="let item of listaDelegacoesFiltrada | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
                                         <td>
                                             {{ item.id }}
                                         </td>

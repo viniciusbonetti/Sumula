@@ -19,6 +19,7 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
     public mostrarEditarModalidade = false;
 
     public listaModalidades: Array<{ id: string; nm_modalidade: string; tp_modalidade: string }> = [];
+    public listaModalidadesFiltrada: Array<{}> = [];
     public inputNomeModalidade: string = "";
     public inputTipoModalidade: string = "";
     public idModalidade = "";
@@ -27,12 +28,22 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
         this.getModalidades();
     }
 
+    public searchTable(event: any) {
+        const conteudo = event.target.value.toUpperCase();
+        const columns = ["nm_cargo"];
+
+        this.listaModalidadesFiltrada = this.filterTable(columns, this.listaModalidades, conteudo);
+        this.pagAtual = 1;
+    }
+
     public cadastrar() {
         this.novoCadastro = !this.novoCadastro;
     }
 
     public async getModalidades() {
         this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
+
+        this.listaModalidadesFiltrada = this.listaModalidades;
     }
 
     public async sendModalidade() {

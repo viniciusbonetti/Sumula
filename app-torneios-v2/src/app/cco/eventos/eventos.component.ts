@@ -23,20 +23,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public editar = false;
     public editarModalidadeEvento = false;
 
-    public listaEventos: Array<{
-        id: string;
-        nm_evento: string;
-        dt_inicio: string;
-        dt_fim: string;
-        nm_tenant: string;
-    }> = [];
-    public listaEventosFiltrado: Array<{
-        id: string;
-        nm_evento: string;
-        dt_inicio: string;
-        dt_fim: string;
-        nm_tenant: string;
-    }> = [];
+    public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
+    public listaEventosFiltrado: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
     public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
     public listaCargosCco: Array<{}> = [];
     public listaTiposDocumentos: Array<{}> = [];

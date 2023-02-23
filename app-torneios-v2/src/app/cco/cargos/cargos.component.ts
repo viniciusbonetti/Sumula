@@ -1,90 +1,101 @@
-import { Component, OnInit } from '@angular/core';
-import { ControllerComponent } from 'src/app/controller/controller.component';
+import { Component, OnInit } from "@angular/core";
+import { ControllerComponent } from "src/app/controller/controller.component";
 
 @Component({
-  selector: 'app-cargos',
-  templateUrl: './cargos.component.html',
-  styleUrls: ['./cargos.component.css']
+    selector: "app-cargos",
+    templateUrl: "./cargos.component.html",
+    styleUrls: ["./cargos.component.css"],
 })
 export class CargosComponent extends ControllerComponent implements OnInit {
-  public getToken = localStorage.getItem("Authorization");
-  public tenant = localStorage.getItem("tenant");
+    public getToken = localStorage.getItem("Authorization");
+    public tenant = localStorage.getItem("tenant");
 
-  public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
-  public setToken = { headers: this.headers };
+    public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
+    public setToken = { headers: this.headers };
 
-  public novoCadastro = false;
-  public mostrarEditarCargo = false;
+    public novoCadastro = false;
+    public mostrarEditarCargo = false;
 
-  public listaCargosCco: Array<{ id: string; nm_cargo: string }> = [];
-  public inputNomeCargo: string = "";
-  public inputEditarCargo: string = "";
-  public idCargo = "";
+    public listaCargosCco: Array<{ id: string; nm_cargo: string }> = [];
+    public listaCargosCcoFiltrada: Array<{}> = [];
+    public inputNomeCargo: string = "";
+    public inputEditarCargo: string = "";
+    public idCargo = "";
 
-  ngOnInit(): void {
-      this.getListaCargos();
-  }
+    ngOnInit(): void {
+        this.getListaCargos();
+    }
 
-  public cadastrar() {
-      this.novoCadastro = !this.novoCadastro;
-  }
+    public searchTable(event: any) {
+        const conteudo = event.target.value.toUpperCase();
+        const columns = ["nm_cargo"];
 
-  public async getListaCargos() {
-      const path = this.paths.cargocco + `/t${this.tenant}`;
-      this.listaCargosCco = await this.getInfo(path, this.setToken);
-  }
+        this.listaCargosCcoFiltrada = this.filterTable(columns, this.listaCargosCco, conteudo);
+        this.pagAtual = 1;
+    }
 
-  public async sendCargo() {        
-      const formCargo = new FormData();
-      formCargo.append("nm_cargo", this.inputNomeCargo);
-      formCargo.append("id_tenant", this.tenant);
+    public cadastrar() {
+        this.novoCadastro = !this.novoCadastro;
+    }
 
-      await this.postInfo(this.paths.cargocco, formCargo, this.setToken);
+    public async getListaCargos() {
+        const path = this.paths.cargocco + `/t${this.tenant}`;
+        this.listaCargosCco = await this.getInfo(path, this.setToken);
 
-      this.inputNomeCargo = "";
-      this.getListaCargos();
-  }
+        this.listaCargosCcoFiltrada = this.listaCargosCco;
+    }
 
-  public cancelarCadastro() {
-      this.inputNomeCargo = "";
+    public async sendCargo() {
+        const formCargo = new FormData();
+        formCargo.append("nm_cargo", this.inputNomeCargo);
+        formCargo.append("id_tenant", this.tenant);
 
-      this.novoCadastro = false;
-  }
+        await this.postInfo(this.paths.cargocco, formCargo, this.setToken);
 
-  public mostrarEdicaoCargo(item, listaCargos) {
-      listaCargos.forEach(element => {
-          element.mostrarEditarCargo = false
-      });
-      item.mostrarEditarCargo = true;
-  }
+        this.inputNomeCargo = "";
+        this.getListaCargos();
+    }
 
-  public async editarCargo(item) {
-      this.idCargo = item.id;
+    public cancelarCadastro() {
+        this.inputNomeCargo = "";
 
-      const path = this.paths.cargocco + `/${this.idCargo}`;
+        this.novoCadastro = false;
+    }
 
-      const formEditarCargo = new FormData();
-      formEditarCargo.append("nm_cargo", item.nm_cargo);
-      formEditarCargo.append("id_tenant", this.tenant);
+    public mostrarEdicaoCargo(item, listaCargos) {
+        listaCargos.forEach((element) => {
+            element.mostrarEditarCargo = false;
+        });
+        item.mostrarEditarCargo = true;
+    }
 
-      await this.putInfo(path, formEditarCargo, this.setToken);
+    public async editarCargo(item) {
+        this.idCargo = item.id;
 
-      this.idCargo = '';
-      this.getListaCargos();
-  }
+        const path = this.paths.cargocco + `/${this.idCargo}`;
 
-  public async excluir(item){
-      this.idCargo = item.id;
-      
-      const path = this.paths.cargocco + `/${this.idCargo}`
+        const formEditarCargo = new FormData();
+        formEditarCargo.append("nm_cargo", item.nm_cargo);
+        formEditarCargo.append("id_tenant", this.tenant);
 
-      await this.deleteInfo(path, this.setToken);
+        await this.putInfo(path, formEditarCargo, this.setToken);
 
-      this.idCargo = '';
-      this.getListaCargos();
-  }
+        this.idCargo = "";
+        this.getListaCargos();
+    }
 
-  public cancelarEdicao(item){
-      item.mostrarEditarCargo = false;
-  }
+    public async excluir(item) {
+        this.idCargo = item.id;
+
+        const path = this.paths.cargocco + `/${this.idCargo}`;
+
+        await this.deleteInfo(path, this.setToken);
+
+        this.idCargo = "";
+        this.getListaCargos();
+    }
+
+    public cancelarEdicao(item) {
+        item.mostrarEditarCargo = false;
+    }
 }
