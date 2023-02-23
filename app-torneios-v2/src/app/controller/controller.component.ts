@@ -140,13 +140,27 @@ export class ControllerComponent implements OnInit {
         else{
             // Passa por todas as colunas procurando o conteudo informado
             columns.forEach(value => {
-                for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
-                    listaOriginal.findIndex(function(obj) {
-                        obj[value] = obj[value].toString();
-                        if(obj[value].match(regex)){
-                            listaFiltrada.push(obj);
-                        }
-                    });
+                // Quando o array é multidimensional, faz o tratamento para pegar os indexes
+                if(value.includes('.')){
+                    let columnSplit = value.split('.');
+                    for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
+                        listaOriginal.findIndex(function(obj) {
+                            obj[columnSplit[0]][columnSplit[1]] = obj[columnSplit[0]][columnSplit[1]].toString();
+                            if(obj[columnSplit[0]][columnSplit[1]].match(regex)){
+                                listaFiltrada.push(obj);
+                            }
+                        });
+                    }
+                }
+                else{
+                    for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
+                        listaOriginal.findIndex(function(obj) {
+                            obj[value] = obj[value].toString();
+                            if(obj[value].match(regex)){
+                                listaFiltrada.push(obj);
+                            }
+                        });
+                    }
                 }
             });
         }
