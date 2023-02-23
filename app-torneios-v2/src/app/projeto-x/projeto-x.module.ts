@@ -20,7 +20,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ],
     declarations: [
         TenantComponent,
-        UsuariosTenantComponent
+        UsuariosTenantComponent,
     ]
   })
   

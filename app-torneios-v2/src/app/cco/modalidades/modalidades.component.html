@@ -39,7 +39,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr *ngFor="let item of listaModalidades; let i = index">
+                                    <tr *ngFor="let item of listaModalidades | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
                                         <td>
                                             {{ item.id }}
                                         </td>
@@ -47,22 +47,36 @@
                                             <p *ngIf="!item.mostrarEditarModalidade">
                                                 {{ item.nm_modalidade }}
                                             </p>
-                                            <input type="text" name="nm_modalidade" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.nm_modalidade" />
+                                            <div *ngIf="item.mostrarEditarModalidade">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput type="text" name="nm_modalidade" id=""  [(ngModel)]="item.nm_modalidade" />
+                                                </mat-form-field>
+                                                <span class="form-error nm_modalidade"></span>
+                                            </div>
                                         </td>
                                         <td>
                                             <p *ngIf="!item.mostrarEditarModalidade">
                                                 {{ item.tp_modalidade }}
                                             </p>
-                                            <input type="text" name="tp_modalidade" id="" *ngIf="item.mostrarEditarModalidade" [(ngModel)]="item.tp_modalidade" />
+                                            <div *ngIf="item.mostrarEditarModalidade">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput type="text" name="tp_modalidade" id=""  [(ngModel)]="item.tp_modalidade" />
+                                                </mat-form-field>
+                                                <span class="form-error tp_modalidade"></span>
+                                            </div>
                                         </td>
                                         <td>
                                             <button (click)="mostrarEdicaoModalidade(item)" *ngIf="!item.mostrarEditarModalidade">editar</button>
                                             <button (click)="editarModalidade(item)" *ngIf="item.mostrarEditarModalidade">confirmar</button>
-                                            <button (click)="excluir(item)">excluir</button>
+                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditarModalidade">excluir</button>
+                                            <button (click)="cancelarCadastro(item)" *ngIf="item.mostrarEditarModalidade">cancelar</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="text-right">
+                            <pagination-controls (pageChange)="pagAtual = $event" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
                         </div>
                     </div>
                 </div>

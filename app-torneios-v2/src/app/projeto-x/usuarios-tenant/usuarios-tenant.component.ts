@@ -58,6 +58,9 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             this.sendNovoUsuario(metodo);
         } else if (this.num == "1") {
             this.sendTenantUsuario(metodo);
+            this.num = '';
+            this.novoCadastro = false;
+            this.editar = false;
         }
     }
 

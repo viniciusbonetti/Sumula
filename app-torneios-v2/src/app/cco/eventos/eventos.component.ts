@@ -37,9 +37,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         dt_fim: string;
         nm_tenant: string;
     }> = [];
-    public listaEstado: Array<{}> = JSON.parse(
-        localStorage.getItem("listaEstados")
-    );
+    public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
     public listaCargosCco: Array<{}> = [];
     public listaTiposDocumentos: Array<{}> = [];
     public listaOcupantes: Array<{}> = [];
@@ -73,10 +71,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public idEvento = "";
     public idRegistroModalidade = "";
 
-    public num = "";
-    public itensPagina = 5;
-    public pagAtual = 1;
-
     ngOnInit(): void {
         this.getEventos();
     }
@@ -96,12 +90,14 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         } else if (this.num == "1") {
             if (this.listaModalidadesEvento.length > 0) {
                 this.num = "2";
+                this.getOcupantes();
             } else {
                 alert("cadastre uma modalidade");
             }
         } else if (this.num == "2") {
             if (this.listaOcupantes.length > 0) {
                 this.num = "3";
+                this.getMunicipiosEvento();
             } else {
                 this.sendNovoOcupante();
             }
@@ -112,11 +108,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         const conteudo = event.target.value.toUpperCase();
         const columns = ["nm_evento", "dt_inicio", "dt_fim"];
 
-        this.listaEventosFiltrado = this.filterTable(
-            columns,
-            this.listaEventos,
-            conteudo
-        );
+        this.listaEventosFiltrado = this.filterTable(columns, this.listaEventos, conteudo);
     }
 
     public async getEventos() {
@@ -133,11 +125,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         formEventos.append("dt_fim", this.inputDataFim);
         formEventos.append("id_tenant", this.tenant);
 
-        let sendInfoEvento = await this.postInfo(
-            this.paths.evento,
-            formEventos,
-            this.setToken
-        );
+        let sendInfoEvento = await this.postInfo(this.paths.evento, formEventos, this.setToken);
 
         this.idEvento = sendInfoEvento.id;
         this.inputNomeEvento = "";
@@ -158,51 +146,29 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getModalidades() {
-        this.listaModalidades = await this.getInfo(
-            this.paths.modalidade,
-            this.setToken
-        );
+        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
     }
 
     public async sendModalidadesEvento(metodo, item) {
+        const formModalidadeEvento = new FormData();
+        formModalidadeEvento.append("id_tenant", this.tenant);
+        formModalidadeEvento.append("id_evento", this.idEvento);
+        formModalidadeEvento.append("id_modalidade", this.modalidadeSelect);
+        formModalidadeEvento.append("nr_idadeinicio", this.inputIdadeInicial);
+        formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
+        formModalidadeEvento.append("tp_naipe", this.naipeSelect);
         if (metodo == "post") {
-            const formModalidadeEvento = new FormData();
-            formModalidadeEvento.append("id_tenant", this.tenant);
-            formModalidadeEvento.append("id_evento", this.idEvento);
-            formModalidadeEvento.append("id_modalidade", this.modalidadeSelect);
-            formModalidadeEvento.append(
-                "nr_idadeinicio",
-                this.inputIdadeInicial
-            );
-            formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
-            formModalidadeEvento.append("tp_naipe", this.naipeSelect);
-            await this.postInfo(
-                this.paths.modalidadeevento,
-                formModalidadeEvento,
-                this.setToken
-            );
+            await this.postInfo(this.paths.modalidadeevento, formModalidadeEvento, this.setToken);
         } else if (metodo == "put") {
-            const formEditarModaidadeEvento = new FormData();
-            formEditarModaidadeEvento.append("id_tenant", this.tenant);
-            formEditarModaidadeEvento.append("id_evento", this.idEvento);
-            formEditarModaidadeEvento.append(
-                "id_modalidade",
-                this.editarModalidadeSelect
-            );
-            formEditarModaidadeEvento.append(
-                "nr_idadeinicio",
-                this.inputEditarIdadeInicial
-            );
-            formEditarModaidadeEvento.append(
-                "nr_idadefinal",
-                this.inputEditarIdadeFinal
-            );
-            formEditarModaidadeEvento.append(
-                "tp_naipe",
-                this.editarNaipeSelect
-            );
+            const formEditarModalidadeEvento = new FormData();
+            formEditarModalidadeEvento.append("id_tenant", this.tenant);
+            formEditarModalidadeEvento.append("id_evento", this.idEvento);
+            formEditarModalidadeEvento.append("id_modalidade", this.editarModalidadeSelect);
+            formEditarModalidadeEvento.append("nr_idadeinicio", this.inputEditarIdadeInicial);
+            formEditarModalidadeEvento.append("nr_idadefinal", this.inputEditarIdadeFinal);
+            formEditarModalidadeEvento.append("tp_naipe", this.editarNaipeSelect);
             const path = this.paths.modalidadeevento + `/${item.id}`;
-            await this.putInfo(path, formEditarModaidadeEvento, this.setToken);
+            await this.putInfo(path, formEditarModalidadeEvento, this.setToken);
         }
 
         this.modalidadeSelect = "";
@@ -213,8 +179,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getModalidadesEvento() {
-        const path =
-            this.paths.modalidadeevento + `/i${this.idEvento}&t${this.tenant}`;
+        const path = this.paths.modalidadeevento + `/i${this.idEvento}&t${this.tenant}`;
 
         this.listaModalidadesEvento = await this.getInfo(path, this.setToken);
     }
@@ -248,8 +213,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getOcupantes() {
-        const path =
-            this.paths.ccoevento + `/i${this.idEvento}&t${this.tenant}`;
+        const path = this.paths.ccoevento + `/i${this.idEvento}&t${this.tenant}`;
         this.listaOcupantes = await this.getInfo(path, this.setToken);
     }
 
@@ -265,11 +229,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         formMunicipioEvento.append("id_tenant", this.tenant);
 
         if (metodo == "post") {
-            await this.postInfo(
-                this.paths.municipioevento,
-                formMunicipioEvento,
-                this.setToken
-            );
+            await this.postInfo(this.paths.municipioevento, formMunicipioEvento, this.setToken);
         } else if (metodo == "put") {
             const path = this.paths.municipioevento + `/${item.id}`;
             await this.putInfo(path, formMunicipioEvento, this.setToken);
@@ -279,8 +239,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getMunicipiosEvento() {
-        const path =
-            this.paths.municipioevento + `/i${this.idEvento}&t${this.tenant}`;
+        const path = this.paths.municipioevento + `/i${this.idEvento}&t${this.tenant}`;
 
         this.listaMunicipiosEvento = await this.getInfo(path, this.setToken);
     }
@@ -326,8 +285,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public async excluir(item) {
         this.idRegistroModalidade = item.id;
 
-        const path =
-            this.paths.modalidadeevento + `/${this.idRegistroModalidade}`;
+        const path = this.paths.modalidadeevento + `/${this.idRegistroModalidade}`;
 
         await this.deleteInfo(path, this.setToken);
 

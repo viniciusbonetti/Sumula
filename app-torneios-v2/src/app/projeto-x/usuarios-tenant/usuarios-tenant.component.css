@@ -1,0 +1,9 @@
+.lista-checkbox{
+    padding: 1% 5% 1% 5%;
+    max-height: 45vh;
+}
+
+.lista-checkbox-item{
+    list-style: none;
+    width: 25%;
+}

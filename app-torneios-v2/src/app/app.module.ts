@@ -82,7 +82,7 @@ import { CargosComponent } from './cco/cargos/cargos.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   declarations: [
   ]

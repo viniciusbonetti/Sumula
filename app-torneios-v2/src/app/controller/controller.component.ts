@@ -11,7 +11,7 @@ declare var $: any;
 export class ControllerComponent implements OnInit {
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public tenant = localStorage.getItem("tenant");
-
+    
     public paths = {
         atleta: "/atleta",
         cargocco: "/cargocco",
@@ -32,6 +32,10 @@ export class ControllerComponent implements OnInit {
         user: "/user",
         geral:"/geral"
     }
+
+    public num = "";
+    public itensPagina = 5;
+    public pagAtual = 1;
 
     ngOnInit(): void {}
 
