@@ -23,6 +23,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     public listaTenantUsuario: Array<{}> = [];
     public listaTenant: Array<{}> = [];
     public checkboxTenant: Array<{}> = [];
+    public listaTenantUsuarioFiltrado: Array<{}> = [];
 
     public inputNome: string = "";
     public inputEmail: string = "";
@@ -64,6 +65,14 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         }
     }
 
+    public searchTable(event: any) {
+        const conteudo = event.target.value.toUpperCase();
+        const columns = ["nm_usuario", "nm_tenant"];
+
+        this.listaTenantUsuarioFiltrado = this.filterTable(columns, this.listaTenantUsuario, conteudo);
+        this.pagAtual = 1;
+    }
+
     public async sendNovoUsuario(metodo) {
         const formNovoUsuario = new FormData();
         formNovoUsuario.append("nm_usuario", this.inputNome);
@@ -87,17 +96,12 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
     public async getTenant() {
         this.listaTenant = await this.getInfo(this.paths.tenant, this.setToken);
-        console.log(this.listaTenant);
     }
 
     public setCheckbox(id, isChecked) {
-        console.log(id);
-        console.log(isChecked.checked);
-        console.log(isChecked);
 
         if (isChecked.checked) {
             this.checkboxTenant.push(id);
-            console.log(this.checkboxTenant);
         } else {
             let index = this.checkboxTenant.findIndex((x) => x == id);
             this.checkboxTenant.splice(index, 1);
@@ -144,9 +148,19 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
                 if (element2["id"] == element.id_tenant) {
                     element2["checked"] = true;
                     this.checkboxTenant.push(element.id_tenant);
-                    console.log(this.checkboxTenant);
                 }
             });
         });
+    }
+
+    public async excluir(item){
+        this.idRegistroUsuario = item.id;
+
+        const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
+
+        await this.deleteInfo(path, this.setToken);
+
+        this.idRegistroUsuario = "";
+        this.getTenantUsuarios();
     }
 }

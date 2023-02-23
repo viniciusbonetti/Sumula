@@ -9,6 +9,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <button (click)="cadastrar()">Cadastrar novo usuario</button>
+                            <mat-form-field class="float-right col-md-3">
+                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
+                            </mat-form-field>
                             <table class="table">
                                 <thead class="text-primary">
                                     <th>ID</th>
@@ -30,7 +33,7 @@
                                         <td>
                                             <button (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
                                             <!-- <button (click)="editar(item)" *ngIf="item.mostrarEditarEventos">confirmar</button> -->
-                                            <button>excluir</button>
+                                            <button (click)="excluir(item)">excluir</button>
                                         </td>
                                     </tr>
                                 </tbody>
