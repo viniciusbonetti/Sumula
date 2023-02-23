@@ -144,9 +144,17 @@ export class ControllerComponent implements OnInit {
                 if(value.includes('.')){
                     let columnSplit = value.split('.');
                     for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
+                        let objColumn = "";
                         listaOriginal.findIndex(function(obj) {
-                            obj[columnSplit[0]][columnSplit[1]] = obj[columnSplit[0]][columnSplit[1]].toString();
-                            if(obj[columnSplit[0]][columnSplit[1]].match(regex)){
+                            if(columnSplit.length == 2){
+                                objColumn = obj[columnSplit[0]][columnSplit[1]];
+                            }
+                            else if(columnSplit.length > 2){
+                                objColumn = obj[columnSplit[0]][columnSplit[1]][columnSplit[2]];
+                            }
+                            
+                            objColumn = objColumn.toString();
+                            if(objColumn.match(regex)){
                                 listaFiltrada.push(obj);
                             }
                         });
