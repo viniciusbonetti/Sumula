@@ -48,6 +48,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
     public async getTenantUsuarios() {
         this.listaTenantUsuario = await this.getInfo(this.paths.tenantusuario, this.setToken);
+        this.listaTenantUsuarioFiltrado = this.listaTenantUsuario;
     }
 
     public cadastrar() {
@@ -67,7 +68,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_usuario", "nm_tenant"];
+        const columns = ["id_usuario.nm_usuario", "id_tenant.nm_tenant"];
 
         this.listaTenantUsuarioFiltrado = this.filterTable(columns, this.listaTenantUsuario, conteudo);
         this.pagAtual = 1;

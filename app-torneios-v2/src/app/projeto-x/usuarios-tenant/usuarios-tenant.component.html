@@ -20,7 +20,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of listaTenantUsuario | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
+                                    <tr *ngFor="let item of listaTenantUsuarioFiltrado | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
                                         <td>
                                             {{ item.id }}
                                         </td>
