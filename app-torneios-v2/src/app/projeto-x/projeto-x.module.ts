@@ -9,14 +9,13 @@ import { TenantComponent } from './tenant/tenant.component';
 import { UsuariosTenantComponent } from './usuarios-tenant/usuarios-tenant.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
-
 @NgModule({
     imports: [
       CommonModule,
       RouterModule.forChild(ProjetoXRoutes),
       FormsModule,
       MaterialModule,
-      NgxPaginationModule
+      NgxPaginationModule,
     ],
     declarations: [
         TenantComponent,

@@ -43,6 +43,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public contatoSelect = "";
 
     public novoCadastro: boolean = false;
+    public editar: boolean = false;
 
     public num = "";
     public idAtleta: string = "";
@@ -120,6 +121,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputEnderecoAtleta = "";
         this.inputNmrEnderecoAtleta = "";
         this.inputCepAtleta = "";
+
+        this.novoCadastro = false;
     }
 
     public async getModalidades() {
@@ -207,5 +210,23 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public limparFormContatoAtleta() {
         this.contatoSelect = "";
         this.inputContatoAtleta = "";
+    }
+
+    public async mostrarEdicaoAtleta(item) {
+        this.novoCadastro = true;
+        this.editar = true;
+        this.idAtleta = item.id;
+        
+        this.inputNomeCompletoAtleta = item.nm_atleta;
+        this.inputApelidoAtleta = item.nm_apelido;
+        this.inputDataNascimentoAtleta = item.dt_nascimento;
+        this.generoSelect = item.tp_genero;
+        this.inputEnderecoAtleta = item.ds_endereco;
+        this.inputNmrEnderecoAtleta = item.ds_endereco;
+        this.inputCepAtleta = item.nr_cep;
+        this.estadoSelect = item.id_municipio.id_estado;
+        this.municipioSelect = item.id_municipio.id;
+
+        this.getListaMunicipio();
     }
 }

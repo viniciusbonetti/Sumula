@@ -85,14 +85,20 @@ export class CargosComponent extends ControllerComponent implements OnInit {
     }
 
     public async excluir(item) {
-        this.idCargo = item.id;
-
-        const path = this.paths.cargocco + `/${this.idCargo}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idCargo = "";
-        this.getListaCargos();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar o cargo?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao cargo!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idCargo = item.id;
+    
+            const path = this.paths.cargocco + `/${this.idCargo}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idCargo = "";
+            this.getListaCargos();
+        }
     }
 
     public cancelarEdicao(item) {

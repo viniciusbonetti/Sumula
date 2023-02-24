@@ -8,7 +8,10 @@ declare var $: any;
 })
 
 export class SweetAlertComponent {
-    showSwal(type) {
+  public resultado = false;
+  public mensagemTitulo = '';
+  public mensagemAlerta = '';
+    async showSwal(type) {
       if (type == 'basic') {
           swal.fire({
               title: "Here's a message!",
@@ -41,8 +44,8 @@ export class SweetAlertComponent {
 
       } else if (type == 'warning-message-and-confirmation') {
           swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Deletar registro?',
+            text: "As ações não poderão ser revertidas!",
             icon: 'warning',
             showCancelButton: true,
             customClass:{
@@ -67,39 +70,41 @@ export class SweetAlertComponent {
             }
           })
       } else if (type == 'warning-message-and-cancel') {
-          swal.fire({
-              title: 'Are you sure?',
-              text: 'You will not be able to recover this imaginary file!',
+          await swal.fire({
+              title: this.mensagemTitulo,
+              text: this.mensagemAlerta,
               icon: 'warning',
               showCancelButton: true,
-              confirmButtonText: 'Yes, delete it!',
-              cancelButtonText: 'No, keep it',
+              confirmButtonText: 'Sim, deletar',
+              cancelButtonText: 'Não, manter',
               customClass:{
                 confirmButton: "btn btn-success",
                 cancelButton: "btn btn-danger",
               },
               buttonsStyling: false
           }).then((result) => {
-            if (result.value) {
+            if (result.value) {              
               swal.fire({
-                  title: 'Deleted!',
-                  text: 'Your imaginary file has been deleted.',
+                  title: 'Confirmado',
+                  text: 'Seu registro foi deletado.',
                   icon: 'success',
                   customClass:{
                     confirmButton: "btn btn-success",
                   },
                   buttonsStyling: false
               });
+              this.resultado = result.isConfirmed;
             } else {
               swal.fire({
-                  title: 'Cancelled',
-                  text: 'Your imaginary file is safe :)',
+                  title: 'Cancelado',
+                  text: 'O registro foi mantido!',
                   icon: 'error',
                   customClass:{
                     confirmButton: "btn btn-info",
                   },
                   buttonsStyling: false
               });
+              this.resultado = result.isConfirmed;
             }
           })
 
