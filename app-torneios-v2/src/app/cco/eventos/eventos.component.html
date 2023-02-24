@@ -30,10 +30,10 @@
                                             {{ item.nm_evento | uppercase }}
                                         </td>
                                         <td>
-                                            {{ item.dt_inicio }}
+                                            {{ item.dt_inicio | date: 'dd/MM/yyyy HH:mm'}}
                                         </td>
                                         <td>
-                                            {{ item.dt_fim }}
+                                            {{ item.dt_fim | date: 'dd/MM/yyyy HH:mm'}}
                                         </td>
                                         <td>
                                             <button (click)="editarEvento(item)">editar</button>
