@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import axios from "axios";
+import { SweetAlertComponent } from "../components/sweetalert/sweetalert.component";
 declare var $: any;
 
 @Component({
@@ -8,7 +9,7 @@ declare var $: any;
     styleUrls: ["./controller.component.css"],
 })
 @Injectable()
-export class ControllerComponent implements OnInit {
+export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public tenant = localStorage.getItem("tenant");
     
@@ -146,16 +147,17 @@ export class ControllerComponent implements OnInit {
                     for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
                         let objColumn = "";
                         listaOriginal.findIndex(function(obj) {
-                            if(columnSplit.length == 2){
+                            if(columnSplit.length <= 2){
                                 objColumn = obj[columnSplit[0]][columnSplit[1]];
                             }
                             else if(columnSplit.length > 2){
                                 objColumn = obj[columnSplit[0]][columnSplit[1]][columnSplit[2]];
                             }
-                            
-                            objColumn = objColumn.toString();
-                            if(objColumn.match(regex)){
-                                listaFiltrada.push(obj);
+                            if(objColumn != null){
+                                objColumn = objColumn.toString();
+                                if(objColumn.match(regex)){
+                                    listaFiltrada.push(obj);
+                                }
                             }
                         });
                     }
@@ -163,9 +165,11 @@ export class ControllerComponent implements OnInit {
                 else{
                     for (var i = 0, iLen = listaOriginal.length; i < iLen; i++) {
                         listaOriginal.findIndex(function(obj) {
-                            obj[value] = obj[value].toString();
-                            if(obj[value].match(regex)){
-                                listaFiltrada.push(obj);
+                            if(obj[value] != null){
+                                obj[value] = obj[value].toString();
+                                if(obj[value].match(regex)){
+                                    listaFiltrada.push(obj);
+                                }
                             }
                         });
                     }
@@ -195,12 +199,44 @@ export class ControllerComponent implements OnInit {
         let listaFiltrada = [];
         if(order === "ASC"){
             listaFiltrada = listaOriginal.sort(function(a, b) {
-                return a[column].localeCompare(b[column]);
+                if(column.includes('.')){
+                    let columnSplit = column.split('.');
+                    let objColumnA = "";
+                    let objColumnB = "";
+                    if(columnSplit.length <= 2){
+                        objColumnA = a[columnSplit[0]][columnSplit[1]];
+                        objColumnB = b[columnSplit[0]][columnSplit[1]];
+                    }
+                    else if(columnSplit.length > 2){
+                        objColumnA = a[columnSplit[0]][columnSplit[1]][columnSplit[2]];
+                        objColumnB = b[columnSplit[0]][columnSplit[1]][columnSplit[2]];
+                    }
+                    return objColumnA.localeCompare(objColumnB);
+                }
+                else{
+                    return a[column].localeCompare(b[column]);
+                }
             });
         }
         else if(order === "DESC"){
             listaFiltrada = listaOriginal.sort(function(a, b) {
-                return b[column].localeCompare(a[column]);
+                if(column.includes('.')){
+                    let columnSplit = column.split('.');
+                    let objColumnA = "";
+                    let objColumnB = "";
+                    if(columnSplit.length <= 2){
+                        objColumnA = a[columnSplit[0]][columnSplit[1]];
+                        objColumnB = b[columnSplit[0]][columnSplit[1]];
+                    }
+                    else if(columnSplit.length > 2){
+                        objColumnA = a[columnSplit[0]][columnSplit[1]][columnSplit[2]];
+                        objColumnB = b[columnSplit[0]][columnSplit[1]][columnSplit[2]];
+                    }
+                    return objColumnB.localeCompare(objColumnA);
+                }
+                else{
+                    return b[column].localeCompare(a[column]);
+                }
             });
         }
         return listaFiltrada;

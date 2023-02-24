@@ -55,7 +55,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_atleta", "nm_apelido", "dt_nascimento", "tp_genero", "id_municipio.nm_municipio"];
+        const columns = ["nm_atleta", "nm_apelido", "dt_nascimento", "tp_genero", "id_municipio.nm_municipio", "id_municipio.estado.sg_estado"];
 
         this.listaAtletasFiltrada = this.filterTable(columns, this.listaAtletas, conteudo);
         this.pagAtual = 1;
