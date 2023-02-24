@@ -65,6 +65,11 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public async getListaAtletas() {
         this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
 
+        // Tratamento para a coluna tp_genero
+        this.listaAtletas.forEach(la => {
+            la['tp_genero'] = la['tp_genero'] == 'm' ? 'Masculino' : 'Feminino';
+        });
+
         this.listaAtletasFiltrada = this.listaAtletas;
     }
 
