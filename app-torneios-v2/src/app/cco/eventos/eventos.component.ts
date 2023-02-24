@@ -94,7 +94,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_evento", "dt_inicio", "dt_fim"];
+        const columns = ["id", "nm_evento", "dt_inicio", "dt_fim"];
 
         this.listaEventosFiltrado = this.filterTable(columns, this.listaEventos, conteudo);
         this.pagAtual = 1;
