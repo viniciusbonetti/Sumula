@@ -214,7 +214,12 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
                     return objColumnA.localeCompare(objColumnB);
                 }
                 else{
-                    return a[column].localeCompare(b[column]);
+                    if(a['id']){
+                        return a[column].localeCompare(b[column], 'en', {numeric: true});
+                    }
+                    else{
+                        return a[column].localeCompare(b[column]);
+                    }
                 }
             });
         }
@@ -235,7 +240,12 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
                     return objColumnB.localeCompare(objColumnA);
                 }
                 else{
-                    return b[column].localeCompare(a[column]);
+                    if(b['id']){
+                        return b[column].localeCompare(a[column], 'en', {numeric: true});
+                    }
+                    else{
+                        return b[column].localeCompare(a[column]);
+                    }
                 }
             });
         }
