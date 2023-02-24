@@ -25,6 +25,7 @@
                                         <th>Número</th>
                                         <th>CEP</th> -->
                                         <th>Cidade</th>
+                                        <th></th>
                                     </thead>
                                     <tbody *ngFor="let item of listaAtletasFiltrada | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
                                         <tr class="tabela-paginator text-center">
@@ -53,6 +54,13 @@
                                                 {{ item.nr_cep }}
                                             </td> -->
                                             <td>{{ item.id_municipio.nm_municipio }} / {{ item.id_municipio.estado.sg_estado }}</td>
+
+                                            <td class="col-md-2">
+                                                <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
+                                                <button (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao">confirmar</button>
+                                                <button (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao">excluir</button>
+                                                <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao">cancelar</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -129,14 +129,20 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     }
 
     public async excluir(item) {
-        this.idRegistroTenant = item.id;
-
-        const path = this.paths.tenant + `/${this.idRegistroTenant}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idRegistroTenant = "";
-        this.getListaEmpresas();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar o Tenant?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao Tenant!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idRegistroTenant = item.id;
+    
+            const path = this.paths.tenant + `/${this.idRegistroTenant}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idRegistroTenant = "";
+            this.getListaEmpresas();
+        }        
     }
 
     public cancelarEdicao(item) {

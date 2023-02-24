@@ -86,13 +86,19 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
     }
 
     public async excluir(item) {
-        this.idModalidade = item.id;
-
-        const path = this.paths.modalidade + `/${this.idModalidade}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idModalidade = "";
-        this.getModalidades();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar a modalidade?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados à modalidade!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idModalidade = item.id;
+    
+            const path = this.paths.modalidade + `/${this.idModalidade}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idModalidade = "";
+            this.getModalidades();
+        }
     }
 }

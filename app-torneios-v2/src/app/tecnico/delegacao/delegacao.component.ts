@@ -111,13 +111,19 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
     }
 
     public async excluir(item) {
-        this.idDelegacao = item.id;
-
-        const path = this.paths.delegacao + `/${this.idDelegacao}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idDelegacao = "";
-        this.getDelegacao();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar a delegação?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados à delegação!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idDelegacao = item.id;
+    
+            const path = this.paths.delegacao + `/${this.idDelegacao}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idDelegacao = "";
+            this.getDelegacao();
+        }
     }
 }

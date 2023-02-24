@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import axios from "axios";
+import { SweetAlertComponent } from "../components/sweetalert/sweetalert.component";
 declare var $: any;
 
 @Component({
@@ -8,7 +9,7 @@ declare var $: any;
     styleUrls: ["./controller.component.css"],
 })
 @Injectable()
-export class ControllerComponent implements OnInit {
+export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public tenant = localStorage.getItem("tenant");
     

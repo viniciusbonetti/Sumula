@@ -272,13 +272,19 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async excluir(item) {
-        this.idRegistroModalidade = item.id;
-
-        const path = this.paths.modalidadeevento + `/${this.idRegistroModalidade}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idRegistroModalidade = "";
-        this.getModalidadesEvento();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar o evento?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao evento!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idEvento = item.id;
+    
+            const path = this.paths.evento + `/${this.idEvento}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idEvento = "";
+            this.getEventos();
+        }
     }
 }

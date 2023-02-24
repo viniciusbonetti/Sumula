@@ -155,13 +155,19 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public async excluir(item){
-        this.idRegistroUsuario = item.id;
-
-        const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
-
-        await this.deleteInfo(path, this.setToken);
-
-        this.idRegistroUsuario = "";
-        this.getTenantUsuarios();
+        const type = 'warning-message-and-cancel';
+        this.mensagemTitulo = 'Deseja deletar o usuário?'
+        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao usuário!'
+        await this.showSwal(type);
+        if(this.resultado){
+            this.idRegistroUsuario = item.id;
+    
+            const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
+    
+            await this.deleteInfo(path, this.setToken);
+    
+            this.idRegistroUsuario = "";
+            this.getTenantUsuarios();
+        }
     }
 }
