@@ -52,6 +52,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     ngOnInit(): void {
         this.getListaAtletas();
+        this.getModalidades();
     }
 
     public searchTable(event: any) {
@@ -74,13 +75,23 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public botaoAvancar() {
         if (this.num == "") {
-            this.sendFormAtleta();
+            if (this.editar) {
+                this.sendFormAtleta('put');
+            } else {
+                this.sendFormAtleta('post');
+            }
+            // this.getCargosCco();
         } else if (this.num == "1") {
             if (this.checkboxAtleta.length > 0) {
-                this.sendModalidadesAtleta();
+                if(this.editar){
+                    this.sendModalidadesAtleta('put');
+                }else {
+                    this.sendModalidadesAtleta('post');
+                }
+                this.getDocumentoAtleta();
                 this.num = "2";
             } else {
-                this.sendModalidadesAtleta();
+                this.sendModalidadesAtleta('post');
             }
         } else if (this.num == "2") {
             if (this.listaDocumentoAtleta.length > 0) {
@@ -96,7 +107,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaMunicipio = await this.getInfo(path, this.setToken);
     }
 
-    public async sendFormAtleta() {
+    public async sendFormAtleta(metodo) {
         const formAtleta = new FormData();
         formAtleta.append("nm_atleta", this.inputNomeCompletoAtleta);
         formAtleta.append("nm_apelido", this.inputApelidoAtleta);
@@ -106,11 +117,18 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         formAtleta.append("nr_endereco", this.inputNmrEnderecoAtleta);
         formAtleta.append("id_municipio", this.municipioSelect);
         formAtleta.append("nr_cep", this.inputCepAtleta);
-        let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
+        if(metodo == 'post'){
+            let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
+            this.idAtleta = sendAtleta.id;
+            this.num = "1";
+        }else if(metodo == 'put'){
+            formAtleta.append('id_atleta', this.idAtleta)
+            const path = this.paths.atleta + `/${this.idAtleta}`;
+            await this.putInfo(path, formAtleta, this.setToken);
+            this.getModalidadesRegistro()
+            this.num = '1';
+        }
 
-        this.idAtleta = sendAtleta.id;
-        this.getModalidades();
-        this.num = "1";
     }
 
     public cancelarCadastro() {
@@ -138,13 +156,18 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         }
     }
 
-    public async sendModalidadesAtleta() {
+    public async sendModalidadesAtleta(metodo) {
         const formModalidadeAtleta = new FormData();
         formModalidadeAtleta.append("id_modalidade", this.checkboxAtleta.toString());
         formModalidadeAtleta.append("id_atleta", this.idAtleta);
         formModalidadeAtleta.append("st_ativo", "true");
 
-        await this.postInfo(this.paths.modalidadeatleta, formModalidadeAtleta, this.setToken);
+        if(metodo == 'post'){
+            await this.postInfo(this.paths.modalidadeatleta, formModalidadeAtleta, this.setToken);
+        }else if(metodo == 'put'){
+            const path = this.paths.modalidadeatleta + `/${this.idAtleta}`
+            await this.putInfo(path, formModalidadeAtleta, this.setToken);
+        }
     }
 
     public adicionarFotoDocumento(event) {
@@ -179,8 +202,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async getDocumentoAtleta() {
         const urlGetDocumentoAtleta = this.paths.documentoatleta + `/t${this.idAtleta}`;
-        console.log(urlGetDocumentoAtleta);
-
         this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
@@ -222,11 +243,26 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputDataNascimentoAtleta = item.dt_nascimento;
         this.generoSelect = item.tp_genero;
         this.inputEnderecoAtleta = item.ds_endereco;
-        this.inputNmrEnderecoAtleta = item.ds_endereco;
+        this.inputNmrEnderecoAtleta = item.nr_endereco;
         this.inputCepAtleta = item.nr_cep;
         this.estadoSelect = item.id_municipio.id_estado;
         this.municipioSelect = item.id_municipio.id;
 
         this.getListaMunicipio();
+    }
+
+    public async getModalidadesRegistro() {
+        const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
+        
+        let listaModalidadesRegistro = await this.getInfo(path, this.setToken);
+        
+        listaModalidadesRegistro.forEach((element) => {
+            this.listaModalidades.forEach((element2) => {
+                if (element2["id"] == element.id_modalidade.id) {                    
+                    element2["checked"] = true;
+                    this.checkboxAtleta.push(element.id_modalidade.id);
+                }
+            });
+        });
     }
 }

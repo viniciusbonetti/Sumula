@@ -180,7 +180,7 @@
                                     <mat-label>Modalidades</mat-label>
                                     <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
                                         <li class="lista-checkbox-item" *ngFor="let item of listaModalidades; let i = index">
-                                            <mat-checkbox name="id_modalidade[]" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_modalidade }}</mat-checkbox>
+                                            <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_modalidade }}</mat-checkbox>
                                         </li>
                                     </ul>
                                     <span class="form-error id_modalidade"></span>
