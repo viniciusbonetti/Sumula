@@ -65,7 +65,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
 
         this.listaAtletasFiltrada = this.listaAtletas;
-        console.log(this.listaAtletasFiltrada);
     }
 
     public cadastrar() {
