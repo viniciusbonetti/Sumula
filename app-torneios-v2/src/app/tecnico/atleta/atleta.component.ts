@@ -67,9 +67,9 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
 
         // Tratamento para a coluna tp_genero
-        // this.listaAtletas.forEach(la => {
-        //     la['tp_genero'] = la['tp_genero'] == 'm' ? 'Masculino' : 'Feminino';
-        // });
+        this.listaAtletas.forEach(la => {
+            la['tp_genero'] = la['tp_genero'] == 'm' ? 'Masculino' : 'Feminino';
+        });
 
         this.listaAtletasFiltrada = this.listaAtletas;
     }
@@ -247,9 +247,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputNomeCompletoAtleta = item.nm_atleta;
         this.inputApelidoAtleta = item.nm_apelido;
         this.inputDataNascimentoAtleta = item.dt_nascimento;
-        this.generoSelect = item.tp_genero;
-        console.log(this.generoSelect);
-        
+        this.generoSelect = (item.tp_genero == 'Masculino') ? 'm' : 'f';
         this.inputEnderecoAtleta = item.ds_endereco;
         this.inputNmrEnderecoAtleta = item.nr_endereco;
         this.inputCepAtleta = item.nr_cep;
