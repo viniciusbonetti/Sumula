@@ -14,6 +14,7 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public tenant = localStorage.getItem("tenant");
     
     public paths = {
+        login: '/login',
         atleta: "/atleta",
         cargocco: "/cargocco",
         ccoevento: "/ccoevento",
