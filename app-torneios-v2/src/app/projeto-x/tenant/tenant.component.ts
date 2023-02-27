@@ -13,7 +13,6 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken: any = { headers: this.headers };
 
-    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public listaEmpresas: Array<string> = [];
     public listaEmpresasFiltrada: Array<string> = [];
 

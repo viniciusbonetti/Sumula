@@ -10,7 +10,7 @@ declare var $: any;
 })
 @Injectable()
 export class ControllerComponent extends SweetAlertComponent implements OnInit {
-    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
+    public baseUrl = "http://dornez.vps-kinghost.net/api";
     public tenant = localStorage.getItem("tenant");
     
     public paths = {

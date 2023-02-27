@@ -37,7 +37,7 @@
                                         </td>
                                         <td>
                                             <button (click)="editarEvento(item)">editar</button>
-                                            <button (click)="excluir(item)">excluir</button>
+                                            <button (click)="excluir(item, 'evento')">excluir</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -96,7 +96,7 @@
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-between p-3">
-                                        <button (click)="cancelarCadastro()">voltar</button>
+                                        <button (click)="cancelar('evento')">voltar</button>
                                         <button (click)="botaoAvancar()">proximo</button>
                                     </div>
                                 </div>
@@ -219,7 +219,8 @@
                                                 <td>
                                                     <button (click)="mostrarEditarModalidade(item)" *ngIf="!item.editarModalidadeEvento">editar</button>
                                                     <button (click)="sendModalidadesEvento('put', item)" *ngIf="item.editarModalidadeEvento">confirmar</button>
-                                                    <button (click)="excluir(item)">excluir</button>
+                                                    <button (click)="excluir(item, 'modalidades')" *ngIf="!item.editarModalidadeEvento">excluir</button>
+                                                    <button (click)="cancelar('modalidades', item)" *ngIf="item.editarModalidadeEvento">cancelar</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -287,7 +288,7 @@
                                                     <span class="form-error nr_documento"></span>
                                                 </td>
                                                 <td>
-                                                    <button (click)="sendNovoOcupante()">confirmar</button>
+                                                    <button (click)="sendNovoOcupante('post')">confirmar</button>
                                                     <button (click)="limparFormOcupante()">X</button>
                                                 </td>
                                             </tr>
@@ -354,7 +355,8 @@
                                                 <td>
                                                     <button (click)="editarEncarregados(item)" *ngIf="!item.mostrarEditarEncarregados">editar</button>
                                                     <button (click)="sendNovoOcupante('put', item)" *ngIf="item.mostrarEditarEncarregados">confirmar</button>
-                                                    <button (click)="excluir(item)">excluir</button>
+                                                    <button (click)="excluir(item, 'cargos')" *ngIf="!item.mostrarEditarEncarregados">excluir</button>
+                                                    <button (click)="cancelar('encarregados', item)" *ngIf="item.mostrarEditarEncarregados">cancelar</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -387,9 +389,9 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Estado</mat-label>
-                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" required>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" [disabled]="mostrarEditarMunicipios" required>
                                                             <option disabled value="">Selecione o estado</option>
-                                                            <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado | uppercase }}</option>
+                                                            <option *ngFor="let itemSelectCriar of listaEstado" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_estado | uppercase }}</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error id_estado"></span>
@@ -397,9 +399,9 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Municipio</mat-label>
-                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" required>
+                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" [disabled]="mostrarEditarMunicipios" required>
                                                             <option disabled value="">Selecione o Municipio</option>
-                                                            <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio | uppercase }} / {{ item.id_estado.sg_estado }}</option>
+                                                            <option *ngFor="let itemSelectCriar of listaMunicipios" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_municipio | uppercase }} / {{ itemSelectCriar.id_estado.sg_estado }}</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error id_municipio"></span>
@@ -423,7 +425,7 @@
                                                         <mat-label>Estado</mat-label>
                                                         <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id" (ngModelChange)="getMunicipio('editar', item.id_municipio.estado.id)" required>
                                                             <option disabled value="">Selecione o estado</option>
-                                                            <option *ngFor="let itemSelect of listaEstado" value="{{ itemSelect.id }}">{{ itemSelect.nm_estado | uppercase }}</option>
+                                                            <option *ngFor="let itemSelectEditar of listaEstado" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_estado | uppercase }}</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error id_estado"></span>
@@ -437,7 +439,7 @@
                                                         <mat-label>Municipio</mat-label>
                                                         <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id" required>
                                                             <option disabled value="">Selecione o Municipio</option>
-                                                            <option *ngFor="let itemSelect of listaMunicipios" value="{{ itemSelect.id }}">{{ itemSelect.nm_municipio | uppercase }} / {{ itemSelect.id_estado.sg_estado }}</option>
+                                                            <option *ngFor="let itemSelectEditar of listaMunicipios" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_municipio | uppercase }} / {{ itemSelectEditar.id_estado.sg_estado }}</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error id_municipio"></span>
@@ -446,7 +448,8 @@
                                                 <td>
                                                     <button (click)="editarMunicipiosEvento(item)" *ngIf="!item.mostrarEditarMunicipios">editar</button>
                                                     <button (click)="cadastrarNovoMunicipio('put', item)" *ngIf="item.mostrarEditarMunicipios">confirmar</button>
-                                                    <button (click)="excluir(item)">excluir</button>
+                                                    <button (click)="excluir(item, 'municipios')" *ngIf="!item.mostrarEditarMunicipios">excluir</button>
+                                                    <button (click)="cancelar('municipios', item)" *ngIf="item.mostrarEditarMunicipios">cancelar</button>
                                                 </td>
                                             </tr>
                                         </tbody>

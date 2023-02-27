@@ -9,7 +9,6 @@ import { ControllerComponent } from "src/app/controller/controller.component";
 export class ModalidadesComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
-    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public url = `${this.baseUrl}/modalidade`;
 
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };

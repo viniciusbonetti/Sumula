@@ -9,7 +9,6 @@ import { ControllerComponent } from "src/app/controller/controller.component";
 export class EventosComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
-    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
     public urlGet = `${this.baseUrl}/evento/t${this.tenant}`;
     public urlPost = `${this.baseUrl}/evento/`;
 
@@ -93,6 +92,25 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             }
         }
     }
+    
+    public cancelar(tela, item) {
+        if (tela == 'evento'){
+            this.inputNomeEvento = "";
+            this.inputDataInicio = "";
+            this.inputDataFim = "";
+            this.inputNomeTenant = "";
+            this.novoCadastro = !this.novoCadastro;
+        }else if(tela == 'modalidades'){
+            item.editarModalidadeEvento = false;
+            this.editarModalidadeEvento = false;
+        }else if(tela == 'encarregados'){
+            item.mostrarEditarEncarregados = false;
+            this.mostrarEditarEncarregados = false;
+        } else if(tela == 'municipios'){
+            item.mostrarEditarMunicipios = false;
+            this.mostrarEditarMunicipios = false;
+        }
+    }
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
@@ -128,13 +146,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.num = "1";
     }
 
-    public cancelarCadastro() {
-        this.inputNomeEvento = "";
-        this.inputDataInicio = "";
-        this.inputDataFim = "";
-        this.inputNomeTenant = "";
-        this.novoCadastro = !this.novoCadastro;
-    }
 
     public async getModalidades() {
         this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
@@ -183,18 +194,18 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public async sendNovoOcupante(metodo, item) {
         const formOcupante = new FormData();
-        if(metodo == 'post'){
+        if (metodo == "post") {
             formOcupante.append("id_tenant", this.tenant);
             formOcupante.append("id_evento", this.idEvento);
             formOcupante.append("id_cargocco", this.cargoSelect);
             formOcupante.append("nm_ocupante", this.inputNomeOcupante);
             formOcupante.append("tp_documento", this.documentoSelect);
             formOcupante.append("nr_documento", this.inputNumeroDocumento);
-    
+
             await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
-    
+
             this.limparFormOcupante();
-        } else if(metodo == 'put'){
+        } else if (metodo == "put") {
             formOcupante.append("id_tenant", this.tenant);
             formOcupante.append("id_evento", this.idEvento);
             formOcupante.append("id_cargocco", item.id_cargocco.id);
@@ -221,12 +232,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getMunicipio(metodo, item) {
-        console.log(item);
-        
-        if(metodo == 'criar'){
+        if (metodo == "criar") {
             const path = this.paths.municipio + `/${this.estadoSelect}`;
             this.listaMunicipios = await this.getInfo(path, this.setToken);
-        } else if(metodo == 'editar'){
+        } else if (metodo == "editar") {
             const path = this.paths.municipio + `/${item}`;
             this.listaMunicipios = await this.getInfo(path, this.setToken);
         }
@@ -234,16 +243,13 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public async cadastrarNovoMunicipio(metodo, item) {
         const formMunicipioEvento = new FormData();
-        
+
         if (metodo == "post") {
             formMunicipioEvento.append("id_tenant", this.tenant);
             formMunicipioEvento.append("id_evento", this.idEvento);
             formMunicipioEvento.append("id_municipio", this.municipioSelect);
             await this.postInfo(this.paths.municipioevento, formMunicipioEvento, this.setToken);
         } else if (metodo == "put") {
-            console.log(item.id_evento);
-            console.log(item.id_municipio);
-
             formMunicipioEvento.append("id_tenant", this.tenant);
             formMunicipioEvento.append("id_evento", item.id_evento.id);
             formMunicipioEvento.append("id_municipio", item.id_municipio.id);
@@ -298,29 +304,56 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.editarNaipeSelect = item.tp_naipe;
     }
 
-    public editarEncarregados(item){
+    public editarEncarregados(item) {
         item.mostrarEditarEncarregados = true;
     }
 
-    public editarMunicipiosEvento(item){        
+    public editarMunicipiosEvento(item) {
         item.mostrarEditarMunicipios = true;
-        this.getMunicipio('editar', item.id_municipio.estado.id);
+        this.mostrarEditarMunicipios = true;
+        this.estadoSelect = '';
+        this.municipioSelect = '';
+        this.getMunicipio("editar", item.id_municipio.estado.id);
     }
 
-    public async excluir(item) {
-        const type = 'warning-message-and-cancel';
-        this.mensagemTitulo = 'Deseja deletar o evento?'
-        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao evento!'
-        await this.showSwal(type);
-        if(this.resultado){
-            this.idEvento = item.id;
-    
-            const path = this.paths.evento + `/${this.idEvento}`;
-    
-            await this.deleteInfo(path, this.setToken);
-    
-            this.idEvento = "";
-            this.getEventos();
+    public async excluir(item, tela) {
+        const type = "warning-message-and-cancel";
+        if (tela == "evento") {
+            this.mensagemTitulo = "Deseja deletar o evento?";
+            this.mensagemAlerta = "Esta ação não será reversível e irá deletar todos os registros relacionados ao evento!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.evento + `/${item.id}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getEventos();
+            }
+        } else if (tela == "modalidades") {
+            this.mensagemTitulo = "Deseja deletar a modalidade deste evento?";
+            this.mensagemAlerta = "Esta ação não será reversível!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.modalidadeevento + `/${item.id}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getModalidadesEvento();
+            }
+        } else if (tela == "cargos") {
+            this.mensagemTitulo = "Deseja deletar o encarregado deste evento?";
+            this.mensagemAlerta = "Esta ação não será reversível!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.ccoevento + `/${item.id}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getOcupantes();
+            }
+        } else if (tela == "municipios") {
+            this.mensagemTitulo = "Deseja deletar o município deste evento?";
+            this.mensagemAlerta = "Esta ação não será reversível!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.municipioevento + `/${item.id}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getMunicipiosEvento();
+            }
         }
     }
 }

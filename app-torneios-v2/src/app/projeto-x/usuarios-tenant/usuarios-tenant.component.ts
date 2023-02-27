@@ -12,7 +12,6 @@ declare var $: any;
 export class UsuariosTenantComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
-    public baseUrl = "http://dornez.vps-kinghost.net/sumulaApi/api";
 
     public headers = {
         Authorization: this.getToken,
