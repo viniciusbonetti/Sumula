@@ -11,7 +11,7 @@
                         <div class="table-responsive">
                             <button (click)="cadastrar()">teste novo cadastro</button>
                             <mat-form-field class="float-right col-md-3">
-                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
+                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                             </mat-form-field>
                             <table class="table">
                                 <thead class="text-primary">
@@ -30,10 +30,10 @@
                                             {{ item.nm_evento | uppercase }}
                                         </td>
                                         <td>
-                                            {{ item.dt_inicio | date: 'dd/MM/yyyy HH:mm'}}
+                                            {{ item.dt_inicio | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
-                                            {{ item.dt_fim | date: 'dd/MM/yyyy HH:mm'}}
+                                            {{ item.dt_fim | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
                                             <button (click)="editarEvento(item)">editar</button>
@@ -60,7 +60,7 @@
                 <div class="col-md-12">
                     <div class="card" [ngSwitch]="num">
                         <div *ngSwitchCase="''">
-                            <div class="card-header card-header-danger d-flex align-items-center" >
+                            <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Adicionar eventos</h4>
                                 <!-- <p class="card-category"></p> -->
                             </div>
@@ -76,19 +76,19 @@
                                             <tr>
                                                 <td class="col-md-3">
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" required/>
+                                                        <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" required />
                                                     </mat-form-field>
                                                     <span class="form-error nm_evento"></span>
                                                 </td>
                                                 <td class="col-md-3">
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required/>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required />
                                                     </mat-form-field>
                                                     <span class="form-error dt_inicio"></span>
                                                 </td>
                                                 <td class="col-md-3">
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required/>
+                                                        <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required />
                                                     </mat-form-field>
                                                     <span class="form-error dt_fim"></span>
                                                 </td>
@@ -104,7 +104,7 @@
                         </div>
 
                         <div *ngSwitchCase="'1'">
-                            <div class="card-header card-header-danger d-flex align-items-center" >
+                            <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Modalidades</h4>
                                 <p class="card-category">Adicionar as modalidades que farão parte do evento</p>
                             </div>
@@ -134,13 +134,13 @@
                                                 </td>
                                                 <td>
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputIdadeInicial" required/>
+                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputIdadeInicial" required />
                                                     </mat-form-field>
                                                     <span class="form-error nr_idadeinicio"></span>
                                                 </td>
                                                 <td>
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputIdadeFinal" required/>
+                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputIdadeFinal" required />
                                                     </mat-form-field>
                                                     <span class="form-error nr_idadefinal"></span>
                                                 </td>
@@ -185,7 +185,7 @@
                                                 </td>
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputEditarIdadeInicial" required/>
+                                                        <input matInput placeholder="" type="text" name="nr_idadeinicio" [(ngModel)]="inputEditarIdadeInicial" required />
                                                     </mat-form-field>
                                                     <span class="form-error nr_idadeinicio"></span>
                                                 </td>
@@ -195,7 +195,7 @@
                                                 </td>
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputEditarIdadeFinal" required/>
+                                                        <input matInput placeholder="" type="text" name="nr_idadefinal" [(ngModel)]="inputEditarIdadeFinal" required />
                                                     </mat-form-field>
                                                     <span class="form-error nr_idadefinal"></span>
                                                 </td>
@@ -226,14 +226,14 @@
                                     </table>
                                     <div>
                                         <button>voltar</button>
-                                        <button (click)="botaoAvancar()" >avançar</button>
+                                        <button (click)="botaoAvancar()">avançar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div *ngSwitchCase="'2'">
-                            <div class="card-header card-header-danger d-flex align-items-center" >
+                            <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Encarregados</h4>
                                 <p class="card-category">Adicionar encarregados para este evento</p>
                             </div>
@@ -256,14 +256,14 @@
                                                         <mat-label>Cargo</mat-label>
                                                         <select matNativeControl name="nm_cargo" [(ngModel)]="cargoSelect" required>
                                                             <option disabled value="">Selecione o cargo</option>
-                                                            <option *ngFor="let item of listaCargosCco" value="{{ item.id }}"> {{ item.nm_cargo | uppercase }}</option>
+                                                            <option *ngFor="let item of listaCargosCco" value="{{ item.id }}">{{ item.nm_cargo | uppercase }}</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error id_cargocco"></span>
                                                 </td>
                                                 <td>
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nm_ocupante" [(ngModel)]="inputNomeOcupante" required/>
+                                                        <input matInput placeholder="" type="text" name="nm_ocupante" [(ngModel)]="inputNomeOcupante" required />
                                                     </mat-form-field>
                                                     <span class="form-error nm_ocupante"></span>
                                                 </td>
@@ -282,7 +282,7 @@
                                                 </td>
                                                 <td>
                                                     <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumento" required/>
+                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumento" required />
                                                     </mat-form-field>
                                                     <span class="form-error nr_documento"></span>
                                                 </td>
@@ -296,46 +296,79 @@
                                                 <td>
                                                     {{ item.id }}
                                                 </td>
-                                                <td>
+
+                                                <td *ngIf="!item.mostrarEditarEncarregados">
                                                     {{ item.id_cargocco.nm_cargo | uppercase }}
                                                 </td>
-                                                <td>
+                                                <td *ngIf="item.mostrarEditarEncarregados">
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Cargo</mat-label>
+                                                        <select matNativeControl name="nm_cargo" [(ngModel)]="item.id_cargocco.id" required>
+                                                            <option disabled value="">Selecione o cargo</option>
+                                                            <option *ngFor="let itemSelect of listaCargosCco" value="{{ itemSelect.id }}">{{ itemSelect.nm_cargo | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_cargocco"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarEncarregados">
                                                     {{ item.nm_ocupante | uppercase }}
                                                 </td>
-                                                <td [ngSwitch]="item.tp_documento">
-                                                    <p *ngSwitchCase="'C'">
-                                                        CPF
-                                                    </p>
-                                                    <p *ngSwitchCase="'R'">
-                                                        RG
-                                                    </p>
-                                                    <p *ngSwitchCase="'H'">
-                                                        HABILITAÇÃO
-                                                    </p>
-                                                    <p *ngSwitchCase="'O'">
-                                                        OUTRO
-                                                    </p>
+                                                <td *ngIf="item.mostrarEditarEncarregados">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nm_ocupante" [(ngModel)]="item.nm_ocupante" required />
+                                                    </mat-form-field>
+                                                    <span class="form-error nm_ocupante"></span>
                                                 </td>
-                                                <td>
+
+                                                <td *ngIf="!item.mostrarEditarEncarregados" [ngSwitch]="item.tp_documento">
+                                                    <p *ngSwitchCase="'C'">CPF</p>
+                                                    <p *ngSwitchCase="'R'">RG</p>
+                                                    <p *ngSwitchCase="'H'">HABILITAÇÃO</p>
+                                                    <p *ngSwitchCase="'O'">OUTRO</p>
+                                                </td>
+                                                <td *ngIf="item.mostrarEditarEncarregados">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Tipo de Documento</mat-label>
+                                                        <select matNativeControl name="tp_documento" [(ngModel)]="item.tp_documento" required>
+                                                            <option disabled value="">Selecione o documento</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="R">RG</option>
+                                                            <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="O">OUTRO</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_documento"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarEncarregados">
                                                     {{ item.nr_documento }}
                                                 </td>
+                                                <td *ngIf="item.mostrarEditarEncarregados">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="item.nr_documento" required />
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_documento"></span>
+                                                </td>
+
                                                 <td>
-                                                    <button>editar</button>
-                                                    <button>excluir</button>
+                                                    <button (click)="editarEncarregados(item)" *ngIf="!item.mostrarEditarEncarregados">editar</button>
+                                                    <button (click)="sendNovoOcupante('put', item)" *ngIf="item.mostrarEditarEncarregados">confirmar</button>
+                                                    <button (click)="excluir(item)">excluir</button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div>
                                         <button>voltar</button>
-                                        <button (click)="botaoAvancar()" >avançar</button>
+                                        <button (click)="botaoAvancar()">avançar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div *ngSwitchCase="'3'">
-                            <div class="card-header card-header-danger d-flex align-items-center" >
+                            <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Municipios</h4>
                                 <p class="card-category">Adicionar os municipios que acontecerão este evento</p>
                             </div>
@@ -354,7 +387,7 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Estado</mat-label>
-                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio()" required>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" required>
                                                             <option disabled value="">Selecione o estado</option>
                                                             <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado | uppercase }}</option>
                                                         </select>
@@ -381,15 +414,39 @@
                                                 <td>
                                                     {{ item.id }}
                                                 </td>
-                                                <td>
+                                                
+                                                <td *ngIf="!item.mostrarEditarMunicipios">
                                                     {{ item.id_municipio.estado.nm_estado | uppercase }}
                                                 </td>
-                                                <td>
+                                                <td *ngIf="item.mostrarEditarMunicipios">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Estado</mat-label>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id" (ngModelChange)="getMunicipio('editar', item.id_municipio.estado.id)" required>
+                                                            <option disabled value="">Selecione o estado</option>
+                                                            <option *ngFor="let itemSelect of listaEstado" value="{{ itemSelect.id }}">{{ itemSelect.nm_estado | uppercase }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_estado"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarMunicipios">
                                                     {{ item.id_municipio.nm_municipio | uppercase }}
                                                 </td>
+                                                <td *ngIf="item.mostrarEditarMunicipios">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Municipio</mat-label>
+                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id" required>
+                                                            <option disabled value="">Selecione o Municipio</option>
+                                                            <option *ngFor="let itemSelect of listaMunicipios" value="{{ itemSelect.id }}">{{ itemSelect.nm_municipio | uppercase }} / {{ itemSelect.id_estado.sg_estado }}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error id_municipio"></span>
+                                                </td>
+
                                                 <td>
-                                                    <button (click)="cadastrarNovoMunicipio('put', item)">editar</button>
-                                                    <button>excluir</button>
+                                                    <button (click)="editarMunicipiosEvento(item)" *ngIf="!item.mostrarEditarMunicipios">editar</button>
+                                                    <button (click)="cadastrarNovoMunicipio('put', item)" *ngIf="item.mostrarEditarMunicipios">confirmar</button>
+                                                    <button (click)="excluir(item)">excluir</button>
                                                 </td>
                                             </tr>
                                         </tbody>

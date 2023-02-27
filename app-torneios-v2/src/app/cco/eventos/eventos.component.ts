@@ -22,6 +22,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public novoCadastro = false;
     public editar = false;
     public editarModalidadeEvento = false;
+    public mostrarEditarEncarregados = false;
+    public mostrarEditarMunicipios = false;
 
     public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
     public listaEventosFiltrado: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
@@ -87,7 +89,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
                 this.num = "3";
                 this.getMunicipiosEvento();
             } else {
-                this.sendNovoOcupante();
+                alert("cadastre um encarregado");
             }
         }
     }
@@ -140,13 +142,13 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public async sendModalidadesEvento(metodo, item) {
         const formModalidadeEvento = new FormData();
-        formModalidadeEvento.append("id_tenant", this.tenant);
-        formModalidadeEvento.append("id_evento", this.idEvento);
-        formModalidadeEvento.append("id_modalidade", this.modalidadeSelect);
-        formModalidadeEvento.append("nr_idadeinicio", this.inputIdadeInicial);
-        formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
-        formModalidadeEvento.append("tp_naipe", this.naipeSelect);
         if (metodo == "post") {
+            formModalidadeEvento.append("id_tenant", this.tenant);
+            formModalidadeEvento.append("id_evento", this.idEvento);
+            formModalidadeEvento.append("id_modalidade", this.modalidadeSelect);
+            formModalidadeEvento.append("nr_idadeinicio", this.inputIdadeInicial);
+            formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
+            formModalidadeEvento.append("tp_naipe", this.naipeSelect);
             await this.postInfo(this.paths.modalidadeevento, formModalidadeEvento, this.setToken);
         } else if (metodo == "put") {
             const formEditarModalidadeEvento = new FormData();
@@ -179,18 +181,30 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.listaCargosCco = await this.getInfo(path, this.setToken);
     }
 
-    public async sendNovoOcupante() {
+    public async sendNovoOcupante(metodo, item) {
         const formOcupante = new FormData();
-        formOcupante.append("id_tenant", this.tenant);
-        formOcupante.append("id_evento", this.idEvento);
-        formOcupante.append("id_cargocco", this.cargoSelect);
-        formOcupante.append("nm_ocupante", this.inputNomeOcupante);
-        formOcupante.append("tp_documento", this.documentoSelect);
-        formOcupante.append("nr_documento", this.inputNumeroDocumento);
+        if(metodo == 'post'){
+            formOcupante.append("id_tenant", this.tenant);
+            formOcupante.append("id_evento", this.idEvento);
+            formOcupante.append("id_cargocco", this.cargoSelect);
+            formOcupante.append("nm_ocupante", this.inputNomeOcupante);
+            formOcupante.append("tp_documento", this.documentoSelect);
+            formOcupante.append("nr_documento", this.inputNumeroDocumento);
+    
+            await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
+    
+            this.limparFormOcupante();
+        } else if(metodo == 'put'){
+            formOcupante.append("id_tenant", this.tenant);
+            formOcupante.append("id_evento", this.idEvento);
+            formOcupante.append("id_cargocco", item.id_cargocco.id);
+            formOcupante.append("nm_ocupante", item.nm_ocupante);
+            formOcupante.append("tp_documento", item.tp_documento);
+            formOcupante.append("nr_documento", item.nr_documento);
 
-        await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
-
-        this.limparFormOcupante();
+            const path = this.paths.ccoevento + `/${item.id}`;
+            await this.putInfo(path, formOcupante, this.setToken);
+        }
         this.getOcupantes();
     }
 
@@ -206,20 +220,33 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.listaOcupantes = await this.getInfo(path, this.setToken);
     }
 
-    public async getMunicipio() {
-        const path = this.paths.municipio + `/${this.estadoSelect}`;
-        this.listaMunicipios = await this.getInfo(path, this.setToken);
+    public async getMunicipio(metodo, item) {
+        console.log(item);
+        
+        if(metodo == 'criar'){
+            const path = this.paths.municipio + `/${this.estadoSelect}`;
+            this.listaMunicipios = await this.getInfo(path, this.setToken);
+        } else if(metodo == 'editar'){
+            const path = this.paths.municipio + `/${item}`;
+            this.listaMunicipios = await this.getInfo(path, this.setToken);
+        }
     }
 
     public async cadastrarNovoMunicipio(metodo, item) {
         const formMunicipioEvento = new FormData();
-        formMunicipioEvento.append("id_evento", this.idEvento);
-        formMunicipioEvento.append("id_municipio", this.municipioSelect);
-        formMunicipioEvento.append("id_tenant", this.tenant);
-
+        
         if (metodo == "post") {
+            formMunicipioEvento.append("id_tenant", this.tenant);
+            formMunicipioEvento.append("id_evento", this.idEvento);
+            formMunicipioEvento.append("id_municipio", this.municipioSelect);
             await this.postInfo(this.paths.municipioevento, formMunicipioEvento, this.setToken);
         } else if (metodo == "put") {
+            console.log(item.id_evento);
+            console.log(item.id_municipio);
+
+            formMunicipioEvento.append("id_tenant", this.tenant);
+            formMunicipioEvento.append("id_evento", item.id_evento.id);
+            formMunicipioEvento.append("id_municipio", item.id_municipio.id);
             const path = this.paths.municipioevento + `/${item.id}`;
             await this.putInfo(path, formMunicipioEvento, this.setToken);
         }
@@ -269,6 +296,15 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.inputEditarIdadeInicial = item.nr_idadeinicio;
         this.inputEditarIdadeFinal = item.nr_idadefinal;
         this.editarNaipeSelect = item.tp_naipe;
+    }
+
+    public editarEncarregados(item){
+        item.mostrarEditarEncarregados = true;
+    }
+
+    public editarMunicipiosEvento(item){        
+        item.mostrarEditarMunicipios = true;
+        this.getMunicipio('editar', item.id_municipio.estado.id);
     }
 
     public async excluir(item) {
