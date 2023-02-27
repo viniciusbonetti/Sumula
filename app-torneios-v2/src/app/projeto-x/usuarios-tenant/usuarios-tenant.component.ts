@@ -38,9 +38,6 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     public usuariosTenant = "";
     public idRegistroUsuario = "";
 
-    public itensPagina = 5;
-    public pagAtual = 1;
-
     ngOnInit(): void {
         this.getTenantUsuarios();
     }
@@ -51,18 +48,48 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public cadastrar() {
-        this.novoCadastro = !this.novoCadastro;
+        this.novoCadastro = true;
+        this.editar = false;
+        this.getTenant();
     }
 
     public botaoAvancar(metodo) {
         if (this.num == "") {
             this.sendNovoUsuario(metodo);
-        } else if (this.num == "1") {
-            this.sendTenantUsuario(metodo);
-            this.num = '';
+        } else if (this.num == "1") {         
+            if(this.checkboxTenant.length >0){
+                this.sendTenantUsuario(metodo);
+                this.num = '';
+                this.novoCadastro = false;
+                this.editar = false;
+                this.limparForm();
+            }  else {
+                this.sendTenantUsuario(metodo);
+            }
+        }
+    }
+
+    public botaoVoltar(){
+        if(this.num == ''){
+            this.idRegistroUsuario = '';
             this.novoCadastro = false;
             this.editar = false;
+            this.limparForm();
+        } else if(this.num == '1'){
+            this.editar = true;
+            console.log(this.checkboxTenant);
+            this.num = '';
+            if(this.checkboxTenant.length > 0){
+                this.sendTenantUsuario('put');
+            }
         }
+    }
+
+    public limparForm(){
+        this.inputNome = '';
+        this.inputEmail = '';
+        this.inputSenha = '';
+        this.inputConfirmaSenha = '';
     }
 
     public searchTable(event: any) {
@@ -87,9 +114,9 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             this.idUsuario = sendInfoNovoUsuario.id;
             this.num = "1";
         } else if (metodo == "put") {
-            const path = this.paths.user + `/${this.idRegistroUsuario}`;
+            const path = this.paths.user + `/${this.idUsuario}`;
             await this.putInfo(path, formNovoUsuario, this.setToken);
-            this.getTenantRegistro();
+            this.getTenantRegistro('checar');
             this.num = "1";
         }
     }
@@ -99,7 +126,6 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public setCheckbox(id, isChecked) {
-
         if (isChecked.checked) {
             this.checkboxTenant.push(id);
         } else {
@@ -116,9 +142,10 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         if (metodo == "post") {
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.postInfo(this.paths.tenantusuario, formTenantUsuario, this.setToken);
+            this.getTenantUsuarios();
         } else if (metodo == "put") {
-            const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
-            formTenantUsuario.append("id_usuario", this.idRegistroUsuario);
+            const path = this.paths.tenantusuario + `/${this.idUsuario}`;
+            formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.putInfo(path, formTenantUsuario, this.setToken);
         }
     }
@@ -132,22 +159,36 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
         let getInfoEvento = await this.getInfo(path, this.setToken);
 
-        this.idRegistroUsuario = getInfoEvento[0].id_usuario.id;
+        this.idUsuario = getInfoEvento[0].id_usuario.id;
         this.inputNome = getInfoEvento[0].id_usuario.nm_usuario;
         this.inputEmail = getInfoEvento[0].id_usuario.ds_email;
         this.getTenant();
     }
 
-    public async getTenantRegistro() {
+    public async getTenantRegistro(check) {
         const formMostrarTenantRegistro = new FormData();
         formMostrarTenantRegistro.append("tipo_request", "tenantUser");
-        formMostrarTenantRegistro.append("id_usuario", this.idRegistroUsuario);
+        formMostrarTenantRegistro.append("id_usuario", this.idUsuario);
         let listaTenantRegistro = await this.postInfo(this.paths.geral, formMostrarTenantRegistro, this.setToken);
+        console.log(listaTenantRegistro);
+        
         listaTenantRegistro.forEach((element) => {
             this.listaTenant.forEach((element2) => {
-                if (element2["id"] == element.id_tenant) {
-                    element2["checked"] = true;
-                    this.checkboxTenant.push(element.id_tenant);
+                if(check == 'checar'){
+                    console.log('teste1');
+                    if (element2["id"] == element.id_tenant) {
+                        element2["checked"] = true;
+                        this.checkboxTenant.push(element.id_tenant);
+                    }
+                } else if(check == 'deschecar') {
+                    console.log('teste2');
+                    
+                    if (element2["id"] == element.id_tenant) {
+                        element2["checked"] = false;
+                        for(let i = 0; i <= this.checkboxTenant.length; i++){
+                            this.checkboxTenant.splice(i,1)
+                        }
+                    }
                 }
             });
         });
@@ -159,13 +200,13 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao usuário!'
         await this.showSwal(type);
         if(this.resultado){
-            this.idRegistroUsuario = item.id;
+            this.idUsuario = item.id;
     
-            const path = this.paths.tenantusuario + `/${this.idRegistroUsuario}`;
+            const path = this.paths.tenantusuario + `/${this.idUsuario}`;
     
             await this.deleteInfo(path, this.setToken);
     
-            this.idRegistroUsuario = "";
+            this.idUsuario = "";
             this.getTenantUsuarios();
         }
     }

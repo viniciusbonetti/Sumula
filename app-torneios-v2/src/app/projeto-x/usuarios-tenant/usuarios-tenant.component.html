@@ -32,7 +32,6 @@
                                         </td>
                                         <td>
                                             <button (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
-                                            <!-- <button (click)="editar(item)" *ngIf="item.mostrarEditarEventos">confirmar</button> -->
                                             <button (click)="excluir(item)">excluir</button>
                                         </td>
                                     </tr>
@@ -89,7 +88,7 @@
                                         <span class="form-error c_sn_usuario"></span>
                                     </div>
                                 </div>
-                                <button (click)="limparSendForm()">voltar</button>
+                                <button (click)="botaoVoltar()">cancelar</button>
                                 <button (click)="botaoAvancar('post')" *ngIf="!editar">proximo</button>
                                 <button (click)="botaoAvancar('put')" *ngIf="editar">proximo</button>
                             </div>
@@ -113,7 +112,9 @@
                                     <span class="form-error id_tenant"></span>
                                 </div>
                                 <div>
-                                    <button (click)="botaoAvancar('put')">confirmar</button>
+                                    <button (click)="botaoVoltar()">voltar</button>
+                                    <button (click)="botaoAvancar('post')"  *ngIf="!editar">salvar</button>
+                                    <button (click)="botaoAvancar('put')"  *ngIf="editar">salvar</button>
                                 </div>
                             </div>
                         </div>
