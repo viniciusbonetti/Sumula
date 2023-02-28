@@ -16,12 +16,13 @@
 
             <div class="user">
                 <div class="photo">
-                    <img src="./assets/img/faces/avatar.jpg" />
+                    <!-- <img src="./assets/img/faces/avatar.jpg" /> -->
+                    <i class="{{'fa-duotone fa-circle-' + userInfo['inicial'] }}" ></i>
                 </div>
                 <div class="user-info">
                     <a data-toggle="collapse" href="#collapseExample" class="collapsed">
                         <span>
-                            Tania Andrew
+                            {{ userInfo['nm_usuario'] }}
                             <b class="caret"></b>
                         </span>
                     </a>

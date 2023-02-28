@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import PerfectScrollbar from "perfect-scrollbar";
+import { ControllerComponent } from "../controller/controller.component";
 
 declare const $: any;
 
@@ -155,7 +156,12 @@ export const ROUTES: RouteInfo[] = [
     selector: "app-sidebar-cmp",
     templateUrl: "sidebar.component.html",
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent extends ControllerComponent implements OnInit {
+    public getToken = localStorage.getItem("Authorization");
+    public userId = localStorage.getItem("Id");
+    public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
+    public setToken: any = { headers: this.headers };
+    public userInfo = {};
     public menuItems: any[];
     ps: any;
     isMobileMenu() {
@@ -165,12 +171,15 @@ export class SidebarComponent implements OnInit {
         return true;
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector(".sidebar .sidebar-wrapper");
             this.ps = new PerfectScrollbar(elemSidebar);
         }
+        const path = '/user/'+this.userId;
+        this.userInfo = await this.getInfo(path, this.setToken);
+        this.userInfo['inicial'] = this.userInfo['nm_usuario'][0].toLowerCase();
     }
     updatePS(): void {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
