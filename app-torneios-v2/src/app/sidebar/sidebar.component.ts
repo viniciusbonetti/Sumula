@@ -180,6 +180,20 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
         const path = '/user/'+this.userId;
         this.userInfo = await this.getInfo(path, this.setToken);
         this.userInfo['inicial'] = this.userInfo['nm_usuario'][0].toLowerCase();
+
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(function(value, key) {
+            if(value.classList.contains('active')){
+                let navChild = value.lastElementChild;
+                if(navChild.classList.contains('collapse')){
+                    navChild.classList.add('show');
+                }
+                else{
+                    navChild.classList.remove('show');
+                }
+            }
+        });
+
     }
     updatePS(): void {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
