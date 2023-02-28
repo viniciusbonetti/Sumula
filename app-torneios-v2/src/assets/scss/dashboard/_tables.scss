@@ -142,3 +142,11 @@
         }
     }
 }
+
+.ngx-pagination{
+    .current{
+        background: $pjxLaranja !important;
+        color: $white !important;
+        border-radius: 15px;
+    }
+}

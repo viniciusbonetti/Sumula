@@ -3,7 +3,7 @@
  .tooltip-inner, .mat-tooltip {
     color: $white !important;
     line-height: 1.5em;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     background: $pjxLaranja;
     border: none;
@@ -46,10 +46,11 @@
 }
 
 .tooltip-inner, .mat-tooltip{
-    padding: 10px 15px;
+    padding: 5px 5px;
     min-width: 130px;
 }
 
 .mat-tooltip{
+    margin: 5px !important;
     text-align: center;
 }
