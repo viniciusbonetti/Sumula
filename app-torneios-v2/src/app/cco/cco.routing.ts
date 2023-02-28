@@ -9,18 +9,21 @@ export const CcoRoutes: Routes = [
       path: '',
       children: [ {
         path: 'cargos',
+        title: 'Cargos - Sumula',
         component: CargosComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'modalidades',
+        title: 'Modalidades - Sumula',
         component: ModalidadesComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'eventos',
+        title: 'Eventos - Sumula',
         component: EventosComponent
     }]},
 ];
