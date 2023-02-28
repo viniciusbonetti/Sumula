@@ -94,7 +94,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["id_usuario.nm_usuario", "id_tenant.nm_tenant"];
+        const columns = ["id", "id_usuario.nm_usuario", "id_tenant.nm_tenant"];
 
         this.listaTenantUsuarioFiltrado = this.filterTable(columns, this.listaTenantUsuario, conteudo);
         this.pagAtual = 1;
