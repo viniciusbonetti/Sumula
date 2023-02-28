@@ -271,4 +271,36 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             });
         });
     }
+
+    public async excluir(item, tela) {
+        const type = "warning-message-and-cancel";
+        if (tela == "atleta") {
+            this.mensagemTitulo = "Deseja deletar o atleta?";
+            this.mensagemAlerta = "Esta ação não será reversível e irá deletar todos os registros relacionados ao atleta!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.atleta + `/${item.id}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getListaAtletas();
+            }
+        } else if (tela == "documento") {
+            this.mensagemTitulo = "Deseja deletar o documento deste atleta?";
+            this.mensagemAlerta = "Esta ação não será reversível!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.documentoatleta + `/i${item.id}&t${this.idAtleta}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getDocumentoAtleta();
+            }
+        } else if (tela == "contato") {
+            this.mensagemTitulo = "Deseja deletar o contato deste atleta?";
+            this.mensagemAlerta = "Esta ação não será reversível!";
+            await this.showSwal(type);
+            if (this.resultado) {
+                const path = this.paths.contatoatleta + `/i${item.id}&t${this.idAtleta}`;
+                await this.deleteInfo(path, this.setToken);
+                this.getContatoAtleta();
+            }
+        }
+    }
 }

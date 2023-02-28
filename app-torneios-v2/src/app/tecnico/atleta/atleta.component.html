@@ -60,7 +60,7 @@
                                                     <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
                                                 </button>
                                                 <button style="background: none; border: none">
-                                                    <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                    <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')" *ngIf="!item.mostrarEditarDelegacao"></i>
                                                 </button>
                                                 <!-- <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.editarAtleta">editar</button>
                                                 <button (click)="excluir(item)" *ngIf="!item.editarAtleta">excluir</button> -->
@@ -263,7 +263,7 @@
                                                         <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarDocumento"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" *ngIf="!mostrarEditarDocumento"></i>
+                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')" *ngIf="!mostrarEditarDocumento"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
                                                         <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarDocumento"></i>
@@ -340,7 +340,7 @@
                                                         <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarContato"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" *ngIf="!mostrarEditarContato"></i>
+                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" *ngIf="!mostrarEditarContato"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
                                                         <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarContato"></i>
