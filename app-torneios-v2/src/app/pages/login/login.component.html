@@ -55,7 +55,7 @@
                         <i class="fa-duotone fa-user-group-crown fa-2x" style="--fa-primary-color: #DC3813; --fa-secondary-color: #dc3813a8;"></i>
                       </span>
                     </div>
-                    <mat-select placeholder="TENANT" name="lista-tenant" ngClass="btn btn-primary btn-round simple" [(ngModel)]="tenantSelect">
+                    <mat-select placeholder="TENANT" name="lista-tenant" ngClass="btn btn-primary btn-round simple text-light" [(ngModel)]="tenantSelect">
                       <mat-option *ngFor="let item of tenantList" [value]="item.id_tenant">
                         {{ item.nm_tenant }}
                       </mat-option>

@@ -8,7 +8,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <button (click)="cadastrar()">Cadastrar novo usuario</button>
+                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x"></i> Novo usuario</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
                             </mat-form-field>
@@ -31,8 +31,12 @@
                                             {{ item.id_tenant.nm_tenant }}
                                         </td>
                                         <td>
-                                            <button (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditarEventos">editar</button>
-                                            <button (click)="excluir(item)">excluir</button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="botaoMostrarEditar(item)" *ngIf="!item.mostrarEditarEventos"></i>
+                                            </button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item)"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -88,9 +92,11 @@
                                         <span class="form-error c_sn_usuario"></span>
                                     </div>
                                 </div>
-                                <button (click)="botaoVoltar()">cancelar</button>
-                                <button (click)="botaoAvancar('post')" *ngIf="!editar">proximo</button>
-                                <button (click)="botaoAvancar('put')" *ngIf="editar">proximo</button>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()" ><i class="fa-solid fa-square-arrow-left fa-2x"></i> Cancelar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                </div>
                             </div>
                         </div>
 
@@ -111,10 +117,10 @@
                                     </ul>
                                     <span class="form-error id_tenant"></span>
                                 </div>
-                                <div>
-                                    <button (click)="botaoVoltar()">voltar</button>
-                                    <button (click)="botaoAvancar('post')"  *ngIf="!editar">salvar</button>
-                                    <button (click)="botaoAvancar('put')"  *ngIf="editar">salvar</button>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button  mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x"></i> voltar</button>
+                                    <button  mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')"  *ngIf="!editar"><i class="fa-solid fa-floppy-disk fa-2x"></i> salvar</button>
+                                    <button  mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')"  *ngIf="editar"><i class="fa-solid fa-floppy-disk fa-2x"></i> salvar</button>
                                 </div>
                             </div>
                         </div>
