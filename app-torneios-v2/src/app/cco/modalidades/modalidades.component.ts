@@ -29,7 +29,7 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_modalidade", "tp_modalidade"];
+        const columns = ["id", "nm_modalidade", "tp_modalidade"];
 
         this.listaModalidadesFiltrada = this.filterTable(columns, this.listaModalidades, conteudo);
         this.pagAtual = 1;
