@@ -28,7 +28,7 @@ export class CargosComponent extends ControllerComponent implements OnInit {
 
     public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ["nm_cargo"];
+        const columns = ["id", "nm_cargo"];
 
         this.listaCargosCcoFiltrada = this.filterTable(columns, this.listaCargosCco, conteudo);
         this.pagAtual = 1;
