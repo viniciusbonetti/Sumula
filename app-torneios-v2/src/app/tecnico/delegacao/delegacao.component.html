@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <button (click)="cadastrar()">teste novo cadastro</button>
+                            <button mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x"></i> Nova delegação</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
                             </mat-form-field>
@@ -52,8 +52,12 @@
                                             <span class="form-error id_municipio"></span>
                                         </td>
                                         <td>
-                                            <button (click)="sendDelegacao()">confirmar</button>
-                                            <button (click)="cancelarCadastro()">cancelar</button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-square-check fa-2x text-success" (click)="sendDelegacao()"></i>
+                                            </button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro()"></i>
+                                            </button>
                                         </td>
                                     </tr>
 
@@ -98,10 +102,18 @@
                                         </td>
                                         
                                         <td class="col-md-2">
-                                            <button (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
-                                            <button (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao">confirmar</button>
-                                            <button (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao">excluir</button>
-                                            <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao">cancelar</button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                            </button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                            </button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-square-check fa-2x text-success" (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao"></i>
+                                            </button>
+                                            <button style="background: none;border: none;">
+                                                <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

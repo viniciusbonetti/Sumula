@@ -9,9 +9,9 @@
                             <p class="card-category">Here is a subtitle for this table</p>
                         </div>
                         <div class="card-body">
-                            <button (click)="cadastrar()">adicionar novo atleta</button>
+                            <button mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x"></i> Novo atleta</button>
                             <mat-form-field class="float-right col-md-3">
-                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
+                                <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                             </mat-form-field>
                             <div class="table-responsive">
                                 <table class="table">
@@ -32,14 +32,14 @@
                                             <td>
                                                 {{ item.id }}
                                             </td>
-                                            <td class=" col-md-3">
+                                            <td class="col-md-3">
                                                 {{ item.nm_atleta }}
                                             </td>
                                             <td>
                                                 {{ item.nm_apelido }}
                                             </td>
                                             <td>
-                                                {{ item.dt_nascimento | date: 'dd/MM/yyyy'}}
+                                                {{ item.dt_nascimento | date : "dd/MM/yyyy" }}
                                             </td>
                                             <td>
                                                 {{ item.tp_genero }}
@@ -56,10 +56,14 @@
                                             <td>{{ item.id_municipio.nm_municipio }} / {{ item.id_municipio.estado.sg_estado }}</td>
 
                                             <td class="col-md-2">
-                                                <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao">editar</button>
-                                                <button (click)="editarDelegacao(item)" *ngIf="item.mostrarEditarDelegacao">confirmar</button>
-                                                <button (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao">excluir</button>
-                                                <button (click)="cancelarEdicao(item)" *ngIf="item.mostrarEditarDelegacao">cancelar</button>
+                                                <button style="background: none; border: none">
+                                                    <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                </button>
+                                                <button style="background: none; border: none">
+                                                    <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                </button>
+                                                <!-- <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.editarAtleta">editar</button>
+                                                <button (click)="excluir(item)" *ngIf="!item.editarAtleta">excluir</button> -->
                                             </td>
                                         </tr>
                                     </tbody>
@@ -164,8 +168,10 @@
                                             <span class="form-error id_municipio"></span>
                                         </div>
                                     </div>
-                                    <button (click)="cancelarCadastro()">voltar</button>
-                                    <button (click)="botaoAvancar()">avançar</button>
+                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelarCadastro()"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Cancelar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -185,9 +191,9 @@
                                     </ul>
                                     <span class="form-error id_modalidade"></span>
                                 </div>
-                                <div>
-                                    <button>voltar</button>
-                                    <button (click)="botaoAvancar()">avançar</button>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Voltar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -236,8 +242,12 @@
                                                     <span class="form-error ds_midia"></span>
                                                 </td>
                                                 <td>
-                                                    <button (click)="sendDocumentoAtleta()">confirmar</button>
-                                                    <button (click)="limparFormDocumentoAtleta()">X</button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta()"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormDocumentoAtleta()"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
 
@@ -249,15 +259,26 @@
                                                     <img src="data:image/png; base64, {{ item.ds_midia }}" alt="" />
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        <button>editar</button>
-                                                        <button>excluir</button>
-                                                    </div>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarDocumento"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" *ngIf="!mostrarEditarDocumento"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarDocumento"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" *ngIf="mostrarEditarDocumento"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <button (click)="botaoAvancar()">avançar</button>
                                     </table>
+                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -301,8 +322,12 @@
                                                     <span class="form-error ds_contato"></span>
                                                 </td>
                                                 <td>
-                                                    <button (click)="sendContatoAtleta()">confirmar</button>
-                                                    <button (click)="limparFormContatoAtleta()">X</button>
+                                                    <button style="background: none;border: none;">
+                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta()"></i>
+                                                    </button>
+                                                    <button style="background: none;border: none;">
+                                                        <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormContatoAtleta()"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
 
@@ -311,14 +336,26 @@
                                                 <td>{{ item.tp_contato }}</td>
                                                 <td>{{ item.ds_contato }}</td>
                                                 <td>
-                                                    <div>
-                                                        <button>editar</button>
-                                                        <button>excluir</button>
-                                                    </div>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarContato"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" *ngIf="!mostrarEditarContato"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarContato"></i>
+                                                    </button>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" *ngIf="mostrarEditarContato"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" >Salvar <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

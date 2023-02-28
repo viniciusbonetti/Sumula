@@ -43,6 +43,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public novoCadastro: boolean = false;
     public editar: boolean = false;
+    public mostrarEditarDocumento: boolean = false;
 
     public num = "";
     public idAtleta: string = "";
