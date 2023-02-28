@@ -8,15 +8,15 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x"></i> Novo usuario</button>
+                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo usuario</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
                             </mat-form-field>
                             <table class="table">
                                 <thead class="text-primary">
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Tenant</th>
+                                    <th>ID <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                    <th>Nome <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th>Tenant <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon> </th>
                                     <th></th>
                                 </thead>
                                 <tbody>
