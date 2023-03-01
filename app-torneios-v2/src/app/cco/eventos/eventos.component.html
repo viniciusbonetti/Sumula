@@ -8,11 +8,13 @@
                         <p class="card-category">Adicionar e editar eventos</p>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <button mat-raised-button class="btn btn-info btn-sm d-flex align-items-center"  (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x"></i> Novo evento</button>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button mat-raised-button class="btn btn-info btn-sm d-flex align-items-center"  (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo evento</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                             </mat-form-field>
+                        </div>
+                        <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
                                     <th>ID <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
@@ -36,11 +38,11 @@
                                             {{ item.dt_fim | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
-                                            <button style="background: none;border: none;">
+                                            <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
                                                 <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarEvento(item)"></i>
                                             </button>
-                                            <button style="background: none;border: none;">
-                                                <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item, 'evento')"></i>
+                                            <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'evento')"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -100,8 +102,8 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('evento')" ><i class="fa-solid fa-square-arrow-left fa-2x"></i> Cancelar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('evento')" ><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Cancelar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -161,10 +163,10 @@
                                                     <span class="form-error tp_naipe"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormModalidade()"></i>
                                                     </button>
                                                 </td>
@@ -225,25 +227,29 @@
                                                 </td>
 
                                                 <td>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item)" *ngIf="!item.editarModalidadeEvento"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'modalidades')" *ngIf="!item.editarModalidadeEvento" ></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('put', item)" *ngIf="item.editarModalidadeEvento" ></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('modalidades', item)" *ngIf="item.editarModalidadeEvento"></i>
-                                                    </button>
+                                                    <div *ngIf="!item.editarModalidadeEvento">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="item.editarModalidadeEvento">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('modalidades', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -304,10 +310,10 @@
                                                     <span class="form-error nr_documento"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendNovoOcupante('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormOcupante()"></i>
                                                     </button>
                                                 </td>
@@ -373,25 +379,29 @@
                                                 </td>
 
                                                 <td>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item)" *ngIf="!item.mostrarEditarEncarregados"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'cargos')" *ngIf="!item.mostrarEditarEncarregados" ></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-square-check fa-2x text-success" (click)="sendNovoOcupante('put', item)" *ngIf="item.mostrarEditarEncarregados"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('encarregados', item)" *ngIf="item.mostrarEditarEncarregados"></i>
-                                                    </button>
+                                                    <div *ngIf="!item.mostrarEditarEncarregados">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="item.mostrarEditarEncarregados">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendNovoOcupante('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('encarregados', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -435,10 +445,10 @@
                                                     <span class="form-error id_municipio"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormMunicipio()"></i>
                                                     </button>
                                                     <!-- <button (click)="cadastrarNovoMunicipio('post')">confirmar</button>
@@ -480,18 +490,22 @@
                                                 </td>
 
                                                 <td>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item)" *ngIf="!item.mostrarEditarMunicipios"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item, 'municipios')" *ngIf="!item.mostrarEditarMunicipios"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('put', item)" *ngIf="item.mostrarEditarMunicipios"></i>
-                                                    </button>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('municipios', item)" *ngIf="item.mostrarEditarMunicipios"></i>
-                                                    </button>
+                                                    <div *ngIf="!item.mostrarEditarMunicipios">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="item.mostrarEditarMunicipios">
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                        </button>
+                                                        <button style="background: none;border: none;">
+                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('municipios', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                        </button>
+                                                    </div>
                                                     <!-- <button (click)="editarMunicipiosEvento(item)" *ngIf="!item.mostrarEditarMunicipios">editar</button>
                                                     <button (click)="excluir(item, 'municipios')" *ngIf="!item.mostrarEditarMunicipios">excluir</button>
                                                     <button (click)="cadastrarNovoMunicipio('put', item)" *ngIf="item.mostrarEditarMunicipios">confirmar</button>
@@ -501,8 +515,8 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" ><i class="fa-solid fa-floppy-disk fa-2x"></i> Salvar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" ><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
                                     </div>
                                 </div>
                             </div>
