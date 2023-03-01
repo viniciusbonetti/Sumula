@@ -24,6 +24,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public inputCepAtleta: string = "";
     public inputNumeroDocumentoAtleta: string = "";
     public inputContatoAtleta: string = "";
+    public inputEditarNumeroDocumentoAtleta: string = "";
+    public inputEditarContatoAtleta: string = "";
 
     public listaAtletas: Array<{ id: string; nm_atleta: string; nm_apelido: string; dt_nascimento: string; tp_genero: string; ds_endereco: string; nr_endereco: string; nr_cep: string; id_estado: string; id_municipio: string }> = [];
     public listaEstado: Array<{}> = JSON.parse(localStorage.getItem("listaEstados"));
@@ -40,15 +42,19 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public modalidadeSelect = "";
     public documentoAtletaSelect = "";
     public contatoSelect = "";
+    public editarDocumentoAtletaSelect = "";
+    public editarContatoSelect = "";
 
     public novoCadastro: boolean = false;
     public editar: boolean = false;
     public mostrarEditarDocumento: boolean = false;
+    public mostrarEditarContato: boolean = false;
 
     public num = "";
     public idAtleta: string = "";
     public extension = "";
     public image = "";
+    public editarImage = "";
 
     ngOnInit(): void {
         this.getListaAtletas();
@@ -103,7 +109,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 this.num = "3";
                 this.getContatoAtleta();
             } else {
-                this.sendDocumentoAtleta();
+                // this.sendDocumentoAtleta();
             }
         }
     }
@@ -135,18 +141,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             this.num = '1';
         }
 
-    }
-
-    public cancelarCadastro() {
-        this.inputApelidoAtleta = "";
-        this.inputEmailAtleta = "";
-        this.inputNomeCompletoAtleta = "";
-        this.inputDataNascimentoAtleta = "";
-        this.inputEnderecoAtleta = "";
-        this.inputNmrEnderecoAtleta = "";
-        this.inputCepAtleta = "";
-
-        this.novoCadastro = false;
     }
 
     public async getModalidades() {
@@ -194,15 +188,25 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.image = btoa(binaryString);
     }
 
-    public async sendDocumentoAtleta() {
+    public async sendDocumentoAtleta(metodo, item) {
         const formDocumentoAtleta = new FormData();
-        formDocumentoAtleta.append("id_atleta", this.idAtleta);
-        formDocumentoAtleta.append("tp_documento", this.documentoAtletaSelect);
-        formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
-        formDocumentoAtleta.append("image", this.image);
 
-        await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
-        this.limparFormDocumentoAtleta();
+        if(metodo == 'post'){
+            formDocumentoAtleta.append("id_atleta", this.idAtleta);
+            formDocumentoAtleta.append("tp_documento", this.documentoAtletaSelect);
+            formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
+            formDocumentoAtleta.append("image", this.image);    
+            await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
+
+            this.limparFormDocumentoAtleta();
+        } else if(metodo == 'put'){
+            formDocumentoAtleta.append("id_atleta", this.idAtleta);
+            formDocumentoAtleta.append("tp_documento", this.editarDocumentoAtletaSelect);
+            formDocumentoAtleta.append("nr_documento", this.inputEditarNumeroDocumentoAtleta);
+            formDocumentoAtleta.append("image", this.image);
+            const path = this.paths.documentoatleta + `/${item.id}`;
+            await this.putInfo(path, formDocumentoAtleta, this.setToken);
+        }
         this.getDocumentoAtleta();
     }
 
@@ -211,27 +215,49 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
+    public editarDocumentoAtleta(item){
+        console.log(item);
+        
+        item.mostrarEditarDocumento = true;
+        this.editarDocumentoAtletaSelect = item.tp_documento;
+        this.inputEditarNumeroDocumentoAtleta = item.nr_documento;
+        this.image = item.ds_midia;
+    }
+
     public limparFormDocumentoAtleta() {
         this.documentoAtletaSelect = "";
         this.inputNumeroDocumentoAtleta = "";
         this.image = "";
     }
 
-    public async sendContatoAtleta() {
+    public async sendContatoAtleta(metodo, item) {
         const formContatoAtleta = new FormData();
-        formContatoAtleta.append("id_atleta", this.idAtleta);
-        formContatoAtleta.append("tp_contato", this.contatoSelect);
-        formContatoAtleta.append("ds_contato", this.inputContatoAtleta);
-
-        await this.postInfo(this.paths.contatoatleta, formContatoAtleta, this.setToken);
-
-        this.limparFormContatoAtleta();
+        if(metodo == 'post'){
+            formContatoAtleta.append("id_atleta", this.idAtleta);
+            formContatoAtleta.append("tp_contato", this.contatoSelect);
+            formContatoAtleta.append("ds_contato", this.inputContatoAtleta);            
+            await this.postInfo(this.paths.contatoatleta, formContatoAtleta, this.setToken);
+            this.limparFormContatoAtleta();
+        }else if(metodo == 'put'){
+            formContatoAtleta.append("id_atleta", this.idAtleta);
+            formContatoAtleta.append("tp_contato", this.editarContatoSelect);
+            formContatoAtleta.append("ds_contato", this.inputEditarContatoAtleta);
+            const path = this.paths.contatoatleta + `/${item.id}`;
+            await this.putInfo(path, formContatoAtleta, this.setToken);
+        }
+        
         this.getContatoAtleta();
     }
 
     public async getContatoAtleta() {
         const urlGetContatoAtleta = this.paths.contatoatleta + `/t${this.idAtleta}`;
         this.listaContatoAtleta = await this.getInfo(urlGetContatoAtleta, this.setToken);
+    }
+
+    public editarContatoAtleta(item){
+        item.mostrarEditarContato = true;
+        this.editarContatoSelect = item.tp_contato;
+        this.inputEditarContatoAtleta = item.ds_contato;
     }
 
     public limparFormContatoAtleta() {
@@ -270,6 +296,27 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 }
             });
         });
+    }
+
+    public cancelar(tela, item) {
+        if (tela == 'atleta'){
+            this.inputNomeCompletoAtleta = "";
+            this.inputApelidoAtleta = "";
+            this.inputDataNascimentoAtleta = "";
+            this.generoSelect = "";
+            this.inputEnderecoAtleta = "";
+            this.inputNmrEnderecoAtleta = "";
+            this.inputCepAtleta = "";
+            this.estadoSelect = "";
+            this.municipioSelect = "";
+            this.novoCadastro = !this.novoCadastro;
+        }else if(tela == 'documento'){
+            item.mostrarEditarDocumento = false;
+            this.mostrarEditarDocumento = false;
+        } else if(tela == 'contato'){
+            item.mostrarEditarContato = false;
+            this.mostrarEditarContato = false;
+        }
     }
 
     public async excluir(item, tela) {

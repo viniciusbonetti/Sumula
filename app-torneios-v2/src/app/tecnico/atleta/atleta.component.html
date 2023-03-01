@@ -169,7 +169,7 @@
                                         </div>
                                     </div>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelarCadastro()"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Cancelar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('atleta')"><i class="fa-solid fa-square-arrow-left fa-2x"></i> Cancelar</button>
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">proximo <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
                                     </div>
                                 </form>
@@ -243,7 +243,7 @@
                                                 </td>
                                                 <td>
                                                     <button style="background: none; border: none">
-                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta()"></i>
+                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('post')"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormDocumentoAtleta()"></i>
@@ -253,24 +253,58 @@
 
                                             <tr *ngFor="let item of listaDocumentoAtleta">
                                                 <td>{{ item.id }}</td>
-                                                <td>{{ item.tp_documento }}</td>
-                                                <td>{{ item.nr_documento }}</td>
-                                                <td>
+
+                                                <td *ngIf="!item.mostrarEditarDocumento">{{ item.tp_documento }}</td>
+                                                <td *ngIf="item.mostrarEditarDocumento">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Tipo de Documento</mat-label>
+                                                        <select matNativeControl name="tp_documento" [(ngModel)]="editarDocumentoAtletaSelect" required>
+                                                            <option disabled value="">Selecione o documento</option>
+                                                            <option value="C">Cpf</option>
+                                                            <option value="R">Rg</option>
+                                                            <option value="H">Carteira de Habilitação</option>
+                                                            <option value="O">Outro</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_documento"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarDocumento">{{ item.nr_documento }}</td>
+                                                <td *ngIf="item.mostrarEditarDocumento">
+                                                    <mat-form-field class="example-full-width">
+                                                        <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputEditarNumeroDocumentoAtleta" required />
+                                                    </mat-form-field>
+                                                    <span class="form-error nr_documento"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarDocumento">
                                                     <img src="data:image/png; base64, {{ item.ds_midia }}" alt="" />
                                                 </td>
+                                                <td *ngIf="item.mostrarEditarDocumento">
+                                                    <button type="button" mat-raised-button (click)="fileInput.click()">Escolher arquivo</button>
+                                                    <input hidden (change)="adicionarFotoDocumento($event)" #fileInput type="file" id="file" [(ngModel)]="inputEditarFileDocumentoAtleta" />
+                                                    {{ inputEditarFileDocumentoAtleta }} <br />
+                                                    <span class="form-error ds_midia"></span>
+                                                    <!-- <img src="data:image/png; base64, {{ item.ds_midia }}" alt="" /> -->
+                                                </td>
+
                                                 <td>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarDocumento"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')" *ngIf="!mostrarEditarDocumento"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarDocumento"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" *ngIf="mostrarEditarDocumento"></i>
-                                                    </button>
+                                                    <div *ngIf="!item.mostrarEditarDocumento">
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item)"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div *ngIf="item.mostrarEditarDocumento">
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -322,10 +356,10 @@
                                                     <span class="form-error ds_contato"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;">
-                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta()"></i>
+                                                    <button style="background: none; border: none">
+                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;">
+                                                    <button style="background: none; border: none">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormContatoAtleta()"></i>
                                                     </button>
                                                 </td>
@@ -333,28 +367,56 @@
 
                                             <tr *ngFor="let item of listaContatoAtleta">
                                                 <td>{{ item.id }}</td>
-                                                <td>{{ item.tp_contato }}</td>
-                                                <td>{{ item.ds_contato }}</td>
+
+                                                <td *ngIf="!item.mostrarEditarContato">{{ item.tp_contato }}</td>
+                                                <td *ngIf="item.mostrarEditarContato">
+                                                    <mat-form-field class="" appearance="fill">
+                                                        <mat-label>Tipo de Documento</mat-label>
+                                                        <select matNativeControl name="tp_Contato" [(ngModel)]="editarContatoSelect" required>
+                                                            <option disabled value="">Selecione o contato</option>
+                                                            <option value="FF">Telefone Fixo</option>
+                                                            <option value="FC">Telefone Celular</option>
+                                                            <option value="EM">E-mail</option>
+                                                            <option value="FB">Facebook</option>
+                                                            <option value="IN">Instagram</option>
+                                                            <option value="OT">Outro</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                    <span class="form-error tp_contato"></span>
+                                                </td>
+
+                                                <td *ngIf="!item.mostrarEditarContato">{{ item.ds_contato }}</td>
+                                                <td *ngIf="item.mostrarEditarContato">
+                                                    <mat-form-field class="example-full-width">
+                                                        <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputEditarContatoAtleta" required />
+                                                    </mat-form-field>
+                                                    <span class="form-error ds_contato"></span>
+                                                </td>
                                                 <td>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-pen-to-square fa-2x text-info" *ngIf="!mostrarEditarContato"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" *ngIf="!mostrarEditarContato"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-square-check fa-2x text-success" *ngIf="mostrarEditarContato"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-light fa-rectangle-xmark fa-2x text-danger" *ngIf="mostrarEditarContato"></i>
-                                                    </button>
+                                                    <div *ngIf="!item.mostrarEditarContato">
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item)"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" ></i>
+                                                        </button>
+                                                    </div>
+
+                                                    <div *ngIf="item.mostrarEditarContato">
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato',item)"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x"></i> voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" >Salvar <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info">Salvar <i class="fa-solid fa-square-arrow-right fa-2x"></i></button>
                                     </div>
                                 </div>
                             </div>

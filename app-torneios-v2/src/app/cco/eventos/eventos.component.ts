@@ -185,6 +185,13 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
         this.listaModalidadesEvento = await this.getInfo(path, this.setToken);
     }
+    
+    public limparFormModalidade(){
+        this.modalidadeSelect = '';
+        this.inputIdadeInicial = '';
+        this.inputIdadeFinal = '';
+        this.naipeSelect = '';
+    }
 
     public async getCargosCco() {
         const path = this.paths.cargocco + `/t${this.tenant}`;
@@ -266,6 +273,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.listaMunicipiosEvento = await this.getInfo(path, this.setToken);
     }
 
+    public limparFormMunicipio(){
+        this.estadoSelect = '';
+        this.municipioSelect = '';
+    }
+
     public async editarEvento(item) {
         this.novoCadastro = true;
         this.editar = true;
@@ -311,8 +323,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public editarMunicipiosEvento(item) {
         item.mostrarEditarMunicipios = true;
         this.mostrarEditarMunicipios = true;
-        this.estadoSelect = '';
-        this.municipioSelect = '';
+        this.limparFormMunicipio();
         this.getMunicipio("editar", item.id_municipio.estado.id);
     }
 

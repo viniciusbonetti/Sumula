@@ -1,4 +1,4 @@
-<div class="main-content" *ngIf="!novoCadastro">
+<div class="main-content pt-0" *ngIf="!novoCadastro">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -7,12 +7,14 @@
                         <h4 class="card-title p-2">Tenant Usuários</h4>
                         <p class="card-category">Adicionar e editar empresas aos usuários</p>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo usuario</button>
+                    <div class="card-body pt-0 pb-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus mr-1"></i> Novo usuario</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
                             </mat-form-field>
+                        </div>
+                        <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
                                     <th>ID <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
