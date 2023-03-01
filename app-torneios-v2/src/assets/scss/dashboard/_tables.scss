@@ -8,6 +8,13 @@
      border-top: none;
    }
 
+   th{
+    padding: 0.5rem;
+    .mat-icon{
+        height: auto;
+    }
+   }
+
    .tab-pane &{
         tbody > tr > td:first-child{
             width: 36px;
@@ -77,8 +84,8 @@
     }
     .si-down{
         position: relative;
-        top: 15px;
-        left: -15px;
+        top: 5px;
+        left: -10px;
     }
 
     td i{
