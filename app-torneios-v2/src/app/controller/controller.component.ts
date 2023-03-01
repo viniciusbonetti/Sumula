@@ -36,7 +36,7 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
     }
 
     public num = "";
-    public itensPagina = 5;
+    public itensPagina = 7;
     public pagAtual = 1;
 
     ngOnInit(): void {}

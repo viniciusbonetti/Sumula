@@ -20,7 +20,7 @@
                                     <thead class="text-primary text-center">
                                         <th>ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
                                         <th>Nome <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                        <th>Apelido</th>
+                                        <!-- <th>Apelido</th> -->
                                         <th>Data de nascimento <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <th>Genero <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <!-- <th>Endereço</th>
@@ -37,9 +37,9 @@
                                             <td class="col-md-3">
                                                 {{ item.nm_atleta }}
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 {{ item.nm_apelido }}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{ item.dt_nascimento | date : "dd/MM/yyyy" }}
                                             </td>
