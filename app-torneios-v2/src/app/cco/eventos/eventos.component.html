@@ -17,11 +17,11 @@
                         <div class="table-responsive">
                             <table class="table text-center table-hover">
                                 <thead class="text-primary">
-                                    <th>ID <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
-                                    <th>Evento <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th>Inicio <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th>Fim <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th></th>
+                                    <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                    <th class="col-md-4">Evento <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th class="col-md-2">Inicio <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th class="col-md-2">Fim <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th class="col-md-2"></th>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of listaEventosFiltrado | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
@@ -118,12 +118,12 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th>ID</th>
-                                            <th>Modalidade</th>
-                                            <th>Idade mínima</th>
-                                            <th>Idade máxima</th>
-                                            <th>Naipe</th>
-                                            <th></th>
+                                            <th class="col-md-2">ID</th>
+                                            <th class="col-md-4">Modalidade</th>
+                                            <th class="col-md-1">Idade mínima</th>
+                                            <th class="col-md-1">Idade máxima</th>
+                                            <th class="col-md-2">Naipe</th>
+                                            <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">
@@ -155,9 +155,9 @@
                                                         <mat-label>Naipe</mat-label>
                                                         <select matNativeControl name="tp_naipe" [(ngModel)]="naipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
-                                                            <option value="M">Masculino</option>
-                                                            <option value="F">Feminino</option>
-                                                            <option value="X">Misto</option>
+                                                            <option value="M">MASCULINO</option>
+                                                            <option value="F">FEMININO</option>
+                                                            <option value="X">MISTO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_naipe"></span>
@@ -211,16 +211,16 @@
                                                 </td>
 
                                                 <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ (item.tp_naipe == 'M') ? 'Masculino' : (item.tp_naipe == 'F') ? 'Feminino' : 'Misto' | uppercase }}
+                                                    {{ (item.tp_naipe == 'M') ? 'MASCULINO' : (item.tp_naipe == 'F') ? 'FEMININO' : 'MISTO' }}
                                                 </td>
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Naipe</mat-label>
                                                         <select matNativeControl name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
-                                                            <option value="M">Masculino</option>
-                                                            <option value="F">Feminino</option>
-                                                            <option value="X">Misto</option>
+                                                            <option value="M">MASCULINO</option>
+                                                            <option value="F">FEMININO</option>
+                                                            <option value="X">MISTO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_naipe"></span>
@@ -264,7 +264,7 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th class="col-md-1">ID</th>
+                                            <th class="col-md-2">ID</th>
                                             <th class="col-md-2">Cargo</th>
                                             <th class="col-md-2">Ocupante</th>
                                             <th class="col-md-2">Documento</th>
@@ -428,10 +428,10 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th>ID</th>
-                                            <th>Estados</th>
-                                            <th>Municipios</th>
-                                            <th></th>
+                                            <th class="col-md-2">ID</th>
+                                            <th class="col-md-4">Estados</th>
+                                            <th class="col-md-4">Municipios</th>
+                                            <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">

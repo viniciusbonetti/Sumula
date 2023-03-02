@@ -156,9 +156,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         if (metodo == "post") {
             let sendInfoEvento = await this.postInfo(this.paths.evento, formEventos, this.setToken);
             this.idEvento = sendInfoEvento.id;
+            this.showNotification("bottom", "center", "Registro de Evento criado com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.evento + `/${this.idEvento}`;
             await this.putInfo(path, formEventos, this.setToken);
+            this.showNotification("bottom", "center", "Registro de Evento atualizado com sucesso!", "success");
         }
 
         if (this.axiosResponse == true) {
@@ -198,6 +200,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formModalidadeEvento.append("nr_idadefinal", this.inputIdadeFinal);
             formModalidadeEvento.append("tp_naipe", this.naipeSelect);
             await this.postInfo(this.paths.modalidadeevento, formModalidadeEvento, this.setToken);
+            this.showNotification("bottom", "center", "Modalidades de Evento criadas com sucesso!", "success");
         } else if (metodo == "put") {
             const formEditarModalidadeEvento = new FormData();
             formEditarModalidadeEvento.append("id_tenant", this.tenant);
@@ -208,6 +211,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formEditarModalidadeEvento.append("tp_naipe", this.editarNaipeSelect);
             const path = this.paths.modalidadeevento + `/${item.id}`;
             await this.putInfo(path, formEditarModalidadeEvento, this.setToken);
+            this.showNotification("bottom", "center", "Modalidades de Evento atualizadas com sucesso!", "success");
         }
 
         this.modalidadeSelect = "";
@@ -247,6 +251,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formOcupante.append("nr_documento", this.inputNumeroDocumento);
             await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
             this.limparFormOcupante();
+            this.showNotification("bottom", "center", "Registro de Ocupante criado com sucesso!", "success");
         } else if (metodo == "put") {
             formOcupante.append("id_tenant", this.tenant);
             formOcupante.append("id_evento", this.idEvento);
@@ -257,6 +262,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
             const path = this.paths.ccoevento + `/${item.id}`;
             await this.putInfo(path, formOcupante, this.setToken);
+            this.showNotification("bottom", "center", "Registro de Ocupante atualizado com sucesso!", "success");
         }
         this.getOcupantes();
     }
@@ -291,12 +297,14 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formMunicipioEvento.append("id_evento", this.idEvento);
             formMunicipioEvento.append("id_municipio", this.municipioSelect);
             await this.postInfo(this.paths.municipioevento, formMunicipioEvento, this.setToken);
+            this.showNotification("bottom", "center", "Municipio do Evento criado com sucesso!", "success");
         } else if (metodo == "put") {
             formMunicipioEvento.append("id_tenant", this.tenant);
             formMunicipioEvento.append("id_evento", item.id_evento.id);
             formMunicipioEvento.append("id_municipio", item.id_municipio.id);
             const path = this.paths.municipioevento + `/${item.id}`;
             await this.putInfo(path, formMunicipioEvento, this.setToken);
+            this.showNotification("bottom", "center", "Municipio do Evento atualizado com sucesso!", "success");
         }
 
         this.getMunicipiosEvento();
