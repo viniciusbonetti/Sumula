@@ -77,7 +77,6 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             this.limparForm();
         } else if(this.num == '1'){
             this.editar = true;
-            console.log(this.checkboxTenant);
             this.num = '';
             if(this.checkboxTenant.length > 0){
                 this.sendTenantUsuario('put');

@@ -91,7 +91,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             } else {
                 this.sendFormAtleta('post');
             }
-            // this.getCargosCco();
         } else if (this.num == "1") {
             if (this.checkboxAtleta.length > 0) {
                 if(this.editar){
@@ -132,15 +131,13 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         if(metodo == 'post'){
             let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
             this.idAtleta = sendAtleta.id;
-            this.num = "1";
         }else if(metodo == 'put'){
             formAtleta.append('id_atleta', this.idAtleta)
             const path = this.paths.atleta + `/${this.idAtleta}`;
             await this.putInfo(path, formAtleta, this.setToken);
             this.getModalidadesRegistro()
-            this.num = '1';
         }
-
+        this.num = '1';
     }
 
     public async getModalidades() {

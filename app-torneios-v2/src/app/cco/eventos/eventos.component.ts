@@ -18,11 +18,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     };
     public setToken = { headers: this.headers };
 
-    public novoCadastro = false;
-    public editar = false;
-    public editarModalidadeEvento = false;
-    public mostrarEditarEncarregados = false;
-    public mostrarEditarMunicipios = false;
+    public novoCadastro: boolean = false;
+    public editar: boolean = false;
+    public editarModalidadeEvento: boolean = false;
+    public mostrarEditarEncarregados: boolean = false;
+    public mostrarEditarMunicipios: boolean = false;
 
     public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
     public listaEventosFiltrado: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
@@ -71,42 +71,62 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public botaoAvancar() {
         if (this.num == "") {
             if (this.editar) {
-                this.editarNomeEvento();
+                this.sendEventos("put");
             } else {
-                this.sendEventos();
+                this.sendEventos("post");
             }
-            this.getCargosCco();
         } else if (this.num == "1") {
             if (this.listaModalidadesEvento.length > 0) {
                 this.num = "2";
-                this.getOcupantes();
             } else {
                 alert("cadastre uma modalidade");
             }
         } else if (this.num == "2") {
             if (this.listaOcupantes.length > 0) {
                 this.num = "3";
-                this.getMunicipiosEvento();
             } else {
                 alert("cadastre um encarregado");
             }
+        } else if (this.num == "3") {
+            alert("informações salvas");
+            this.num = "";
+            this.finalizarCadastro();
         }
     }
-    
+    public botaoVoltar() {
+        if (this.num == "") {
+            this.limparFormEvento();
+            this.finalizarCadastro();
+        } else if (this.num == "1") {
+            this.editar = true;
+            this.num = "";
+        } else if (this.num == "2") {
+            this.num = "1";
+        } else if (this.num == "3") {
+            this.num = "2";
+        }
+    }
+
+    public finalizarCadastro() {
+        this.idEvento = "";
+        this.novoCadastro = false;
+        this.editar = false;
+    }
+
     public cancelar(tela, item) {
-        if (tela == 'evento'){
+        if (tela == "evento") {
             this.inputNomeEvento = "";
             this.inputDataInicio = "";
             this.inputDataFim = "";
             this.inputNomeTenant = "";
             this.novoCadastro = !this.novoCadastro;
-        }else if(tela == 'modalidades'){
+        } else if (tela == "modalidades") {
             item.editarModalidadeEvento = false;
             this.editarModalidadeEvento = false;
-        }else if(tela == 'encarregados'){
+        } else if (tela == "encarregados") {
             item.mostrarEditarEncarregados = false;
             this.mostrarEditarEncarregados = false;
-        } else if(tela == 'municipios'){
+        } else if (tela == "municipios") {
             item.mostrarEditarMunicipios = false;
             this.mostrarEditarMunicipios = false;
         }
@@ -127,25 +147,42 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.listaEventosFiltrado = this.listaEventos;
     }
 
-    public async sendEventos() {
+    public async sendEventos(metodo) {
         const formEventos = new FormData();
         formEventos.append("nm_evento", this.inputNomeEvento);
         formEventos.append("dt_inicio", this.inputDataInicio);
         formEventos.append("dt_fim", this.inputDataFim);
         formEventos.append("id_tenant", this.tenant);
+        if (metodo == "post") {
+            let sendInfoEvento = await this.postInfo(this.paths.evento, formEventos, this.setToken);
+            this.idEvento = sendInfoEvento.id;
+        } else if (metodo == "put") {
+            const path = this.paths.evento + `/${this.idEvento}`;
+            await this.putInfo(path, formEventos, this.setToken);
+        }
 
-        let sendInfoEvento = await this.postInfo(this.paths.evento, formEventos, this.setToken);
+        if (this.axiosResponse == true) {
+            this.num = "1";
+            this.getCargosCco();
+            this.getModalidades();
+            if(this.editar){
+                this.getEdits();
+            }
+        }
+    }
 
-        this.idEvento = sendInfoEvento.id;
+    public limparFormEvento() {
         this.inputNomeEvento = "";
         this.inputDataInicio = "";
         this.inputDataFim = "";
         this.inputNomeTenant = "";
-
-        this.getModalidades();
-        this.num = "1";
     }
 
+    public getEdits() {
+        this.getOcupantes();
+        this.getModalidadesEvento();
+        this.getMunicipiosEvento();
+    }
 
     public async getModalidades() {
         this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
@@ -185,12 +222,12 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
         this.listaModalidadesEvento = await this.getInfo(path, this.setToken);
     }
-    
-    public limparFormModalidade(){
-        this.modalidadeSelect = '';
-        this.inputIdadeInicial = '';
-        this.inputIdadeFinal = '';
-        this.naipeSelect = '';
+
+    public limparFormModalidade() {
+        this.modalidadeSelect = "";
+        this.inputIdadeInicial = "";
+        this.inputIdadeFinal = "";
+        this.naipeSelect = "";
     }
 
     public async getCargosCco() {
@@ -208,9 +245,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formOcupante.append("nm_ocupante", this.inputNomeOcupante);
             formOcupante.append("tp_documento", this.documentoSelect);
             formOcupante.append("nr_documento", this.inputNumeroDocumento);
-
             await this.postInfo(this.paths.ccoevento, formOcupante, this.setToken);
-
             this.limparFormOcupante();
         } else if (metodo == "put") {
             formOcupante.append("id_tenant", this.tenant);
@@ -273,9 +308,9 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.listaMunicipiosEvento = await this.getInfo(path, this.setToken);
     }
 
-    public limparFormMunicipio(){
-        this.estadoSelect = '';
-        this.municipioSelect = '';
+    public limparFormMunicipio() {
+        this.estadoSelect = "";
+        this.municipioSelect = "";
     }
 
     public async editarEvento(item) {
@@ -290,22 +325,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.inputNomeEvento = getInfoEvento[0].nm_evento;
         this.inputDataInicio = getInfoEvento[0].dt_inicio;
         this.inputDataFim = getInfoEvento[0].dt_fim;
-    }
-
-    public async editarNomeEvento() {
-        const path = this.paths.evento + `/${this.idEvento}`;
-
-        const formEditarEvento = new FormData();
-        formEditarEvento.append("nm_evento", this.inputNomeEvento);
-        formEditarEvento.append("dt_inicio", this.inputDataInicio);
-        formEditarEvento.append("dt_fim", this.inputDataFim);
-        formEditarEvento.append("id_tenant", this.tenant);
-
-        await this.putInfo(path, formEditarEvento, this.setToken);
-        this.num = "1";
-
-        this.getModalidades();
-        this.getModalidadesEvento();
     }
 
     public mostrarEditarModalidade(item) {

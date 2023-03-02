@@ -131,7 +131,7 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Modalidade</mat-label>
-                                                        <select matNativeControl required name="id_modalidade" [(ngModel)]="modalidadeSelect" required>
+                                                        <select matNativeControl  name="id_modalidade" [(ngModel)]="modalidadeSelect" required>
                                                             <option disabled value="">Selecione a modalidade</option>
                                                             <option *ngFor="let item of listaModalidades" value="{{ item.id }}">{{ item.nm_modalidade | uppercase }}</option>
                                                         </select>
@@ -153,7 +153,7 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Naipe</mat-label>
-                                                        <select matNativeControl required name="tp_naipe" [(ngModel)]="naipeSelect" required>
+                                                        <select matNativeControl name="tp_naipe" [(ngModel)]="naipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
@@ -182,7 +182,7 @@
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Modalidade</mat-label>
-                                                        <select matNativeControl required name="id_modalidade" [(ngModel)]="editarModalidadeSelect" required>
+                                                        <select matNativeControl name="id_modalidade" [(ngModel)]="editarModalidadeSelect" required>
                                                             <option disabled value="">Selecione a modalidade</option>
                                                             <option *ngFor="let itemSelect of listaModalidades" value="{{ itemSelect.id }}">{{ itemSelect.nm_modalidade | uppercase }}</option>
                                                         </select>
@@ -216,7 +216,7 @@
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Naipe</mat-label>
-                                                        <select matNativeControl required name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
+                                                        <select matNativeControl name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
@@ -248,7 +248,7 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
@@ -400,7 +400,7 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
@@ -515,8 +515,8 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" ><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
                                     </div>
                                 </div>
                             </div>

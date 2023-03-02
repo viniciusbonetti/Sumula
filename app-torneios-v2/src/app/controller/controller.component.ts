@@ -35,6 +35,8 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         geral:"/geral"
     }
 
+    public axiosResponse:boolean = false;
+
     public num = "";
     public itensPagina = 7;
     public pagAtual = 1;
@@ -58,22 +60,24 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         let urlPost = this.baseUrl + path;
         try {
             let sendInfo = await axios.post(urlPost, form, header);
+            this.axiosResponse = sendInfo.data.success;
             return sendInfo.data.data;
         } catch (error) {
             this.mostrarErros(error);
-        }
+            this.axiosResponse = false;
+        }        
     }
 
     public async putInfo(path, form, header){
         this.formError();
         let urlPut = this.baseUrl + path;
         try {
-            let putInfo = await axios.put(urlPut, form, header);
-            
+            let putInfo = await axios.put(urlPut, form, header);            
+            this.axiosResponse = putInfo.data.success;
             return putInfo;
         } catch (error) {
             this.mostrarErros(error);
-            return error;
+            this.axiosResponse = false;
         }
     }
 
