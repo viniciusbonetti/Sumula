@@ -112,11 +112,13 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
             this.idUsuario = sendInfoNovoUsuario.id;
             this.num = "1";
+            this.showNotification("bottom", "center", "Registro de Usuário criado com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.user + `/${this.idUsuario}`;
             await this.putInfo(path, formNovoUsuario, this.setToken);
             this.getTenantRegistro('checar');
             this.num = "1";
+            this.showNotification("bottom", "center", "Registro de Usuário atualizado com sucesso!", "success");
         }
     }
 
@@ -142,10 +144,12 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.postInfo(this.paths.tenantusuario, formTenantUsuario, this.setToken);
             this.getTenantUsuarios();
+            this.showNotification("bottom", "center", "Acessos de Tenant criados com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.tenantusuario + `/${this.idUsuario}`;
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.putInfo(path, formTenantUsuario, this.setToken);
+            this.showNotification("bottom", "center", "Acessos de Tenant atualizados com sucesso!", "success");
         }
     }
 
