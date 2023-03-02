@@ -95,15 +95,15 @@ export class SweetAlertComponent {
               });
               this.resultado = result.isConfirmed;
             } else {
-              swal.fire({
-                  title: 'Cancelado',
-                  text: 'O registro foi mantido!',
-                  icon: 'error',
-                  customClass:{
-                    confirmButton: "btn btn-info",
-                  },
-                  buttonsStyling: false
-              });
+              // swal.fire({
+              //     title: 'Cancelado',
+              //     text: 'O registro foi mantido!',
+              //     icon: 'error',
+              //     customClass:{
+              //       confirmButton: "btn btn-info",
+              //     },
+              //     buttonsStyling: false
+              // });
               this.resultado = result.isConfirmed;
             }
           })
