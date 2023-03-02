@@ -35,7 +35,7 @@
                                                 {{ item.id }}
                                             </td>
                                             <td class="col-md-3">
-                                                {{ item.nm_atleta }}
+                                                {{ item.nm_atleta | uppercase }}
                                             </td>
                                             <!-- <td>
                                                 {{ item.nm_apelido }}
@@ -44,7 +44,7 @@
                                                 {{ item.dt_nascimento | date : "dd/MM/yyyy" }}
                                             </td>
                                             <td>
-                                                {{ item.tp_genero }}
+                                                {{ item.tp_genero | uppercase }}
                                             </td>
                                             <!-- <td>
                                                 {{ item.ds_endereco }}
@@ -55,7 +55,7 @@
                                             <td>
                                                 {{ item.nr_cep }}
                                             </td> -->
-                                            <td>{{ item.id_municipio.nm_municipio }} / {{ item.id_municipio.estado.sg_estado }}</td>
+                                            <td>{{ item.id_municipio.nm_municipio | uppercase }} / {{ item.id_municipio.estado.sg_estado | uppercase }}</td>
 
                                             <td class="col-md-2">
                                                 <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
@@ -260,7 +260,6 @@
                                             <tr *ngFor="let item of listaDocumentoAtleta">
                                                 <td>{{ item.id }}</td>
 
-                                                <!-- <td *ngIf="!item.mostrarEditarDocumento">{{ item.tp_documento }}</td> -->
                                                 <td *ngIf="!item.mostrarEditarDocumento" [ngSwitch]="item.tp_documento">
                                                     <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
                                                     <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
@@ -358,12 +357,12 @@
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_Contato" [(ngModel)]="contatoSelect" required>
                                                             <option disabled value="">Selecione o contato</option>
-                                                            <option value="FF">Telefone Fixo</option>
-                                                            <option value="FC">Telefone Celular</option>
-                                                            <option value="EM">E-mail</option>
-                                                            <option value="FB">Facebook</option>
-                                                            <option value="IN">Instagram</option>
-                                                            <option value="OT">Outro</option>
+                                                            <option value="FF">TELEFONE FIXO</option>
+                                                            <option value="FC">TELEFONE CELULAR</option>
+                                                            <option value="EM">E-MAIL</option>
+                                                            <option value="FB">FACEBOOK</option>
+                                                            <option value="IN">INSTAGRAM</option>
+                                                            <option value="OT">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_contato"></span>
@@ -387,24 +386,31 @@
                                             <tr *ngFor="let item of listaContatoAtleta">
                                                 <td>{{ item.id }}</td>
 
-                                                <td *ngIf="!item.mostrarEditarContato">{{ item.tp_contato }}</td>
+                                                <td *ngIf="!item.mostrarEditarContato" [ngSwitch]="item.tp_contato">
+                                                    <p *ngSwitchCase="'FF'">TELEFONE FIXO</p>
+                                                    <p *ngSwitchCase="'FC'">TELEFONE CELULAR</p>
+                                                    <p *ngSwitchCase="'EM'">E-MAIL</p>
+                                                    <p *ngSwitchCase="'FB'">FACEBOOK</p>
+                                                    <p *ngSwitchCase="'IN'">INSTAGRAM</p>
+                                                    <p *ngSwitchCase="'OT'">OUTRO</p>
+                                                </td>
                                                 <td *ngIf="item.mostrarEditarContato">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_Contato" [(ngModel)]="editarContatoSelect" required>
                                                             <option disabled value="">Selecione o contato</option>
-                                                            <option value="FF">Telefone Fixo</option>
-                                                            <option value="FC">Telefone Celular</option>
-                                                            <option value="EM">E-mail</option>
-                                                            <option value="FB">Facebook</option>
-                                                            <option value="IN">Instagram</option>
-                                                            <option value="OT">Outro</option>
+                                                            <option value="FF">TELEFONE FIXO</option>
+                                                            <option value="FC">TELEFONE CELULAR</option>
+                                                            <option value="EM">E-MAIL</option>
+                                                            <option value="FB">FACEBOOK</option>
+                                                            <option value="IN">INSTAGRAM</option>
+                                                            <option value="OT">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_contato"></span>
                                                 </td>
 
-                                                <td *ngIf="!item.mostrarEditarContato">{{ item.ds_contato }}</td>
+                                                <td *ngIf="!item.mostrarEditarContato">{{ item.ds_contato | uppercase }}</td>
                                                 <td *ngIf="item.mostrarEditarContato">
                                                     <mat-form-field class="example-full-width">
                                                         <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputEditarContatoAtleta" required />

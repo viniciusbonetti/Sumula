@@ -54,7 +54,7 @@
                                         </td>
                                         <td>
                                             <p *ngIf="!item.mostrarEditarModalidade">
-                                                {{ item.nm_modalidade }}
+                                                {{ item.nm_modalidade | uppercase }}
                                             </p>
                                             <div *ngIf="item.mostrarEditarModalidade">
                                                 <mat-form-field class="example-full-width">
@@ -65,7 +65,7 @@
                                         </td>
                                         <td>
                                             <p *ngIf="!item.mostrarEditarModalidade">
-                                                {{ item.tp_modalidade }}
+                                                {{ item.tp_modalidade | uppercase }}
                                             </p>
                                             <div *ngIf="item.mostrarEditarModalidade">
                                                 <mat-form-field class="example-full-width">

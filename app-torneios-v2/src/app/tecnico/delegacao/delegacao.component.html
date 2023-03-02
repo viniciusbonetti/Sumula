@@ -72,7 +72,7 @@
                                             <input type="text" name="nm_delegacao" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
-                                            {{ item.nm_delegacao }}
+                                            {{ item.nm_delegacao | uppercase }}
                                         </td>
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
@@ -86,7 +86,7 @@
                                             <span class="form-error id_estado"></span>                                            
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
-                                            {{ item.id_municipio.estado.nm_estado }}
+                                            {{ item.id_municipio.estado.nm_estado | uppercase }}
                                         </td>
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
@@ -100,7 +100,7 @@
                                             <span class="form-error id_municipio"></span>
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">                                            
-                                            {{ item.id_municipio.nm_municipio }}
+                                            {{ item.id_municipio.nm_municipio | uppercase }}
                                         </td>
                                         
                                         <td class="col-md-2">

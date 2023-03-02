@@ -211,7 +211,7 @@
                                                 </td>
 
                                                 <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ (item.tp_naipe == 'M') ? 'Masculino' : (item.tp_naipe == 'F') ? 'Feminino' : 'Misto' }}
+                                                    {{ (item.tp_naipe == 'M') ? 'Masculino' : (item.tp_naipe == 'F') ? 'Feminino' : 'Misto' | uppercase }}
                                                 </td>
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field class="" appearance="fill">

@@ -46,7 +46,7 @@
                                         </td>
                                         <td >
                                             <p *ngIf="!item.mostrarEditarCargo">
-                                                {{ item.nm_cargo }}
+                                                {{ item.nm_cargo | uppercase }}
                                             </p>
                                             <div *ngIf="item.mostrarEditarCargo">
                                                 <mat-form-field class="example-full-width">
