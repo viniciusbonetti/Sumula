@@ -8,7 +8,7 @@
                             <h4 class="card-title p-2">Atletas</h4>
                             <p class="card-category">Adicionar e editar atletas</p>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body py-0">
                             <div class="d-flex align-items-center justify-content-between">
                                 <button mat-raised-button class="btn btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo atleta</button>
                                 <mat-form-field class="float-right col-md-3">
@@ -16,7 +16,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table text-center table-hover">
                                     <thead class="text-primary text-center">
                                         <th>ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
                                         <th>Nome <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
@@ -59,10 +59,10 @@
 
                                             <td class="col-md-2">
                                                 <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
                                                 </button>
                                                 <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                    <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')" *ngIf="!item.mostrarEditarDelegacao"></i>
                                                 </button>
                                                 <!-- <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.editarAtleta">editar</button>
                                                 <button (click)="excluir(item)" *ngIf="!item.editarAtleta">excluir</button> -->
@@ -207,7 +207,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table text-center">
+                                    <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
                                             <th>ID</th>
                                             <th>Tipo</th>
@@ -310,18 +310,18 @@
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarDocumento">
                                                         <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item)"></i>
+                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item)"></i>
                                                         </button>
                                                         <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarDocumento">
                                                         <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
+                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
                                                         </button>
                                                         <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
+                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -343,7 +343,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table text-center">
+                                    <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
                                             <th>ID</th>
                                             <th>Tipo</th>
@@ -414,19 +414,19 @@
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarContato">
                                                         <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                            <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item)"></i>
+                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item)"></i>
                                                         </button>
                                                         <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                            <i class="fa-light fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" ></i>
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" ></i>
                                                         </button>
                                                     </div>
 
                                                     <div *ngIf="item.mostrarEditarContato">
                                                         <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                            <i class="fa-light fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
+                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
                                                         </button>
                                                         <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                            <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato',item)"></i>
+                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato',item)"></i>
                                                         </button>
                                                     </div>
                                                 </td>
