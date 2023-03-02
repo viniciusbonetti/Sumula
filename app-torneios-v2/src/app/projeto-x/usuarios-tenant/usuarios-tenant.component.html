@@ -17,10 +17,10 @@
                         <div class="table-responsive">
                             <table class="table text-center table-hover">
                                 <thead class="text-primary">
-                                    <th>ID <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
-                                    <th>Nome <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th>Tenant <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon> </th>
-                                    <th></th>
+                                    <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                    <th class="col-md-5">Nome <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_usuario.nm_usuario', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th class="col-md-3">Tenant <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_tenant.nm_tenant', listaTenantUsuarioFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon> </th>
+                                    <th class="col-md-2"></th>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of listaTenantUsuarioFiltrado | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
