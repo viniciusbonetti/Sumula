@@ -71,6 +71,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
 
         this.getListaEmpresas();
         this.limparCadastroTenant();
+        this.showNotification("bottom", "center", "Registro de Tenant criado com sucesso!", "success");
     }
 
     public limparCadastroTenant() {
@@ -107,6 +108,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         this.extension = "";
         this.image = "";
         this.getListaEmpresas();
+        this.showNotification("bottom", "center", "Registro de Tenant atualizado com sucesso!", "success");
     }
 
     public imagemTenant(event) {
