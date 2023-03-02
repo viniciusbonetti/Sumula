@@ -223,10 +223,14 @@
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_documento" [(ngModel)]="documentoAtletaSelect" required>
                                                             <option disabled value="">Selecione o documento</option>
-                                                            <option value="C">Cpf</option>
-                                                            <option value="R">Rg</option>
-                                                            <option value="H">Carteira de Habilitação</option>
-                                                            <option value="O">Outro</option>
+                                                            <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="T">CARTEIRA DE TRABALHO</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="M">IDENTIDADE MILITAR</option>
+                                                            <option value="P">PASSAPORTE</option>
+                                                            <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                            <option value="R">RG</option>
+                                                            <option value="O">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_documento"></span>
@@ -256,16 +260,30 @@
                                             <tr *ngFor="let item of listaDocumentoAtleta">
                                                 <td>{{ item.id }}</td>
 
-                                                <td *ngIf="!item.mostrarEditarDocumento">{{ item.tp_documento }}</td>
+                                                <!-- <td *ngIf="!item.mostrarEditarDocumento">{{ item.tp_documento }}</td> -->
+                                                <td *ngIf="!item.mostrarEditarDocumento" [ngSwitch]="item.tp_documento">
+                                                    <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
+                                                    <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
+                                                    <p *ngSwitchCase="'C'">CPF</p>
+                                                    <p *ngSwitchCase="'M'">IDENTIDADE MILITAR</p>
+                                                    <p *ngSwitchCase="'P'">PASSAPORTE</p>
+                                                    <p *ngSwitchCase="'E'">REGISTRO NACIONAL DE ESTRANGEIRO</p>
+                                                    <p *ngSwitchCase="'R'">RG</p>
+                                                    <p *ngSwitchCase="'O'">OUTRO</p>
+                                                </td>
                                                 <td *ngIf="item.mostrarEditarDocumento">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_documento" [(ngModel)]="editarDocumentoAtletaSelect" required>
                                                             <option disabled value="">Selecione o documento</option>
-                                                            <option value="C">Cpf</option>
-                                                            <option value="R">Rg</option>
-                                                            <option value="H">Carteira de Habilitação</option>
-                                                            <option value="O">Outro</option>
+                                                            <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="T">CARTEIRA DE TRABALHO</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="M">IDENTIDADE MILITAR</option>
+                                                            <option value="P">PASSAPORTE</option>
+                                                            <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                            <option value="R">RG</option>
+                                                            <option value="O">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_documento"></span>
