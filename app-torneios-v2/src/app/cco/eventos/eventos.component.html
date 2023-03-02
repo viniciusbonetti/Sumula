@@ -295,9 +295,13 @@
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_documento" [(ngModel)]="documentoSelect" required>
                                                             <option disabled value="">Selecione o documento</option>
-                                                            <option value="C">CPF</option>
-                                                            <option value="R">RG</option>
                                                             <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="T">CARTEIRA DE TRABALHO</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="M">IDENTIDADE MILITAR</option>
+                                                            <option value="P">PASSAPORTE</option>
+                                                            <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                            <option value="R">RG</option>
                                                             <option value="O">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
@@ -349,9 +353,13 @@
                                                 </td>
 
                                                 <td *ngIf="!item.mostrarEditarEncarregados" [ngSwitch]="item.tp_documento">
+                                                    <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
+                                                    <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
                                                     <p *ngSwitchCase="'C'">CPF</p>
+                                                    <p *ngSwitchCase="'M'">IDENTIDADE MILITAR</p>
+                                                    <p *ngSwitchCase="'P'">PASSAPORTE</p>
+                                                    <p *ngSwitchCase="'E'">REGISTRO NACIONAL DE ESTRANGEIRO</p>
                                                     <p *ngSwitchCase="'R'">RG</p>
-                                                    <p *ngSwitchCase="'H'">HABILITAÇÃO</p>
                                                     <p *ngSwitchCase="'O'">OUTRO</p>
                                                 </td>
                                                 <td *ngIf="item.mostrarEditarEncarregados">
@@ -359,9 +367,13 @@
                                                         <mat-label>Tipo de Documento</mat-label>
                                                         <select matNativeControl name="tp_documento" [(ngModel)]="item.tp_documento" required>
                                                             <option disabled value="">Selecione o documento</option>
-                                                            <option value="C">CPF</option>
-                                                            <option value="R">RG</option>
                                                             <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                            <option value="T">CARTEIRA DE TRABALHO</option>
+                                                            <option value="C">CPF</option>
+                                                            <option value="M">IDENTIDADE MILITAR</option>
+                                                            <option value="P">PASSAPORTE</option>
+                                                            <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                            <option value="R">RG</option>
                                                             <option value="O">OUTRO</option>
                                                         </select>
                                                     </mat-form-field>
