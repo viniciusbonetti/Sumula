@@ -143,7 +143,6 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         if (metodo == "post") {
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.postInfo(this.paths.tenantusuario, formTenantUsuario, this.setToken);
-            this.getTenantUsuarios();
             this.showNotification("bottom", "center", "Acessos de Tenant criados com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.tenantusuario + `/${this.idUsuario}`;
@@ -151,6 +150,8 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             await this.putInfo(path, formTenantUsuario, this.setToken);
             this.showNotification("bottom", "center", "Acessos de Tenant atualizados com sucesso!", "success");
         }
+        this.getTenantUsuarios();
+        this.checkboxTenant = [];
     }
 
     public async botaoMostrarEditar(item) {
