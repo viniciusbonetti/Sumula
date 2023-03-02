@@ -10,13 +10,13 @@
 
                     <div class="card-body pt-0 pb-0">
                         <div class="d-flex align-items-center justify-content-between">
-                            <button  mat-raised-button class="btn btn-info btn-sm d-flex align-items-center" (click)="adicionarEmpresa()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Nova empresa</button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center" (click)="adicionarEmpresa()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Nova empresa</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" >
                             </mat-form-field>
                         </div>
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center table-hover">
                                 <thead class="text-primary">
                                     <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaEmpresasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEmpresasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon> </th>
                                     <th class="col-md-5">Tenant <mat-icon (click)="sortTable('nm_tenant', listaEmpresasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_tenant', listaEmpresasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon> </th>
@@ -34,17 +34,17 @@
                                             <span class="form-error nm_tenant"></span>
                                         </td>
                                         <td>
-                                            <button  mat-raised-button class="btn btn-info btn-sm" type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem com fundo transparente e no formato PNG.">Escolher arquivo</button>
+                                            <button  mat-raised-button class="btn btn-orange btn-sm" type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem com fundo transparente e no formato PNG.">Escolher arquivo</button>
                                             <input hidden (change)="imagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileTenant"/>
                                             {{ inputFileTenant }} <br>
                                             <span class="form-error ds_midia"></span>
                                         </td>
                                         <td>
                                             <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                <i class="fa-light fa-square-check fa-2x text-success" (click)="confirmarNovoTenant()"></i>
+                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="confirmarNovoTenant()"></i>
                                             </button>
                                             <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="limparCadastroTenant()"></i>
+                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparCadastroTenant()"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -66,7 +66,7 @@
                                         </td>
                                         <td>
                                             <div *ngIf="item.mostrarEditar">
-                                                <button  mat-raised-button class="btn btn-primary btn-sm" type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem com fundo transparente e no formato PNG.">Escolher arquivo</button>
+                                                <button  mat-raised-button class="btn btn-orange btn-sm" type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem com fundo transparente e no formato PNG.">Escolher arquivo</button>
                                                 <input hidden (change)="imagemTenant($event)" #fileInput type="file" id="file" [(ngModel)]="editarInputFileTenant"/>
                                                 {{ editarInputFileTenant }} <br>
                                                 <span class="form-error ds_midia"></span>
@@ -76,18 +76,18 @@
                                         <td>
                                             <div *ngIf="!item.mostrarEditar">
                                                 <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-light fa-pen-to-square fa-2x text-info" (click)="botaoMostrarEditar(item)"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="botaoMostrarEditar(item)"></i>
                                                 </button>
                                                 <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                    <i class="fa-light fa-trash-xmark fa-2x text-danger " (click)="excluir(item)"></i>
+                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)"></i>
                                                 </button>
                                             </div>
                                             <div *ngIf="item.mostrarEditar">
                                                 <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-light fa-square-check fa-2x text-success" (click)="editar(item)"></i>
+                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="editar(item)"></i>
                                                 </button>
                                                 <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                    <i class="fa-light fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" ></i>
+                                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" ></i>
                                                 </button>
                                             </div>
                                         </td>
