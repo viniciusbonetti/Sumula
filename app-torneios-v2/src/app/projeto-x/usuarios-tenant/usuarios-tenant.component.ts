@@ -32,6 +32,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     public novoCadastro = false;
     public mostrarEditarUsuariosTenant = false;
     public editar = false;
+    public ativarTabs = false;
 
     public num = "";
     public idUsuario = "";
@@ -119,6 +120,10 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             this.getTenantRegistro();
             this.num = "1";
             this.showToast("bottom", "Registro de Usuário atualizado com sucesso!", "success");
+        }
+
+        if(this.axiosResponse == true){
+            this.ativarTabs = true;
         }
     }
 
