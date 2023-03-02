@@ -43,6 +43,10 @@
    > tfoot > tr > td{
        padding: 2px 8px;
        vertical-align: middle;
+
+       p{
+        margin: 0 !important;
+       }
    }
 
    .th-description{
