@@ -54,7 +54,7 @@ export class CargosComponent extends ControllerComponent implements OnInit {
 
         this.inputNomeCargo = "";
         this.getListaCargos();
-        this.showNotification("bottom", "center", "Registro de Cargo criado com sucesso!", "success");
+        this.showToast("bottom", "Registro de Cargo criado com sucesso!", "success");
     }
 
     public cancelarCadastro() {
@@ -83,7 +83,7 @@ export class CargosComponent extends ControllerComponent implements OnInit {
 
         this.idCargo = "";
         this.getListaCargos();
-        this.showNotification("bottom", "center", "Registro de Cargo atualizado com sucesso!", "success");
+        this.showToast("bottom", "Registro de Cargo atualizado com sucesso!", "success");
     }
 
     public async excluir(item) {

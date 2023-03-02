@@ -69,7 +69,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
 
         this.getDelegacao();
         this.cancelarCadastro();
-        this.showNotification("bottom", "center", "Registro de Delegação criado com sucesso!", "success");
+        this.showToast("bottom", "Registro de Delegação criado com sucesso!", "success");
     }
 
     public cancelarCadastro() {
@@ -108,7 +108,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
 
         this.idDelegacao = "";
         this.getDelegacao();
-        this.showNotification("bottom", "center", "Registro de Delegação atualizado com sucesso!", "success");
+        this.showToast("bottom", "Registro de Delegação atualizado com sucesso!", "success");
     }
 
     public async excluir(item) {

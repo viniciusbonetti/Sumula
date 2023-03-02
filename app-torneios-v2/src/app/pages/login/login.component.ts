@@ -91,7 +91,7 @@ export class LoginComponent extends ControllerComponent implements OnInit, OnDes
                     input[0].parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML = erro[i].mensagem;
                 }
             } else {
-                this.showNotification("bottom", "center", erro, "danger");
+                this.showToast("bottom", erro, "danger");
             }
             (event.target as HTMLButtonElement).disabled = false;
         }
@@ -117,21 +117,4 @@ export class LoginComponent extends ControllerComponent implements OnInit, OnDes
             this.logadoTenant = true;
         }
     }
-    
-        public showNotification(from, align, message, type) {
-            $.notify(
-                {
-                    icon: "add_alert",
-                    message: message,
-                },
-                {
-                    type: type,
-                    timer: 4000,
-                    placement: {
-                        from: from,
-                        align: align,
-                    },
-                }
-            );
-        }
 }

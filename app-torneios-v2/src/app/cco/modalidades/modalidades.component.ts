@@ -55,7 +55,7 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
         this.inputNomeModalidade = '';
         this.inputTipoModalidade = '';
         this.getModalidades();
-        this.showNotification("bottom", "center", "Registro de Modalidade criado com sucesso!", "success");
+        this.showToast("bottom", "Registro de Modalidade criado com sucesso!", "success");
     }
 
     public cancelarCadastro(item) {
@@ -82,7 +82,7 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
         if (putInfoModalidade.status == 200) {
             this.getModalidades();
             this.cancelarCadastro(item);
-            this.showNotification("bottom", "center", "Registro de Modalidade atualizado com sucesso!", "success");
+            this.showToast("bottom", "Registro de Modalidade atualizado com sucesso!", "success");
         }
     }
 

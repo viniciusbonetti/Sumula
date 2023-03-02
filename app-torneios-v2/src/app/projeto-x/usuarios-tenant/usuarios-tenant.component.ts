@@ -112,13 +112,13 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
 
             this.idUsuario = sendInfoNovoUsuario.id;
             this.num = "1";
-            this.showNotification("bottom", "center", "Registro de Usuário criado com sucesso!", "success");
+            this.showToast("bottom", "Registro de Usuário criado com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.user + `/${this.idUsuario}`;
             await this.putInfo(path, formNovoUsuario, this.setToken);
-            this.getTenantRegistro('checar');
+            this.getTenantRegistro();
             this.num = "1";
-            this.showNotification("bottom", "center", "Registro de Usuário atualizado com sucesso!", "success");
+            this.showToast("bottom", "Registro de Usuário atualizado com sucesso!", "success");
         }
     }
 
@@ -143,12 +143,12 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         if (metodo == "post") {
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.postInfo(this.paths.tenantusuario, formTenantUsuario, this.setToken);
-            this.showNotification("bottom", "center", "Acessos de Tenant criados com sucesso!", "success");
+            this.showToast("bottom", "Acessos de Tenant criados com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.tenantusuario + `/${this.idUsuario}`;
             formTenantUsuario.append("id_usuario", this.idUsuario);
             await this.putInfo(path, formTenantUsuario, this.setToken);
-            this.showNotification("bottom", "center", "Acessos de Tenant atualizados com sucesso!", "success");
+            this.showToast("bottom", "Acessos de Tenant atualizados com sucesso!", "success");
         }
         this.getTenantUsuarios();
         this.checkboxTenant = [];
@@ -169,30 +169,17 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         this.getTenant();
     }
 
-    public async getTenantRegistro(check) {
+    public async getTenantRegistro() {
         const formMostrarTenantRegistro = new FormData();
         formMostrarTenantRegistro.append("tipo_request", "tenantUser");
         formMostrarTenantRegistro.append("id_usuario", this.idUsuario);
         let listaTenantRegistro = await this.postInfo(this.paths.geral, formMostrarTenantRegistro, this.setToken);
-        console.log(listaTenantRegistro);
-        
+
         listaTenantRegistro.forEach((element) => {
             this.listaTenant.forEach((element2) => {
-                if(check == 'checar'){
-                    console.log('teste1');
-                    if (element2["id"] == element.id_tenant) {
-                        element2["checked"] = true;
-                        this.checkboxTenant.push(element.id_tenant);
-                    }
-                } else if(check == 'deschecar') {
-                    console.log('teste2');
-                    
-                    if (element2["id"] == element.id_tenant) {
-                        element2["checked"] = false;
-                        for(let i = 0; i <= this.checkboxTenant.length; i++){
-                            this.checkboxTenant.splice(i,1)
-                        }
-                    }
+                if (element2["id"] == element.id_tenant) {
+                    element2["checked"] = true;
+                    this.checkboxTenant.push(element.id_tenant);
                 }
             });
         });

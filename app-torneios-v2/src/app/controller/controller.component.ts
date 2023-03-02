@@ -110,24 +110,7 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
             
             span.classList.add("text-danger");
         }
-        this.showNotification("bottom", "center", error.response.data.message, "danger");
-    }
-
-    public showNotification(from, align, message, type) {
-        $.notify(
-            {
-                icon: "add_alert",
-                message: message,
-            },
-            {
-                type: type,
-                timer: 4000,
-                placement: {
-                    from: from,
-                    align: align,
-                },
-            }
-        );
+        this.showToast("bottom", error.response.data.message, "error");
     }
 
     /** Função para filtrar conteúdo da tabela

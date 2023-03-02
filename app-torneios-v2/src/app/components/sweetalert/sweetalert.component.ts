@@ -154,4 +154,39 @@ export class SweetAlertComponent {
           });
       }
     }
+
+    async showToast(position, message, iconToast){
+      const Toast = swal.mixin({
+        toast: true,
+        position: position,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', swal.stopTimer)
+          toast.addEventListener('mouseleave', swal.resumeTimer)
+        }
+      });
+
+      let bgColor = '';
+      let ftColor = '';
+      switch (iconToast) {
+        case 'success':
+          bgColor = '#55b555';
+          ftColor = '#fff';
+          break;
+        case 'error':
+          bgColor = '#f55145';
+          ftColor = '#000';
+          break;
+      }
+
+      Toast.fire({
+        icon: iconToast,
+        title: message,
+        background: bgColor,
+        color: ftColor,
+        iconColor: ftColor,
+      })
+    }
 }
