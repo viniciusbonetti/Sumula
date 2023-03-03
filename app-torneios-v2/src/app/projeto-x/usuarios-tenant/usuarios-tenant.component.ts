@@ -61,26 +61,30 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     public botaoAvancar(metodo) {
         let tabHeaders = document.getElementsByClassName('tabHeader');
         let tabPanes = document.getElementsByClassName('tab-pane');
-
-        [].forEach.call(tabPanes, function(tab, index) {
-            let nextIndex: number = (index+1);
-            let tabPaneAtual = '';
-            let tabPaneNext = '';
+        let nextIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPaneNext = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
             if(tab.classList.contains('active')){
-                if(tabHeaders[nextIndex]){
-                    tabPaneAtual = tabHeaders[index].getAttribute('href').replace('#', '');
-                    tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
-                    // Remove os ativos do elemento atual
-                    tabHeaders[index].setAttribute("aria-selected", "false");
-                    tabHeaders[index].classList.remove('active');
-                    document.getElementById(tabPaneAtual).classList.remove('active');
-                    // Adiciona os ativos no elemento proximo
-                    tabHeaders[nextIndex].setAttribute("aria-selected", "true");
-                    tabHeaders[nextIndex].classList.add('active');
-                    document.getElementById(tabPaneNext).classList.add('active');
-                }
+                tabIndex = index;
+                nextIndex = (index+1);
             }
         });
+
+        if(nextIndex < tabPanes.length){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+            tabHeaders[nextIndex].classList.add('active');
+            document.getElementById(tabPaneNext).classList.add('active');
+        }
         
         if (this.num == "") {
             this.sendNovoUsuario(metodo);
@@ -100,26 +104,30 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     public botaoVoltar(){
         let tabHeaders = document.getElementsByClassName('tabHeader');
         let tabPanes = document.getElementsByClassName('tab-pane');
-
-        [].forEach.call(tabPanes, function(tab, index) {
-            let prevIndex: number = (index-1);
-            let tabPaneAtual = '';
-            let tabPanePrev = '';
+        let prevIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPanePrev = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
             if(tab.classList.contains('active')){
-                if(tabHeaders[prevIndex]){
-                    tabPaneAtual = tabHeaders[index].getAttribute('href').replace('#', '');
-                    tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
-                    // Remove os ativos do elemento atual
-                    tabHeaders[index].setAttribute("aria-selected", "false");
-                    tabHeaders[index].classList.remove('active');
-                    document.getElementById(tabPaneAtual).classList.remove('active');
-                    // Adiciona os ativos no elemento proximo
-                    tabHeaders[prevIndex].setAttribute("aria-selected", "true");
-                    tabHeaders[prevIndex].classList.add('active');
-                    document.getElementById(tabPanePrev).classList.add('active');
-                }
+                tabIndex = index;
+                prevIndex = (index-1);
             }
         });
+
+        if(prevIndex >= 0){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[prevIndex].setAttribute("aria-selected", "true");
+            tabHeaders[prevIndex].classList.add('active');
+            document.getElementById(tabPanePrev).classList.add('active');
+        }
 
         if(this.num == ''){
             this.idRegistroUsuario = '';

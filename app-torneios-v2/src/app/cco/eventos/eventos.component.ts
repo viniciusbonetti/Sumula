@@ -23,6 +23,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public editarModalidadeEvento: boolean = false;
     public mostrarEditarEncarregados: boolean = false;
     public mostrarEditarMunicipios: boolean = false;
+    public ativarTabs = false;
 
     public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
     public listaEventosFiltrado: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
@@ -69,6 +70,33 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public botaoAvancar() {
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+        let nextIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPaneNext = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
+            if(tab.classList.contains('active')){
+                tabIndex = index;
+                nextIndex = (index+1);
+            }
+        });
+
+        if(nextIndex < tabPanes.length){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+            tabHeaders[nextIndex].classList.add('active');
+            document.getElementById(tabPaneNext).classList.add('active');
+        }
+
         if (this.num == "") {
             if (this.editar) {
                 this.sendEventos("put");
@@ -94,6 +122,33 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         }
     }
     public botaoVoltar() {
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+        let prevIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPanePrev = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
+            if(tab.classList.contains('active')){
+                tabIndex = index;
+                prevIndex = (index-1);
+            }
+        });
+
+        if(prevIndex >= 0){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[prevIndex].setAttribute("aria-selected", "true");
+            tabHeaders[prevIndex].classList.add('active');
+            document.getElementById(tabPanePrev).classList.add('active');
+        }
+
         if (this.num == "") {
             this.limparFormEvento();
             this.finalizarCadastro();
@@ -321,9 +376,14 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.municipioSelect = "";
     }
 
+    public tabs(index){
+        this.num = index;
+    }
+
     public async editarEvento(item) {
         this.novoCadastro = true;
         this.editar = true;
+        this.ativarTabs = true;
         this.idEvento = item.id;
 
         const path = this.paths.evento + `/i${item.id}&t${this.tenant}`;
