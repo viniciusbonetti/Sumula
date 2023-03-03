@@ -8,9 +8,9 @@
                             <h4 class="card-title p-2">Atletas</h4>
                             <p class="card-category">Adicionar e editar atletas</p>
                         </div>
-                        <div class="card-body py-0">
+                        <div class="card-body p-0">
                             <div class="d-flex align-items-center justify-content-between">
-                                <button mat-raised-button class="btn btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo atleta</button>
+                                <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo atleta</button>
                                 <mat-form-field class="float-right col-md-3">
                                     <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                                 </mat-form-field>
@@ -18,7 +18,7 @@
                             <div class="table-responsive">
                                 <table class="table text-center table-hover">
                                     <thead class="text-primary text-center">
-                                        <th class="col-md-1">ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                        <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
                                         <th class="col-md-2">Nome <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <!-- <th>Apelido</th> -->
                                         <th class="col-md-2">Nascimento <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>

@@ -7,9 +7,9 @@
                         <h4 class="card-title p-2">Eventos</h4>
                         <p class="card-category">Adicionar e editar eventos</p>
                     </div>
-                    <div class="card-body py-0">
+                    <div class="card-body p-0">
                         <div class="d-flex align-items-center justify-content-between">
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo evento</button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo evento</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                             </mat-form-field>
@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="tab-content">
 
                                 <div class="tab-pane active" id="eventos">
