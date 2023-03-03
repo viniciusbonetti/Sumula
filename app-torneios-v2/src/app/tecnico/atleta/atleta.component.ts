@@ -49,6 +49,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public editar: boolean = false;
     public mostrarEditarDocumento: boolean = false;
     public mostrarEditarContato: boolean = false;
+    public editarFormAtleta: boolean = false;
 
     public num = "";
     public idAtleta: string = "";
@@ -86,7 +87,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public botaoAvancar() {
         if (this.num == "") {
-            if (this.editar) {
+            if (this.editarFormAtleta) {
                 this.sendFormAtleta('put');
             } else {
                 this.sendFormAtleta('post');
@@ -98,7 +99,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 }else {
                     this.sendModalidadesAtleta('post');
                 }
-                this.getDocumentoAtleta();
+                console.log(listaModalidadesRegistro);
                 this.num = "2";
             } else {
                 this.sendModalidadesAtleta('post');
@@ -106,11 +107,42 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         } else if (this.num == "2") {
             if (this.listaDocumentoAtleta.length > 0) {
                 this.num = "3";
-                this.getContatoAtleta();
             } else {
-                // this.sendDocumentoAtleta();
+                this.sendDocumentoAtleta('post','');
             }
+        } else if(this.num == '3'){
+            alert("informações salvas");
+            this.num = "";
+            this.finalizarCadastro();
         }
+    }
+
+    public botaoVoltar() {
+        if (this.num == "") {
+            this.limparFormContatoAtleta();
+            this.limparFormDocumentoAtleta();
+        } else if (this.num == "1") {
+            if(this.editar){
+                this.sendModalidadesAtleta('put');
+            }else {
+                this.sendModalidadesAtleta('post');
+            }
+            this.editarFormAtleta = true;
+            this.num = "";
+        } else if (this.num == "2") {
+            this.getModalidadesRegistro();
+            this.editar = true;
+            this.num = "1";
+        } else if (this.num == "3") {
+            this.num = "2";
+        }
+    }
+
+    public finalizarCadastro() {
+        this.idAtleta = "";
+        this.novoCadastro = false;
+        this.editarFormAtleta = false;
+        this.editar = false;
     }
 
     public async getListaMunicipio() {
@@ -135,11 +167,22 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             formAtleta.append('id_atleta', this.idAtleta)
             const path = this.paths.atleta + `/${this.idAtleta}`;
             await this.putInfo(path, formAtleta, this.setToken);
-            this.getModalidadesRegistro()
         }
-        this.num = '1';
+
+        if (this.axiosResponse == true) {
+            this.num = "1";
+            if(this.editar){
+                this.getEdits();
+            }
+        }
     }
 
+    public getEdits() {
+        this.getModalidadesRegistro();
+        this.getDocumentoAtleta();
+        this.getContatoAtleta();
+    }
+    
     public async getModalidades() {
         this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
     }
@@ -165,6 +208,9 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             const path = this.paths.modalidadeatleta + `/${this.idAtleta}`
             await this.putInfo(path, formModalidadeAtleta, this.setToken);
         }
+        console.log(this.checkboxAtleta);
+        this.checkboxAtleta = [];
+        console.log(this.checkboxAtleta);
     }
 
     public adicionarFotoDocumento(event) {
@@ -194,7 +240,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
             formDocumentoAtleta.append("image", this.image);    
             await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
-
             this.limparFormDocumentoAtleta();
         } else if(metodo == 'put'){
             formDocumentoAtleta.append("id_atleta", this.idAtleta);
@@ -264,6 +309,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async mostrarEdicaoAtleta(item) {
         this.novoCadastro = true;
+        this.editarFormAtleta = true;
         this.editar = true;
         this.idAtleta = item.id;
         
@@ -283,8 +329,9 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public async getModalidadesRegistro() {
         const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
         
-        let listaModalidadesRegistro = await this.getInfo(path, this.setToken);
-        
+        let listaModalidadesRegistro = await this.getInfo(path, this.setToken); 
+        console.log(listaModalidadesRegistro);
+               
         listaModalidadesRegistro.forEach((element) => {
             this.listaModalidades.forEach((element2) => {
                 if (element2["id"] == element.id_modalidade.id) {                    
@@ -306,7 +353,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             this.inputCepAtleta = "";
             this.estadoSelect = "";
             this.municipioSelect = "";
-            this.novoCadastro = !this.novoCadastro;
+            this.novoCadastro = false;
+            this.editar = false;
         }else if(tela == 'documento'){
             item.mostrarEditarDocumento = false;
             this.mostrarEditarDocumento = false;

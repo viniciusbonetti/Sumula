@@ -194,7 +194,7 @@
                                     <span class="form-error id_modalidade"></span>
                                 </div>
                                 <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                     <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                 </div>
                             </div>
@@ -328,7 +328,7 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
@@ -440,8 +440,8 @@
                                         </tbody>
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info">Salvar <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Salvar <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>

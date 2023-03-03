@@ -54,7 +54,14 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         this.getTenant();
     }
 
+    public tabs(index){
+        this.num = index;
+    }
+
     public botaoAvancar(metodo) {
+        let tabAtiva = document.getElementsByClassName('tab-pane');
+        console.log(tabAtiva);
+        
         if (this.num == "") {
             this.sendNovoUsuario(metodo);
         } else if (this.num == "1") {         
@@ -85,6 +92,11 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         }
     }
 
+    public async getEdits(){
+        await this.getTenant();
+        await this.getTenantRegistro();
+    }
+
     public limparForm(){
         this.inputNome = '';
         this.inputEmail = '';
@@ -112,18 +124,19 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             sendInfoNovoUsuario = await this.postInfo(this.paths.user, formNovoUsuario, this.setToken);
 
             this.idUsuario = sendInfoNovoUsuario.id;
-            this.num = "1";
+            // this.num = "1";
             this.showToast("bottom", "Registro de Usuário criado com sucesso!", "success");
         } else if (metodo == "put") {
             const path = this.paths.user + `/${this.idUsuario}`;
             await this.putInfo(path, formNovoUsuario, this.setToken);
             this.getTenantRegistro();
-            this.num = "1";
+            // this.num = "1";
             this.showToast("bottom", "Registro de Usuário atualizado com sucesso!", "success");
         }
 
         if(this.axiosResponse == true){
             this.ativarTabs = true;
+            this.num = '1'
         }
     }
 
@@ -155,13 +168,14 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             await this.putInfo(path, formTenantUsuario, this.setToken);
             this.showToast("bottom", "Acessos de Tenant atualizados com sucesso!", "success");
         }
-        this.getTenantUsuarios();
+        // this.getTenantUsuarios();
         this.checkboxTenant = [];
     }
 
     public async botaoMostrarEditar(item) {
         this.novoCadastro = true;
         this.editar = true;
+        this.ativarTabs = true;
         this.idUsuario = item.id;
 
         const path = this.paths.tenantusuario + `/i${item.id}&t${this.tenant}`;
@@ -171,23 +185,24 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         this.idUsuario = getInfoEvento[0].id_usuario.id;
         this.inputNome = getInfoEvento[0].id_usuario.nm_usuario;
         this.inputEmail = getInfoEvento[0].id_usuario.ds_email;
-        this.getTenant();
+        this.getEdits();
     }
 
-    public async getTenantRegistro() {
+    public async getTenantRegistro() {        
         const formMostrarTenantRegistro = new FormData();
         formMostrarTenantRegistro.append("tipo_request", "tenantUser");
         formMostrarTenantRegistro.append("id_usuario", this.idUsuario);
         let listaTenantRegistro = await this.postInfo(this.paths.geral, formMostrarTenantRegistro, this.setToken);
-
+        
         listaTenantRegistro.forEach((element) => {
-            this.listaTenant.forEach((element2) => {
+            this.listaTenant.forEach((element2) => {                
                 if (element2["id"] == element.id_tenant) {
                     element2["checked"] = true;
                     this.checkboxTenant.push(element.id_tenant);
                 }
             });
         });
+        
     }
 
     public async excluir(item){
