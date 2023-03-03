@@ -1,8 +1,8 @@
-<div class="main-content" *ngIf="!novoCadastro">
-    <div class="container-fluid">
-        <div class="row">
+<div class="main-content h-100" *ngIf="!novoCadastro">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-header card-header-danger d-flex align-items-center">
                         <h4 class="card-title p-2">Eventos</h4>
                         <p class="card-category">Adicionar e editar eventos</p>
@@ -70,7 +70,7 @@
                             <div class="wizard-navigation">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item">
-                                        <a class="nav-link tabHeader active" href="#eventos" data-toggle="tab" role="tab" (click)="tabs('0')"> EVENTOS </a>
+                                        <a class="nav-link tabHeader active" href="#eventos" data-toggle="tab" role="tab" (click)="tabs('0')"> EVENTO </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link tabHeader" href="#modalidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
