@@ -18,23 +18,23 @@
                             <div class="table-responsive">
                                 <table class="table text-center table-hover">
                                     <thead class="text-primary text-center">
-                                        <th>ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
-                                        <th>Nome <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                        <th class="col-md-1">ID <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                        <th class="col-md-2">Nome <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_atleta', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <!-- <th>Apelido</th> -->
-                                        <th>Data de nascimento <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                        <th>Genero <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                        <th class="col-md-2">Nascimento <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_nascimento', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                        <th class="col-md-2">Genero <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('tp_genero', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <!-- <th>Endereço</th>
                                         <th>Número</th>
                                         <th>CEP</th> -->
-                                        <th>Cidade <mat-icon (click)="sortTable('id_municipio.nm_municipio', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_municipio.nm_municipio', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                        <th></th>
+                                        <th class="col-md-2">Cidade <mat-icon (click)="sortTable('id_municipio.nm_municipio', listaAtletasFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id_municipio.nm_municipio', listaAtletasFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                        <th class="col-md-2"></th>
                                     </thead>
                                     <tbody *ngFor="let item of listaAtletasFiltrada | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
                                         <tr class="tabela-paginator text-center">
                                             <td>
                                                 {{ item.id }}
                                             </td>
-                                            <td class="col-md-3">
+                                            <td>
                                                 {{ item.nm_atleta | uppercase }}
                                             </td>
                                             <!-- <td>
@@ -57,7 +57,7 @@
                                             </td> -->
                                             <td>{{ item.id_municipio.nm_municipio | uppercase }} / {{ item.id_municipio.estado.sg_estado | uppercase }}</td>
 
-                                            <td class="col-md-2">
+                                            <td>
                                                 <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
                                                     <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
                                                 </button>
@@ -181,11 +181,10 @@
                         <div *ngSwitchCase="'1'">
                             <div class="card-header card-header-danger d-flex align-items-center">
                                 <h4 class="card-title p-2">Modalidades</h4>
-                                <p class="card-category">Selecione as modalidades que o atleta participará</p>
                             </div>
                             <div class="card-body">
                                 <div>
-                                    <mat-label>Modalidades</mat-label>
+                                    <mat-label>Selecione as modalidades que o atleta participará:</mat-label>
                                     <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
                                         <li class="lista-checkbox-item" *ngFor="let item of listaModalidades; let i = index">
                                             <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_modalidade }}</mat-checkbox>
@@ -209,11 +208,11 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th>ID</th>
-                                            <th>Tipo</th>
-                                            <th>Numero</th>
-                                            <th>Foto do documento</th>
-                                            <th></th>
+                                            <th class="col-md-1">ID</th>
+                                            <th class="col-md-3">Tipo</th>
+                                            <th class="col-md-3">Numero</th>
+                                            <th class="col-md-2">Foto do documento</th>
+                                            <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">
@@ -344,10 +343,10 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th>ID</th>
+                                            <th class="col-md-1">ID</th>
                                             <th>Tipo</th>
                                             <th>Contato</th>
-                                            <th></th>
+                                            <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">
