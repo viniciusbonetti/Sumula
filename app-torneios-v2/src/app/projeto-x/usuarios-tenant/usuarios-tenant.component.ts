@@ -59,8 +59,28 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public botaoAvancar(metodo) {
-        let tabAtiva = document.getElementsByClassName('tab-pane');
-        console.log(tabAtiva);
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+
+        [].forEach.call(tabPanes, function(tab, index) {
+            let nextIndex: number = (index+1);
+            let tabPaneAtual = '';
+            let tabPaneNext = '';
+            if(tab.classList.contains('active')){
+                if(tabHeaders[nextIndex]){
+                    tabPaneAtual = tabHeaders[index].getAttribute('href').replace('#', '');
+                    tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+                    // Remove os ativos do elemento atual
+                    tabHeaders[index].setAttribute("aria-selected", "false");
+                    tabHeaders[index].classList.remove('active');
+                    document.getElementById(tabPaneAtual).classList.remove('active');
+                    // Adiciona os ativos no elemento proximo
+                    tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+                    tabHeaders[nextIndex].classList.add('active');
+                    document.getElementById(tabPaneNext).classList.add('active');
+                }
+            }
+        });
         
         if (this.num == "") {
             this.sendNovoUsuario(metodo);
@@ -78,6 +98,29 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public botaoVoltar(){
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+
+        [].forEach.call(tabPanes, function(tab, index) {
+            let prevIndex: number = (index-1);
+            let tabPaneAtual = '';
+            let tabPanePrev = '';
+            if(tab.classList.contains('active')){
+                if(tabHeaders[prevIndex]){
+                    tabPaneAtual = tabHeaders[index].getAttribute('href').replace('#', '');
+                    tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+                    // Remove os ativos do elemento atual
+                    tabHeaders[index].setAttribute("aria-selected", "false");
+                    tabHeaders[index].classList.remove('active');
+                    document.getElementById(tabPaneAtual).classList.remove('active');
+                    // Adiciona os ativos no elemento proximo
+                    tabHeaders[prevIndex].setAttribute("aria-selected", "true");
+                    tabHeaders[prevIndex].classList.add('active');
+                    document.getElementById(tabPanePrev).classList.add('active');
+                }
+            }
+        });
+
         if(this.num == ''){
             this.idRegistroUsuario = '';
             this.novoCadastro = false;
@@ -138,6 +181,8 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             this.ativarTabs = true;
             this.num = '1'
         }
+
+        this.getTenantUsuarios();
     }
 
     public async getTenant() {
@@ -168,7 +213,7 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
             await this.putInfo(path, formTenantUsuario, this.setToken);
             this.showToast("bottom", "Acessos de Tenant atualizados com sucesso!", "success");
         }
-        // this.getTenantUsuarios();
+        this.getTenantUsuarios();
         this.checkboxTenant = [];
     }
 
