@@ -17,11 +17,11 @@
                         <div class="table-responsive">
                             <table class="table text-center table-hover">
                                 <thead class="text-primary">
-                                    <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
-                                    <th class="col-md-4">Evento <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th class="col-md-2">Inicio <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th class="col-md-2">Fim <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
-                                    <th class="col-md-2"></th>
+                                    <th>ID <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
+                                    <th>Evento <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('nm_evento', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th>Inicio <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_inicio', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th>Fim <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('dt_fim', listaEventosFiltrado, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                    <th></th>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of listaEventosFiltrado | paginate : { itemsPerPage: itensPagina, currentPage: pagAtual }">
@@ -38,10 +38,10 @@
                                             {{ item.dt_fim | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
-                                            <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
                                                 <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEvento(item)"></i>
                                             </button>
-                                            <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'evento')"></i>
                                             </button>
                                         </td>
@@ -71,40 +71,31 @@
                                 <!-- <p class="card-category"></p> -->
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table text-center table-hover">
-                                        <thead class="text-primary">
-                                            <th>Evento</th>
-                                            <th>Inicio</th>
-                                            <th>Fim</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-md-3">
-                                                    <mat-form-field>
-                                                        <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error nm_evento"></span>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    <mat-form-field>
-                                                        <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error dt_inicio"></span>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    <mat-form-field>
-                                                        <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error dt_fim"></span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('evento')" ><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Cancelar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                <div class="col-md-12 d-flex flex-column align-items-center">
+                                    <div class="col-md-7">
+                                        <mat-form-field>
+                                            <input matInput placeholder="" type="text" name="nm_evento" [(ngModel)]="inputNomeEvento" required />
+                                        </mat-form-field>
+                                        <span class="form-error nm_evento"></span>
                                     </div>
+
+                                    <div class="col-md-7">
+                                        <mat-form-field>
+                                            <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required />
+                                        </mat-form-field>
+                                        <span class="form-error dt_inicio"></span>
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <mat-form-field>
+                                            <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required />
+                                        </mat-form-field>
+                                        <span class="form-error dt_fim"></span>
+                                    </div>
+                                </div>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('evento')"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Cancelar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -118,12 +109,12 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th class="col-md-2">ID</th>
-                                            <th class="col-md-4">Modalidade</th>
-                                            <th class="col-md-1">Idade mínima</th>
-                                            <th class="col-md-1">Idade máxima</th>
-                                            <th class="col-md-2">Naipe</th>
-                                            <th class="col-md-2"></th>
+                                            <th>ID</th>
+                                            <th>Modalidade</th>
+                                            <th>Idade mínima</th>
+                                            <th>Idade máxima</th>
+                                            <th>Naipe</th>
+                                            <th></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">
@@ -131,7 +122,7 @@
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Modalidade</mat-label>
-                                                        <select matNativeControl  name="id_modalidade" [(ngModel)]="modalidadeSelect" required>
+                                                        <select matNativeControl name="id_modalidade" [(ngModel)]="modalidadeSelect" required>
                                                             <option disabled value="">Selecione a modalidade</option>
                                                             <option *ngFor="let item of listaModalidades" value="{{ item.id }}">{{ item.nm_modalidade | uppercase }}</option>
                                                         </select>
@@ -155,18 +146,18 @@
                                                         <mat-label>Naipe</mat-label>
                                                         <select matNativeControl name="tp_naipe" [(ngModel)]="naipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
-                                                            <option value="M">MASCULINO</option>
-                                                            <option value="F">FEMININO</option>
-                                                            <option value="X">MISTO</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
+                                                            <option value="X">Misto</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_naipe"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                    <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                    <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormModalidade()"></i>
                                                     </button>
                                                 </td>
@@ -211,16 +202,16 @@
                                                 </td>
 
                                                 <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ (item.tp_naipe == 'M') ? 'MASCULINO' : (item.tp_naipe == 'F') ? 'FEMININO' : 'MISTO' }}
+                                                    {{ item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto" | uppercase) }}
                                                 </td>
                                                 <td *ngIf="item.editarModalidadeEvento">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Naipe</mat-label>
                                                         <select matNativeControl name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
                                                             <option disabled value="">Selecione o naipe</option>
-                                                            <option value="M">MASCULINO</option>
-                                                            <option value="F">FEMININO</option>
-                                                            <option value="X">MISTO</option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
+                                                            <option value="X">Misto</option>
                                                         </select>
                                                     </mat-form-field>
                                                     <span class="form-error tp_naipe"></span>
@@ -228,18 +219,18 @@
 
                                                 <td>
                                                     <div *ngIf="!item.editarModalidadeEvento">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.editarModalidadeEvento">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('modalidades', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
@@ -249,7 +240,7 @@
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -264,7 +255,7 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th class="col-md-2">ID</th>
+                                            <th class="col-md-1">ID</th>
                                             <th class="col-md-2">Cargo</th>
                                             <th class="col-md-2">Ocupante</th>
                                             <th class="col-md-2">Documento</th>
@@ -314,10 +305,10 @@
                                                     <span class="form-error nr_documento"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                    <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendNovoOcupante('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                    <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormOcupante()"></i>
                                                     </button>
                                                 </td>
@@ -392,18 +383,18 @@
 
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarEncarregados">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger "(click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarEncarregados">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendNovoOcupante('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('encarregados', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
@@ -413,7 +404,7 @@
                                     </table>
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()" > Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -428,10 +419,10 @@
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
-                                            <th class="col-md-2">ID</th>
-                                            <th class="col-md-4">Estados</th>
-                                            <th class="col-md-4">Municipios</th>
-                                            <th class="col-md-2"></th>
+                                            <th>ID</th>
+                                            <th>Estados</th>
+                                            <th>Municipios</th>
+                                            <th></th>
                                         </thead>
                                         <tbody>
                                             <tr class="tabela-ocupante">
@@ -457,10 +448,10 @@
                                                     <span class="form-error id_municipio"></span>
                                                 </td>
                                                 <td>
-                                                    <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                    <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
                                                         <i class="fa-solid fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('post')"></i>
                                                     </button>
-                                                    <button style="background: none;border: none;" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                    <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                         <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormMunicipio()"></i>
                                                     </button>
                                                     <!-- <button (click)="cadastrarNovoMunicipio('post')">confirmar</button>
@@ -472,7 +463,7 @@
                                                 <td>
                                                     {{ item.id }}
                                                 </td>
-                                                
+
                                                 <td *ngIf="!item.mostrarEditarMunicipios">
                                                     {{ item.id_municipio.estado.nm_estado | uppercase }}
                                                 </td>
@@ -503,18 +494,18 @@
 
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarMunicipios">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        <button style="background: none; border: none">
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarMunicipios">
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
                                                         </button>
-                                                        <button style="background: none;border: none;">
+                                                        <button style="background: none; border: none">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('municipios', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
                                                         </button>
                                                     </div>
