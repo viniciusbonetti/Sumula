@@ -50,6 +50,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public mostrarEditarDocumento: boolean = false;
     public mostrarEditarContato: boolean = false;
     public editarFormAtleta: boolean = false;
+    public ativarTabs = false;
 
     public num = "";
     public idAtleta: string = "";
@@ -85,7 +86,38 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = true;
     }
 
+    public tabs(index){
+        this.num = index;
+    }
+
     public botaoAvancar() {
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+        let nextIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPaneNext = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
+            if(tab.classList.contains('active')){
+                tabIndex = index;
+                nextIndex = (index+1);
+            }
+        });
+
+        if(nextIndex < tabPanes.length){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+            tabHeaders[nextIndex].classList.add('active');
+            document.getElementById(tabPaneNext).classList.add('active');
+        }
+
         if (this.num == "") {
             if (this.editarFormAtleta) {
                 this.sendFormAtleta('put');
@@ -117,6 +149,33 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     }
 
     public botaoVoltar() {
+        let tabHeaders = document.getElementsByClassName('tabHeader');
+        let tabPanes = document.getElementsByClassName('tab-pane');
+        let prevIndex: number = 0;
+        let tabIndex: number = 0;
+        let tabPaneAtual = '';
+        let tabPanePrev = '';
+        
+        Array.from(tabPanes).forEach(function(tab, index) {
+            if(tab.classList.contains('active')){
+                tabIndex = index;
+                prevIndex = (index-1);
+            }
+        });
+
+        if(prevIndex >= 0){
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
+            tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove('active');
+            document.getElementById(tabPaneAtual).classList.remove('active');
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[prevIndex].setAttribute("aria-selected", "true");
+            tabHeaders[prevIndex].classList.add('active');
+            document.getElementById(tabPanePrev).classList.add('active');
+        }
+
         if (this.num == "") {
             this.limparFormContatoAtleta();
             this.limparFormDocumentoAtleta();
