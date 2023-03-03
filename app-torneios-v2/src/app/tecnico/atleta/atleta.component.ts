@@ -99,7 +99,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 }else {
                     this.sendModalidadesAtleta('post');
                 }
-                console.log(listaModalidadesRegistro);
                 this.num = "2";
             } else {
                 this.sendModalidadesAtleta('post');
@@ -208,9 +207,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             const path = this.paths.modalidadeatleta + `/${this.idAtleta}`
             await this.putInfo(path, formModalidadeAtleta, this.setToken);
         }
-        console.log(this.checkboxAtleta);
+        this.getModalidadesRegistro();
         this.checkboxAtleta = [];
-        console.log(this.checkboxAtleta);
     }
 
     public adicionarFotoDocumento(event) {
@@ -257,9 +255,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
-    public editarDocumentoAtleta(item){
-        console.log(item);
-        
+    public editarDocumentoAtleta(item){        
         item.mostrarEditarDocumento = true;
         this.editarDocumentoAtletaSelect = item.tp_documento;
         this.inputEditarNumeroDocumentoAtleta = item.nr_documento;
@@ -328,13 +324,11 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async getModalidadesRegistro() {
         const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
-        
         let listaModalidadesRegistro = await this.getInfo(path, this.setToken); 
-        console.log(listaModalidadesRegistro);
                
         listaModalidadesRegistro.forEach((element) => {
             this.listaModalidades.forEach((element2) => {
-                if (element2["id"] == element.id_modalidade.id) {                    
+                if (element2["id"] == element.st_ativo) {                    
                     element2["checked"] = true;
                     this.checkboxAtleta.push(element.id_modalidade.id);
                 }
