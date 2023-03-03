@@ -45,7 +45,8 @@ export class CargosComponent extends ControllerComponent implements OnInit {
         this.listaCargosCcoFiltrada = this.listaCargosCco;
     }
 
-    public async sendCargo() {
+    public async sendCargo(event) {
+        (event.target as HTMLButtonElement).disabled = true;
         const formCargo = new FormData();
         formCargo.append("nm_cargo", this.inputNomeCargo);
         formCargo.append("id_tenant", this.tenant);
@@ -55,6 +56,7 @@ export class CargosComponent extends ControllerComponent implements OnInit {
         this.inputNomeCargo = "";
         this.getListaCargos();
         this.showToast("bottom", "Registro de Cargo criado com sucesso!", "success");
+        (event.target as HTMLButtonElement).disabled = false;
     }
 
     public cancelarCadastro() {
@@ -70,7 +72,8 @@ export class CargosComponent extends ControllerComponent implements OnInit {
         item.mostrarEditarCargo = true;
     }
 
-    public async editarCargo(item) {
+    public async editarCargo(item, event) {
+        (event.target as HTMLButtonElement).disabled = true;
         this.idCargo = item.id;
 
         const path = this.paths.cargocco + `/${this.idCargo}`;
@@ -84,6 +87,7 @@ export class CargosComponent extends ControllerComponent implements OnInit {
         this.idCargo = "";
         this.getListaCargos();
         this.showToast("bottom", "Registro de Cargo atualizado com sucesso!", "success");
+        (event.target as HTMLButtonElement).disabled = false;
     }
 
     public async excluir(item) {
