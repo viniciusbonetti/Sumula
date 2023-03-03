@@ -235,10 +235,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.inputNomeTenant = "";
     }
 
-    public getEdits() {
-        this.getOcupantes();
-        this.getModalidadesEvento();
-        this.getMunicipiosEvento();
+    public async getEdits() {
+        await this.getOcupantes();
+        await this.getModalidadesEvento();
+        await this.getMunicipiosEvento();
     }
 
     public async getModalidades() {
@@ -393,6 +393,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.inputNomeEvento = getInfoEvento[0].nm_evento;
         this.inputDataInicio = getInfoEvento[0].dt_inicio;
         this.inputDataFim = getInfoEvento[0].dt_fim;
+        this.getEdits();
     }
 
     public mostrarEditarModalidade(item) {
