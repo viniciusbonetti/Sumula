@@ -7,9 +7,9 @@
                         <h4 class="card-title p-2">Cargos</h4>
                         <p class="card-category">Adicionar e editar cargos</p>
                     </div>
-                    <div class="card-body pt-0 pb-0">
+                    <div class="card-body p-0">
                         <div class="d-flex align-items-center justify-content-between">
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo cargo </button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo cargo </button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)">
                             </mat-form-field>
@@ -33,7 +33,7 @@
                                         </td>
                                         <td>
                                             <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendCargo()"></i>
+                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendCargo($event)"></i>
                                             </button>
                                             <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro()"></i>
@@ -67,7 +67,7 @@
                                             </div>
                                             <div *ngIf="item.mostrarEditarCargo">
                                                 <button style="background: none;border: none;">
-                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarCargo(item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarCargo(item, $event)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
                                                 </button>
                                                 <button style="background: none;border: none;">
                                                     <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
