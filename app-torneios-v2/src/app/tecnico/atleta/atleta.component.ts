@@ -221,10 +221,12 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         if(metodo == 'post'){
             let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
             this.idAtleta = sendAtleta.id;
+            this.showToast("bottom", "Registro do Atleta criado com sucesso!", "success");
         }else if(metodo == 'put'){
             formAtleta.append('id_atleta', this.idAtleta)
             const path = this.paths.atleta + `/${this.idAtleta}`;
             await this.putInfo(path, formAtleta, this.setToken);
+            this.showToast("bottom", "Registro do Atleta atualizado com sucesso!", "success");
         }
 
         if (this.axiosResponse == true) {
@@ -235,10 +237,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         }
     }
 
-    public getEdits() {
-        this.getModalidadesRegistro();
-        this.getDocumentoAtleta();
-        this.getContatoAtleta();
+    public async getEdits() {
+        await this.getModalidadesRegistro();
+        await this.getDocumentoAtleta();
+        await this.getContatoAtleta();
     }
     
     public async getModalidades() {
@@ -262,9 +264,11 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
         if(metodo == 'post'){
             await this.postInfo(this.paths.modalidadeatleta, formModalidadeAtleta, this.setToken);
+            this.showToast("bottom", "Modalidades do Atleta criadas com sucesso!", "success");
         }else if(metodo == 'put'){
             const path = this.paths.modalidadeatleta + `/${this.idAtleta}`
             await this.putInfo(path, formModalidadeAtleta, this.setToken);
+            this.showToast("bottom", "Modalidades do Atleta atualizadas com sucesso!", "success");
         }
         this.getModalidadesRegistro();
         this.checkboxAtleta = [];
@@ -298,6 +302,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             formDocumentoAtleta.append("image", this.image);    
             await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
             this.limparFormDocumentoAtleta();
+            this.showToast("bottom", "Documento do Atleta criado com sucesso!", "success");
         } else if(metodo == 'put'){
             formDocumentoAtleta.append("id_atleta", this.idAtleta);
             formDocumentoAtleta.append("tp_documento", this.editarDocumentoAtletaSelect);
@@ -305,6 +310,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             formDocumentoAtleta.append("image", this.image);
             const path = this.paths.documentoatleta + `/${item.id}`;
             await this.putInfo(path, formDocumentoAtleta, this.setToken);
+            this.showToast("bottom", "Documento do Atleta atualizado com sucesso!", "success");
         }
         this.getDocumentoAtleta();
     }
@@ -335,12 +341,14 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             formContatoAtleta.append("ds_contato", this.inputContatoAtleta);            
             await this.postInfo(this.paths.contatoatleta, formContatoAtleta, this.setToken);
             this.limparFormContatoAtleta();
+            this.showToast("bottom", "Contato do Atleta criado com sucesso!", "success");
         }else if(metodo == 'put'){
             formContatoAtleta.append("id_atleta", this.idAtleta);
             formContatoAtleta.append("tp_contato", this.editarContatoSelect);
             formContatoAtleta.append("ds_contato", this.inputEditarContatoAtleta);
             const path = this.paths.contatoatleta + `/${item.id}`;
             await this.putInfo(path, formContatoAtleta, this.setToken);
+            this.showToast("bottom", "Contato do Atleta atualizado com sucesso!", "success");
         }
         
         this.getContatoAtleta();
@@ -366,6 +374,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = true;
         this.editarFormAtleta = true;
         this.editar = true;
+        this.ativarTabs = true;
         this.idAtleta = item.id;
         
         this.inputNomeCompletoAtleta = item.nm_atleta;
@@ -379,6 +388,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.municipioSelect = item.id_municipio.id;
 
         this.getListaMunicipio();
+        this.getEdits();
     }
 
     public async getModalidadesRegistro() {
