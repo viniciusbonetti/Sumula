@@ -4,9 +4,10 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MaterialModule } from "../app.module";
 
+
 import { TecnicoRoutes } from "./tecnico.routing";
 import { NgxPaginationModule } from "ngx-pagination";
-import { AtletaComponent } from "./atleta/atleta.component";
+import { AtletaComponent, AtletaModal } from "./atleta/atleta.component";
 import { DelegacaoComponent } from "./delegacao/delegacao.component";
 
 @NgModule({
@@ -17,6 +18,6 @@ import { DelegacaoComponent } from "./delegacao/delegacao.component";
     MaterialModule,
     NgxPaginationModule,
   ],
-  declarations: [AtletaComponent, DelegacaoComponent],
+  declarations: [AtletaComponent, DelegacaoComponent, AtletaModal],
 })
 export class TecnicoModule {}

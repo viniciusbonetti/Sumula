@@ -1,0 +1,28 @@
+<div class="card" style="box-shadow: none;">
+    <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
+        <h4 class="card-title p-2">Ficha técnica do atleta:</h4>
+        <p class="card-category">{{data.nomeAtletaModal}}</p>
+    </div>
+    <mat-dialog-content class="mat-typography">
+        <div>
+            <h2>Informações Pessoais </h2>
+            <p>Nome: {{data.nomeAtletaModal}}</p>
+            <p>Apelio: {{data.apelidoAtletaModal}}</p>
+            <p>Data de Nascimento: {{data.nascimentoAtletaModal}}</p>
+            <p>Genero / Naipe: {{data.generoAtletaModal}} </p>
+        </div>
+    
+        <div>
+            <h2>Informações de Residência</h2>
+            <p>Logradouro: {{data.enderecoAtletaModal}} </p>
+            <p>Número: {{data.nrEnderecoAtletaModal}} </p>
+            <p>CEP: {{data.cepAtletaModal}} </p>
+            <p>Estado: {{data.estadoAtletaModal}} </p>
+            <p>Município: {{data.municipioAtletaModal}} </p>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="true" class="btn-info">Editar</button>
+    </mat-dialog-actions>
+</div>

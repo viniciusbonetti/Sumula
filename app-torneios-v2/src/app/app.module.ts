@@ -49,7 +49,7 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutes } from './app.routing';
-import { CargosComponent } from './cco/cargos/cargos.component';
+import { DialogModule } from '@angular/cdk/dialog';
 
 @NgModule({
   exports: [
@@ -83,6 +83,7 @@ import { CargosComponent } from './cco/cargos/cargos.component';
     MatToolbarModule,
     MatTooltipModule,
     MatNativeDateModule,
+    DialogModule
   ],
   declarations: [
   ]

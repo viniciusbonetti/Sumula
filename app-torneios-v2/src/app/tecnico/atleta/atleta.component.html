@@ -58,14 +58,15 @@
                                             <td>{{ item.id_municipio.nm_municipio | uppercase }} / {{ item.id_municipio.estado.sg_estado | uppercase }}</td>
 
                                             <td>
+                                                <button (click)="mostrarEdicaoAtleta(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'left'">
+                                                    <i class="fa-solid fa-square-list fa-2x text-warning"></i>
+                                                </button>
                                                 <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item, 'editar')"></i>
                                                 </button>
                                                 <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')" *ngIf="!item.mostrarEditarDelegacao"></i>
+                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')"></i>
                                                 </button>
-                                                <!-- <button (click)="mostrarEdicaoAtleta(item)" *ngIf="!item.editarAtleta">editar</button>
-                                                <button (click)="excluir(item)" *ngIf="!item.editarAtleta">excluir</button> -->
                                             </td>
                                         </tr>
                                     </tbody>
@@ -90,366 +91,364 @@
                     <!-- <div class="card" [ngSwitch]="num"> -->
                     <div class="card">
                         <!-- <div *ngSwitchCase="''"> -->
-                            <div class="card-header card-header-danger d-flex align-items-center">
-                                <div class="wizard-navigation">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item">
-                                            <a class="nav-link tabHeader active" href="#atleta" data-toggle="tab" role="tab" (click)="tabs('0')"> ATLETA </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link tabHeader" href="#modalidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link tabHeader" href="#documentos" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('2')"> DOCUMENTOS </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link tabHeader" href="#contatos" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('3')"> CONTATOS </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- <h4 class="card-title p-2">Atleta</h4>
-                                <p class="card-category">Inscrever um atleta</p> -->
+                        <div class="card-header card-header-danger d-flex align-items-center">
+                            <div class="wizard-navigation">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item">
+                                        <a class="nav-link tabHeader active" href="#atleta" data-toggle="tab" role="tab" (click)="tabs('0')"> ATLETA </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link tabHeader" href="#modalidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link tabHeader" href="#documentos" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('2')"> DOCUMENTOS </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link tabHeader" href="#contatos" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('3')"> CONTATOS </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-body">
-                                <div class="tab-content">
-
-                                    <div class="tab-pane active" id="atleta">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Nome Completo" type="text" name="nm_atleta" [(ngModel)]="inputNomeCompletoAtleta" required />
+                            <!-- <h4 class="card-title p-2">Atleta</h4>
+                                <p class="card-category">Inscrever um atleta</p> -->
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="atleta">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Nome Completo" type="text" name="nm_atleta" [(ngModel)]="inputNomeCompletoAtleta" required />
+                                                </mat-form-field>
+                                                <span class="form-error nm_atleta"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Apelido" name="nm_apelido" [(ngModel)]="inputApelidoAtleta" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Data de Nascimento" type="date" name="dt_nascimento" [(ngModel)]="inputDataNascimentoAtleta" required />
+                                                </mat-form-field>
+                                                <span class="form-error dt_nascimento"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="">
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Genero</mat-label>
+                                                        <select matNativeControl required name="tp_genero" [(ngModel)]="generoSelect">
+                                                            <option disabled value="">Selecione o genero</option>
+                                                            <option value="m">Masculino</option>
+                                                            <option value="f">Feminino</option>
+                                                        </select>
                                                     </mat-form-field>
-                                                    <span class="form-error nm_atleta"></span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Apelido" name="nm_apelido" [(ngModel)]="inputApelidoAtleta" />
-                                                    </mat-form-field>
+                                                    <span class="form-error tp_genero"></span>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Data de Nascimento" type="date" name="dt_nascimento" [(ngModel)]="inputDataNascimentoAtleta" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error dt_nascimento"></span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="">
-                                                        <mat-form-field appearance="fill">
-                                                            <mat-label>Genero</mat-label>
-                                                            <select matNativeControl required name="tp_genero" [(ngModel)]="generoSelect">
-                                                                <option disabled value="">Selecione o genero</option>
-                                                                <option value="m">Masculino</option>
-                                                                <option value="f">Feminino</option>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Endereço" type="text" name="ds_endereco" [(ngModel)]="inputEnderecoAtleta" required />
+                                                </mat-form-field>
+                                                <span class="form-error ds_endereco"></span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Numero" type="text" name="nr_endereco" [(ngModel)]="inputNmrEnderecoAtleta" required />
+                                                </mat-form-field>
+                                                <span class="form-error nr_endereco"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="CEP" type="text" name="nr_cep" [(ngModel)]="inputCepAtleta" />
+                                                </mat-form-field>
+                                                <span class="form-error nr_cep"></span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Estado</mat-label>
+                                                    <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getListaMunicipio()">
+                                                        <option disabled value="">Selecione o estado</option>
+                                                        <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
+                                                    </select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Municipio</mat-label>
+                                                    <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
+                                                        <option disabled value="">Selecione o municipio</option>
+                                                        <option *ngFor="let item of listaMunicipio" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
+                                                    </select>
+                                                </mat-form-field>
+                                                <span class="form-error id_municipio"></span>
+                                            </div>
+                                        </div>
+                                        <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('atleta')"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Cancelar</button>
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane" id="modalidades">
+                                    <div>
+                                        <mat-label>Selecione as modalidades que o atleta participará:</mat-label>
+                                        <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
+                                            <li class="lista-checkbox-item" *ngFor="let item of listaModalidades; let i = index">
+                                                <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_modalidade }}</mat-checkbox>
+                                            </li>
+                                        </ul>
+                                        <span class="form-error id_modalidade"></span>
+                                    </div>
+                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="documentos">
+                                    <div class="table-responsive">
+                                        <table class="table text-center table-hover">
+                                            <thead class="text-primary col-md-12">
+                                                <th class="col-md-1">ID</th>
+                                                <th class="col-md-3">Tipo</th>
+                                                <th class="col-md-3">Numero</th>
+                                                <th class="col-md-2">Foto do documento</th>
+                                                <th class="col-md-2"></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="tabela-ocupante">
+                                                    <td></td>
+                                                    <td>
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Tipo de Documento</mat-label>
+                                                            <select matNativeControl name="tp_documento" [(ngModel)]="documentoAtletaSelect" required>
+                                                                <option disabled value="">Selecione o documento</option>
+                                                                <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                                <option value="T">CARTEIRA DE TRABALHO</option>
+                                                                <option value="C">CPF</option>
+                                                                <option value="M">IDENTIDADE MILITAR</option>
+                                                                <option value="P">PASSAPORTE</option>
+                                                                <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                                <option value="R">RG</option>
+                                                                <option value="O">OUTRO</option>
                                                             </select>
                                                         </mat-form-field>
-                                                        <span class="form-error tp_genero"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Endereço" type="text" name="ds_endereco" [(ngModel)]="inputEnderecoAtleta" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error ds_endereco"></span>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Numero" type="text" name="nr_endereco" [(ngModel)]="inputNmrEnderecoAtleta" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error nr_endereco"></span>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="CEP" type="text" name="nr_cep" [(ngModel)]="inputCepAtleta" />
-                                                    </mat-form-field>
-                                                    <span class="form-error nr_cep"></span>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <mat-form-field appearance="fill">
-                                                        <mat-label>Estado</mat-label>
-                                                        <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getListaMunicipio()">
-                                                            <option disabled value="">Selecione o estado</option>
-                                                            <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado }}</option>
-                                                        </select>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <mat-form-field appearance="fill">
-                                                        <mat-label>Municipio</mat-label>
-                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
-                                                            <option disabled value="">Selecione o municipio</option>
-                                                            <option *ngFor="let item of listaMunicipio" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
-                                                        </select>
-                                                    </mat-form-field>
-                                                    <span class="form-error id_municipio"></span>
-                                                </div>
-                                            </div>
-                                            <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar('atleta')"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Cancelar</button>
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                        <span class="form-error tp_documento"></span>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="example-full-width">
+                                                            <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumentoAtleta" required />
+                                                        </mat-form-field>
+                                                        <span class="form-error nr_documento"></span>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem no formato PNG.">Escolher arquivo</button>
+                                                        <input hidden (change)="adicionarFotoDocumento($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileDocumentoAtleta" />
+                                                        {{ inputFileDocumentoAtleta }} <br />
+                                                        <span class="form-error ds_midia"></span>
+                                                    </td>
+                                                    <td>
+                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('post')"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormDocumentoAtleta()"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
 
-                                    <div class="tab-pane" id="modalidades">
-                                        <div>
-                                            <mat-label>Selecione as modalidades que o atleta participará:</mat-label>
-                                            <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
-                                                <li class="lista-checkbox-item" *ngFor="let item of listaModalidades; let i = index">
-                                                    <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{ item.nm_modalidade }}</mat-checkbox>
-                                                </li>
-                                            </ul>
-                                            <span class="form-error id_modalidade"></span>
-                                        </div>
+                                                <tr *ngFor="let item of listaDocumentoAtleta">
+                                                    <td>{{ item.id }}</td>
+
+                                                    <td *ngIf="!item.mostrarEditarDocumento" [ngSwitch]="item.tp_documento">
+                                                        <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
+                                                        <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
+                                                        <p *ngSwitchCase="'C'">CPF</p>
+                                                        <p *ngSwitchCase="'M'">IDENTIDADE MILITAR</p>
+                                                        <p *ngSwitchCase="'P'">PASSAPORTE</p>
+                                                        <p *ngSwitchCase="'E'">REGISTRO NACIONAL DE ESTRANGEIRO</p>
+                                                        <p *ngSwitchCase="'R'">RG</p>
+                                                        <p *ngSwitchCase="'O'">OUTRO</p>
+                                                    </td>
+                                                    <td *ngIf="item.mostrarEditarDocumento">
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Tipo de Documento</mat-label>
+                                                            <select matNativeControl name="tp_documento" [(ngModel)]="editarDocumentoAtletaSelect" required>
+                                                                <option disabled value="">Selecione o documento</option>
+                                                                <option value="H">CARTEIRA DE HABILITAÇÃO</option>
+                                                                <option value="T">CARTEIRA DE TRABALHO</option>
+                                                                <option value="C">CPF</option>
+                                                                <option value="M">IDENTIDADE MILITAR</option>
+                                                                <option value="P">PASSAPORTE</option>
+                                                                <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
+                                                                <option value="R">RG</option>
+                                                                <option value="O">OUTRO</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error tp_documento"></span>
+                                                    </td>
+
+                                                    <td *ngIf="!item.mostrarEditarDocumento">{{ item.nr_documento }}</td>
+                                                    <td *ngIf="item.mostrarEditarDocumento">
+                                                        <mat-form-field class="example-full-width">
+                                                            <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputEditarNumeroDocumentoAtleta" required />
+                                                        </mat-form-field>
+                                                        <span class="form-error nr_documento"></span>
+                                                    </td>
+
+                                                    <td *ngIf="!item.mostrarEditarDocumento">
+                                                        <img src="data:image/png; base64, {{ item.ds_midia }}" alt="" />
+                                                    </td>
+                                                    <td *ngIf="item.mostrarEditarDocumento">
+                                                        <button type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem no formato PNG.">Escolher arquivo</button>
+                                                        <input hidden (change)="adicionarFotoDocumento($event)" #fileInput type="file" id="file" [(ngModel)]="inputEditarFileDocumentoAtleta" />
+                                                        {{ inputEditarFileDocumentoAtleta }} <br />
+                                                        <span class="form-error ds_midia"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <div *ngIf="!item.mostrarEditarDocumento">
+                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item, listaDocumentoAtleta)"></i>
+                                                            </button>
+                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                                <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div *ngIf="item.mostrarEditarDocumento">
+                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
+                                                            </button>
+                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                         <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
                                             <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                             <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="tab-pane" id="documentos">
-                                        <div class="table-responsive">
-                                            <table class="table text-center table-hover">
-                                                <thead class="text-primary col-md-12">
-                                                    <th class="col-md-1">ID</th>
-                                                    <th class="col-md-3">Tipo</th>
-                                                    <th class="col-md-3">Numero</th>
-                                                    <th class="col-md-2">Foto do documento</th>
-                                                    <th class="col-md-2"></th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="tabela-ocupante">
-                                                        <td></td>
-                                                        <td>
-                                                            <mat-form-field class="" appearance="fill">
-                                                                <mat-label>Tipo de Documento</mat-label>
-                                                                <select matNativeControl name="tp_documento" [(ngModel)]="documentoAtletaSelect" required>
-                                                                    <option disabled value="">Selecione o documento</option>
-                                                                    <option value="H">CARTEIRA DE HABILITAÇÃO</option>
-                                                                    <option value="T">CARTEIRA DE TRABALHO</option>
-                                                                    <option value="C">CPF</option>
-                                                                    <option value="M">IDENTIDADE MILITAR</option>
-                                                                    <option value="P">PASSAPORTE</option>
-                                                                    <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
-                                                                    <option value="R">RG</option>
-                                                                    <option value="O">OUTRO</option>
-                                                                </select>
-                                                            </mat-form-field>
-                                                            <span class="form-error tp_documento"></span>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="example-full-width">
-                                                                <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputNumeroDocumentoAtleta" required />
-                                                            </mat-form-field>
-                                                            <span class="form-error nr_documento"></span>
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem no formato PNG.">Escolher arquivo</button>
-                                                            <input hidden (change)="adicionarFotoDocumento($event)" #fileInput type="file" id="file" [(ngModel)]="inputFileDocumentoAtleta" />
-                                                            {{ inputFileDocumentoAtleta }} <br />
-                                                            <span class="form-error ds_midia"></span>
-                                                        </td>
-                                                        <td>
+                                <div class="tab-pane" id="contatos">
+                                    <div class="table-responsive">
+                                        <table class="table text-center table-hover">
+                                            <thead class="text-primary col-md-12">
+                                                <th class="col-md-1">ID</th>
+                                                <th>Tipo</th>
+                                                <th>Contato</th>
+                                                <th class="col-md-2"></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="tabela-ocupante">
+                                                    <td></td>
+                                                    <td>
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Tipo de Documento</mat-label>
+                                                            <select matNativeControl name="tp_Contato" [(ngModel)]="contatoSelect" required>
+                                                                <option disabled value="">Selecione o contato</option>
+                                                                <option value="FF">TELEFONE FIXO</option>
+                                                                <option value="FC">TELEFONE CELULAR</option>
+                                                                <option value="EM">E-MAIL</option>
+                                                                <option value="FB">FACEBOOK</option>
+                                                                <option value="IN">INSTAGRAM</option>
+                                                                <option value="OT">OUTRO</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error tp_contato"></span>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="example-full-width">
+                                                            <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputContatoAtleta" required />
+                                                        </mat-form-field>
+                                                        <span class="form-error ds_contato"></span>
+                                                    </td>
+                                                    <td>
+                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('post')"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormContatoAtleta()"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngFor="let item of listaContatoAtleta">
+                                                    <td>{{ item.id }}</td>
+
+                                                    <td *ngIf="!item.mostrarEditarContato" [ngSwitch]="item.tp_contato">
+                                                        <p *ngSwitchCase="'FF'">TELEFONE FIXO</p>
+                                                        <p *ngSwitchCase="'FC'">TELEFONE CELULAR</p>
+                                                        <p *ngSwitchCase="'EM'">E-MAIL</p>
+                                                        <p *ngSwitchCase="'FB'">FACEBOOK</p>
+                                                        <p *ngSwitchCase="'IN'">INSTAGRAM</p>
+                                                        <p *ngSwitchCase="'OT'">OUTRO</p>
+                                                    </td>
+                                                    <td *ngIf="item.mostrarEditarContato">
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Tipo de Documento</mat-label>
+                                                            <select matNativeControl name="tp_Contato" [(ngModel)]="editarContatoSelect" required>
+                                                                <option disabled value="">Selecione o contato</option>
+                                                                <option value="FF">TELEFONE FIXO</option>
+                                                                <option value="FC">TELEFONE CELULAR</option>
+                                                                <option value="EM">E-MAIL</option>
+                                                                <option value="FB">FACEBOOK</option>
+                                                                <option value="IN">INSTAGRAM</option>
+                                                                <option value="OT">OUTRO</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error tp_contato"></span>
+                                                    </td>
+
+                                                    <td *ngIf="!item.mostrarEditarContato">{{ item.ds_contato | uppercase }}</td>
+                                                    <td *ngIf="item.mostrarEditarContato">
+                                                        <mat-form-field class="example-full-width">
+                                                            <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputEditarContatoAtleta" required />
+                                                        </mat-form-field>
+                                                        <span class="form-error ds_contato"></span>
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="!item.mostrarEditarContato">
+                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item, listaContatoAtleta)"></i>
+                                                            </button>
+                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                                <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')"></i>
+                                                            </button>
+                                                        </div>
+
+                                                        <div *ngIf="item.mostrarEditarContato">
                                                             <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('post')"></i>
+                                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
                                                             </button>
-                                                            <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
-                                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormDocumentoAtleta()"></i>
+                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato', item)"></i>
                                                             </button>
-                                                        </td>
-                                                    </tr>
-        
-                                                    <tr *ngFor="let item of listaDocumentoAtleta">
-                                                        <td>{{ item.id }}</td>
-        
-                                                        <td *ngIf="!item.mostrarEditarDocumento" [ngSwitch]="item.tp_documento">
-                                                            <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
-                                                            <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
-                                                            <p *ngSwitchCase="'C'">CPF</p>
-                                                            <p *ngSwitchCase="'M'">IDENTIDADE MILITAR</p>
-                                                            <p *ngSwitchCase="'P'">PASSAPORTE</p>
-                                                            <p *ngSwitchCase="'E'">REGISTRO NACIONAL DE ESTRANGEIRO</p>
-                                                            <p *ngSwitchCase="'R'">RG</p>
-                                                            <p *ngSwitchCase="'O'">OUTRO</p>
-                                                        </td>
-                                                        <td *ngIf="item.mostrarEditarDocumento">
-                                                            <mat-form-field class="" appearance="fill">
-                                                                <mat-label>Tipo de Documento</mat-label>
-                                                                <select matNativeControl name="tp_documento" [(ngModel)]="editarDocumentoAtletaSelect" required>
-                                                                    <option disabled value="">Selecione o documento</option>
-                                                                    <option value="H">CARTEIRA DE HABILITAÇÃO</option>
-                                                                    <option value="T">CARTEIRA DE TRABALHO</option>
-                                                                    <option value="C">CPF</option>
-                                                                    <option value="M">IDENTIDADE MILITAR</option>
-                                                                    <option value="P">PASSAPORTE</option>
-                                                                    <option value="E">REGISTRO NACIONAL DE ESTRANGEIRO</option>
-                                                                    <option value="R">RG</option>
-                                                                    <option value="O">OUTRO</option>
-                                                                </select>
-                                                            </mat-form-field>
-                                                            <span class="form-error tp_documento"></span>
-                                                        </td>
-        
-                                                        <td *ngIf="!item.mostrarEditarDocumento">{{ item.nr_documento }}</td>
-                                                        <td *ngIf="item.mostrarEditarDocumento">
-                                                            <mat-form-field class="example-full-width">
-                                                                <input matInput placeholder="" type="text" name="nr_documento" [(ngModel)]="inputEditarNumeroDocumentoAtleta" required />
-                                                            </mat-form-field>
-                                                            <span class="form-error nr_documento"></span>
-                                                        </td>
-        
-                                                        <td *ngIf="!item.mostrarEditarDocumento">
-                                                            <img src="data:image/png; base64, {{ item.ds_midia }}" alt="" />
-                                                        </td>
-                                                        <td *ngIf="item.mostrarEditarDocumento">
-                                                            <button type="button" mat-raised-button (click)="fileInput.click()" matTooltip="Sugerimos utilizar imagem no formato PNG.">Escolher arquivo</button>
-                                                            <input hidden (change)="adicionarFotoDocumento($event)" #fileInput type="file" id="file" [(ngModel)]="inputEditarFileDocumentoAtleta" />
-                                                            {{ inputEditarFileDocumentoAtleta }} <br />
-                                                            <span class="form-error ds_midia"></span>
-                                                        </td>
-        
-                                                        <td>
-                                                            <div *ngIf="!item.mostrarEditarDocumento">
-                                                                <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item, listaDocumentoAtleta)"></i>
-                                                                </button>
-                                                                <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div *ngIf="item.mostrarEditarDocumento">
-                                                                <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
-                                                                </button>
-                                                                <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
-                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> voltar</button>
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Salvar <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                         </div>
                                     </div>
-
-                                    <div class="tab-pane" id="contatos">
-                                        <div class="table-responsive">
-                                            <table class="table text-center table-hover">
-                                                <thead class="text-primary col-md-12">
-                                                    <th class="col-md-1">ID</th>
-                                                    <th>Tipo</th>
-                                                    <th>Contato</th>
-                                                    <th class="col-md-2"></th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="tabela-ocupante">
-                                                        <td></td>
-                                                        <td>
-                                                            <mat-form-field class="" appearance="fill">
-                                                                <mat-label>Tipo de Documento</mat-label>
-                                                                <select matNativeControl name="tp_Contato" [(ngModel)]="contatoSelect" required>
-                                                                    <option disabled value="">Selecione o contato</option>
-                                                                    <option value="FF">TELEFONE FIXO</option>
-                                                                    <option value="FC">TELEFONE CELULAR</option>
-                                                                    <option value="EM">E-MAIL</option>
-                                                                    <option value="FB">FACEBOOK</option>
-                                                                    <option value="IN">INSTAGRAM</option>
-                                                                    <option value="OT">OUTRO</option>
-                                                                </select>
-                                                            </mat-form-field>
-                                                            <span class="form-error tp_contato"></span>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="example-full-width">
-                                                                <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputContatoAtleta" required />
-                                                            </mat-form-field>
-                                                            <span class="form-error ds_contato"></span>
-                                                        </td>
-                                                        <td>
-                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('post')"></i>
-                                                            </button>
-                                                            <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
-                                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormContatoAtleta()"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-        
-                                                    <tr *ngFor="let item of listaContatoAtleta">
-                                                        <td>{{ item.id }}</td>
-        
-                                                        <td *ngIf="!item.mostrarEditarContato" [ngSwitch]="item.tp_contato">
-                                                            <p *ngSwitchCase="'FF'">TELEFONE FIXO</p>
-                                                            <p *ngSwitchCase="'FC'">TELEFONE CELULAR</p>
-                                                            <p *ngSwitchCase="'EM'">E-MAIL</p>
-                                                            <p *ngSwitchCase="'FB'">FACEBOOK</p>
-                                                            <p *ngSwitchCase="'IN'">INSTAGRAM</p>
-                                                            <p *ngSwitchCase="'OT'">OUTRO</p>
-                                                        </td>
-                                                        <td *ngIf="item.mostrarEditarContato">
-                                                            <mat-form-field class="" appearance="fill">
-                                                                <mat-label>Tipo de Documento</mat-label>
-                                                                <select matNativeControl name="tp_Contato" [(ngModel)]="editarContatoSelect" required>
-                                                                    <option disabled value="">Selecione o contato</option>
-                                                                    <option value="FF">TELEFONE FIXO</option>
-                                                                    <option value="FC">TELEFONE CELULAR</option>
-                                                                    <option value="EM">E-MAIL</option>
-                                                                    <option value="FB">FACEBOOK</option>
-                                                                    <option value="IN">INSTAGRAM</option>
-                                                                    <option value="OT">OUTRO</option>
-                                                                </select>
-                                                            </mat-form-field>
-                                                            <span class="form-error tp_contato"></span>
-                                                        </td>
-        
-                                                        <td *ngIf="!item.mostrarEditarContato">{{ item.ds_contato | uppercase }}</td>
-                                                        <td *ngIf="item.mostrarEditarContato">
-                                                            <mat-form-field class="example-full-width">
-                                                                <input matInput placeholder="" type="text" name="ds_contato" [(ngModel)]="inputEditarContatoAtleta" required />
-                                                            </mat-form-field>
-                                                            <span class="form-error ds_contato"></span>
-                                                        </td>
-                                                        <td>
-                                                            <div *ngIf="!item.mostrarEditarContato">
-                                                                <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item, listaContatoAtleta)"></i>
-                                                                </button>
-                                                                <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
-                                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')" ></i>
-                                                                </button>
-                                                            </div>
-        
-                                                            <div *ngIf="item.mostrarEditarContato">
-                                                                <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
-                                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
-                                                                </button>
-                                                                <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
-                                                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato',item)"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> voltar</button>
-                                                <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Salvar <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
+                        </div>
                         <!-- </div> -->
 
                         <!-- <div *ngSwitchCase="'1'">

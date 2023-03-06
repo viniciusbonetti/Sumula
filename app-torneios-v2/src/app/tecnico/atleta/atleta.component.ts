@@ -1,5 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject } from "@angular/core";
 import { ControllerComponent } from "src/app/controller/controller.component";
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+
+export interface DialogData {
+    nomeAtletaModal: string;
+    apelidoAtletaModal: string;
+    nascimentoAtletaModal: string;
+    generoAtletaModal: string;
+    enderecoAtletaModal: string;
+    nrEnderecoAtletaModal: string;
+    cepAtletaModal: string;
+    estadoAtletaModal: string;
+    municipioAtletaModal: string;
+}
 
 @Component({
     selector: "app-atleta",
@@ -58,6 +71,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public image = "";
     public editarImage = "";
 
+    constructor(public dialog: MatDialog) {
+        super();
+    }
+
     ngOnInit(): void {
         this.getListaAtletas();
         this.getModalidades();
@@ -75,8 +92,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
 
         // Tratamento para a coluna tp_genero
-        this.listaAtletas.forEach(la => {
-            la['tp_genero'] = la['tp_genero'] == 'm' ? 'Masculino' : 'Feminino';
+        this.listaAtletas.forEach((la) => {
+            la["tp_genero"] = la["tp_genero"] == "m" ? "Masculino" : "Feminino";
         });
 
         this.listaAtletasFiltrada = this.listaAtletas;
@@ -86,62 +103,62 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = true;
     }
 
-    public tabs(index){
+    public tabs(index) {
         this.num = index;
     }
 
     public botaoAvancar() {
-        let tabHeaders = document.getElementsByClassName('tabHeader');
-        let tabPanes = document.getElementsByClassName('tab-pane');
+        let tabHeaders = document.getElementsByClassName("tabHeader");
+        let tabPanes = document.getElementsByClassName("tab-pane");
         let nextIndex: number = 0;
         let tabIndex: number = 0;
-        let tabPaneAtual = '';
-        let tabPaneNext = '';
-        
-        Array.from(tabPanes).forEach(function(tab, index) {
-            if(tab.classList.contains('active')){
+        let tabPaneAtual = "";
+        let tabPaneNext = "";
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
                 tabIndex = index;
-                nextIndex = (index+1);
+                nextIndex = index + 1;
             }
         });
 
-        if(nextIndex < tabPanes.length){
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
-            tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+        if (nextIndex < tabPanes.length) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
             // Remove os ativos do elemento atual
             tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove('active');
-            document.getElementById(tabPaneAtual).classList.remove('active');
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
             // Adiciona os ativos no elemento proximo
             tabHeaders[nextIndex].setAttribute("aria-selected", "true");
-            tabHeaders[nextIndex].classList.add('active');
-            document.getElementById(tabPaneNext).classList.add('active');
+            tabHeaders[nextIndex].classList.add("active");
+            document.getElementById(tabPaneNext).classList.add("active");
         }
 
         if (this.num == "") {
             if (this.editarFormAtleta) {
-                this.sendFormAtleta('put');
+                this.sendFormAtleta("put");
             } else {
-                this.sendFormAtleta('post');
+                this.sendFormAtleta("post");
             }
         } else if (this.num == "1") {
             if (this.checkboxAtleta.length > 0) {
-                if(this.editar){
-                    this.sendModalidadesAtleta('put');
-                }else {
-                    this.sendModalidadesAtleta('post');
+                if (this.editar) {
+                    this.sendModalidadesAtleta("put");
+                } else {
+                    this.sendModalidadesAtleta("post");
                 }
                 this.num = "2";
             } else {
-                this.sendModalidadesAtleta('post');
+                this.sendModalidadesAtleta("post");
             }
         } else if (this.num == "2") {
             if (this.listaDocumentoAtleta.length > 0) {
                 this.num = "3";
             } else {
-                this.sendDocumentoAtleta('post','');
+                this.sendDocumentoAtleta("post", "");
             }
-        } else if(this.num == '3'){
+        } else if (this.num == "3") {
             alert("informações salvas");
             this.num = "";
             this.finalizarCadastro();
@@ -149,41 +166,41 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     }
 
     public botaoVoltar() {
-        let tabHeaders = document.getElementsByClassName('tabHeader');
-        let tabPanes = document.getElementsByClassName('tab-pane');
+        let tabHeaders = document.getElementsByClassName("tabHeader");
+        let tabPanes = document.getElementsByClassName("tab-pane");
         let prevIndex: number = 0;
         let tabIndex: number = 0;
-        let tabPaneAtual = '';
-        let tabPanePrev = '';
-        
-        Array.from(tabPanes).forEach(function(tab, index) {
-            if(tab.classList.contains('active')){
+        let tabPaneAtual = "";
+        let tabPanePrev = "";
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
                 tabIndex = index;
-                prevIndex = (index-1);
+                prevIndex = index - 1;
             }
         });
 
-        if(prevIndex >= 0){
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
-            tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+        if (prevIndex >= 0) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPanePrev = tabHeaders[prevIndex].getAttribute("href").replace("#", "");
             // Remove os ativos do elemento atual
             tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove('active');
-            document.getElementById(tabPaneAtual).classList.remove('active');
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
             // Adiciona os ativos no elemento proximo
             tabHeaders[prevIndex].setAttribute("aria-selected", "true");
-            tabHeaders[prevIndex].classList.add('active');
-            document.getElementById(tabPanePrev).classList.add('active');
+            tabHeaders[prevIndex].classList.add("active");
+            document.getElementById(tabPanePrev).classList.add("active");
         }
 
         if (this.num == "") {
             this.limparFormContatoAtleta();
             this.limparFormDocumentoAtleta();
         } else if (this.num == "1") {
-            if(this.editar){
-                this.sendModalidadesAtleta('put');
-            }else {
-                this.sendModalidadesAtleta('post');
+            if (this.editar) {
+                this.sendModalidadesAtleta("put");
+            } else {
+                this.sendModalidadesAtleta("post");
             }
             this.editarFormAtleta = true;
             this.num = "";
@@ -218,12 +235,12 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         formAtleta.append("nr_endereco", this.inputNmrEnderecoAtleta);
         formAtleta.append("id_municipio", this.municipioSelect);
         formAtleta.append("nr_cep", this.inputCepAtleta);
-        if(metodo == 'post'){
+        if (metodo == "post") {
             let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
             this.idAtleta = sendAtleta.id;
             this.showToast("bottom", "Registro do Atleta criado com sucesso!", "success");
-        }else if(metodo == 'put'){
-            formAtleta.append('id_atleta', this.idAtleta)
+        } else if (metodo == "put") {
+            formAtleta.append("id_atleta", this.idAtleta);
             const path = this.paths.atleta + `/${this.idAtleta}`;
             await this.putInfo(path, formAtleta, this.setToken);
             this.showToast("bottom", "Registro do Atleta atualizado com sucesso!", "success");
@@ -231,7 +248,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
         if (this.axiosResponse == true) {
             this.num = "1";
-            if(this.editar){
+            if (this.editar) {
                 this.getEdits();
             }
         }
@@ -242,7 +259,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         await this.getDocumentoAtleta();
         await this.getContatoAtleta();
     }
-    
+
     public async getModalidades() {
         this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
     }
@@ -262,11 +279,11 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         formModalidadeAtleta.append("id_atleta", this.idAtleta);
         formModalidadeAtleta.append("st_ativo", "true");
 
-        if(metodo == 'post'){
+        if (metodo == "post") {
             await this.postInfo(this.paths.modalidadeatleta, formModalidadeAtleta, this.setToken);
             this.showToast("bottom", "Modalidades do Atleta criadas com sucesso!", "success");
-        }else if(metodo == 'put'){
-            const path = this.paths.modalidadeatleta + `/${this.idAtleta}`
+        } else if (metodo == "put") {
+            const path = this.paths.modalidadeatleta + `/${this.idAtleta}`;
             await this.putInfo(path, formModalidadeAtleta, this.setToken);
             this.showToast("bottom", "Modalidades do Atleta atualizadas com sucesso!", "success");
         }
@@ -295,15 +312,15 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public async sendDocumentoAtleta(metodo, item) {
         const formDocumentoAtleta = new FormData();
 
-        if(metodo == 'post'){
+        if (metodo == "post") {
             formDocumentoAtleta.append("id_atleta", this.idAtleta);
             formDocumentoAtleta.append("tp_documento", this.documentoAtletaSelect);
             formDocumentoAtleta.append("nr_documento", this.inputNumeroDocumentoAtleta);
-            formDocumentoAtleta.append("image", this.image);    
+            formDocumentoAtleta.append("image", this.image);
             await this.postInfo(this.paths.documentoatleta, formDocumentoAtleta, this.setToken2);
             this.limparFormDocumentoAtleta();
             this.showToast("bottom", "Documento do Atleta criado com sucesso!", "success");
-        } else if(metodo == 'put'){
+        } else if (metodo == "put") {
             formDocumentoAtleta.append("id_atleta", this.idAtleta);
             formDocumentoAtleta.append("tp_documento", this.editarDocumentoAtletaSelect);
             formDocumentoAtleta.append("nr_documento", this.inputEditarNumeroDocumentoAtleta);
@@ -320,10 +337,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
-    public editarDocumentoAtleta(item, lista){    
+    public editarDocumentoAtleta(item, lista) {
         lista.forEach((element) => {
             element.mostrarEditarDocumento = false;
-        });    
+        });
         item.mostrarEditarDocumento = true;
         this.editarDocumentoAtletaSelect = item.tp_documento;
         this.inputEditarNumeroDocumentoAtleta = item.nr_documento;
@@ -338,14 +355,14 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async sendContatoAtleta(metodo, item) {
         const formContatoAtleta = new FormData();
-        if(metodo == 'post'){
+        if (metodo == "post") {
             formContatoAtleta.append("id_atleta", this.idAtleta);
             formContatoAtleta.append("tp_contato", this.contatoSelect);
-            formContatoAtleta.append("ds_contato", this.inputContatoAtleta);            
+            formContatoAtleta.append("ds_contato", this.inputContatoAtleta);
             await this.postInfo(this.paths.contatoatleta, formContatoAtleta, this.setToken);
             this.limparFormContatoAtleta();
             this.showToast("bottom", "Contato do Atleta criado com sucesso!", "success");
-        }else if(metodo == 'put'){
+        } else if (metodo == "put") {
             formContatoAtleta.append("id_atleta", this.idAtleta);
             formContatoAtleta.append("tp_contato", this.editarContatoSelect);
             formContatoAtleta.append("ds_contato", this.inputEditarContatoAtleta);
@@ -353,7 +370,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             await this.putInfo(path, formContatoAtleta, this.setToken);
             this.showToast("bottom", "Contato do Atleta atualizado com sucesso!", "success");
         }
-        
+
         this.getContatoAtleta();
     }
 
@@ -362,7 +379,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaContatoAtleta = await this.getInfo(urlGetContatoAtleta, this.setToken);
     }
 
-    public editarContatoAtleta(item, lista){
+    public editarContatoAtleta(item, lista) {
         lista.forEach((element) => {
             element.mostrarEditarContato = false;
         });
@@ -376,34 +393,61 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputContatoAtleta = "";
     }
 
-    public async mostrarEdicaoAtleta(item) {
-        this.novoCadastro = true;
-        this.editarFormAtleta = true;
-        this.editar = true;
-        this.ativarTabs = true;
+    public async mostrarEdicaoAtleta(item, option) {
         this.idAtleta = item.id;
-        
+
         this.inputNomeCompletoAtleta = item.nm_atleta;
         this.inputApelidoAtleta = item.nm_apelido;
         this.inputDataNascimentoAtleta = item.dt_nascimento;
-        this.generoSelect = (item.tp_genero == 'Masculino') ? 'm' : 'f';
+        this.generoSelect = item.tp_genero == "Masculino" ? "m" : "f";
         this.inputEnderecoAtleta = item.ds_endereco;
         this.inputNmrEnderecoAtleta = item.nr_endereco;
         this.inputCepAtleta = item.nr_cep;
         this.estadoSelect = item.id_municipio.id_estado;
-        this.municipioSelect = item.id_municipio.id;
+        this.municipioSelect = item.id_municipio.id;        
 
         this.getListaMunicipio();
         this.getEdits();
+
+        if (option == "editar") {
+            this.novoCadastro = true;
+            this.editarFormAtleta = true;
+            this.editar = true;
+            this.ativarTabs = true;
+        } else if (option == "mostrar") {
+            await this.openDialog(item);
+        }
+    }
+
+    openDialog(item) {
+        const dialogRef = this.dialog.open(AtletaModal, {
+            data: {
+                nomeAtletaModal: item.nm_atleta,
+                apelidoAtletaModal: item.nm_apelido,
+                nascimentoAtletaModal: item.dt_nascimento,
+                generoAtletaModal: item.tp_genero,
+                enderecoAtletaModal: item.ds_endereco,
+                nrEnderecoAtletaModal: item.nr_endereco,
+                cepAtletaModal: item.nr_cep,
+                estadoAtletaModal:  item.id_municipio.estado.nm_estado,
+                municipioAtletaModal: item.id_municipio.nm_municipio,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.mostrarEdicaoAtleta(item, "editar");
+            }
+        });
     }
 
     public async getModalidadesRegistro() {
         const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
-        let listaModalidadesRegistro = await this.getInfo(path, this.setToken); 
-               
+        let listaModalidadesRegistro = await this.getInfo(path, this.setToken);
+
         listaModalidadesRegistro.forEach((element) => {
             this.listaModalidades.forEach((element2) => {
-                if (element2["id"] == element.st_ativo) {                    
+                if (element2["id"] == element.st_ativo) {
                     element2["checked"] = true;
                     this.checkboxAtleta.push(element.id_modalidade.id);
                 }
@@ -412,7 +456,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     }
 
     public cancelar(tela, item) {
-        if (tela == 'atleta'){
+        if (tela == "atleta") {
             this.inputNomeCompletoAtleta = "";
             this.inputApelidoAtleta = "";
             this.inputDataNascimentoAtleta = "";
@@ -424,10 +468,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             this.municipioSelect = "";
             this.novoCadastro = false;
             this.editar = false;
-        }else if(tela == 'documento'){
+        } else if (tela == "documento") {
             item.mostrarEditarDocumento = false;
             this.mostrarEditarDocumento = false;
-        } else if(tela == 'contato'){
+        } else if (tela == "contato") {
             item.mostrarEditarContato = false;
             this.mostrarEditarContato = false;
         }
@@ -464,4 +508,12 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             }
         }
     }
+}
+@Component({
+    selector: "atleta-modal",
+    templateUrl: "AtletaModal.html",
+})
+export class AtletaModal {
+    constructor(public dialogRef: MatDialogRef<AtletaModal>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    ngOnInit() {}
 }
