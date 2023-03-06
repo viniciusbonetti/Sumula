@@ -123,12 +123,12 @@
                                     <div class="table-responsive">
                                         <table class="table text-center table-hover">
                                             <thead class="text-primary col-md-12">
-                                                <th>ID</th>
-                                                <th>Modalidade</th>
-                                                <th>Idade mínima</th>
-                                                <th>Idade máxima</th>
-                                                <th>Naipe</th>
-                                                <th></th>
+                                                <th class="col-md-2">ID</th>
+                                                <th class="col-md-2">Modalidade</th>
+                                                <th class="col-md-2">Idade mínima</th>
+                                                <th class="col-md-2">Idade máxima</th>
+                                                <th class="col-md-2">Naipe</th>
+                                                <th class="col-md-2"></th>
                                             </thead>
                                             <tbody>
                                                 <tr class="tabela-ocupante">
@@ -234,7 +234,7 @@
                                                     <td>
                                                         <div *ngIf="!item.editarModalidadeEvento">
                                                             <button style="background: none; border: none">
-                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item, listaModalidadesEvento)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                             </button>
                                                             <button style="background: none; border: none">
                                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
@@ -265,7 +265,7 @@
                                     <div class="table-responsive">
                                         <table class="table text-center table-hover">
                                             <thead class="text-primary col-md-12">
-                                                <th class="col-md-1">ID</th>
+                                                <th class="col-md-2">ID</th>
                                                 <th class="col-md-2">Cargo</th>
                                                 <th class="col-md-2">Ocupante</th>
                                                 <th class="col-md-2">Documento</th>
@@ -394,7 +394,7 @@
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarEncarregados">
                                                             <button style="background: none; border: none">
-                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item, listaOcupantes)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                             </button>
                                                             <button style="background: none; border: none">
                                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
@@ -425,10 +425,10 @@
                                     <div class="table-responsive">
                                         <table class="table text-center table-hover">
                                             <thead class="text-primary col-md-12">
-                                                <th>ID</th>
-                                                <th>Estados</th>
-                                                <th>Municipios</th>
-                                                <th></th>
+                                                <th class="col-md-3">ID</th>
+                                                <th class="col-md-3">Estados</th>
+                                                <th class="col-md-3">Municipios</th>
+                                                <th class="col-md-3"></th>
                                             </thead>
                                             <tbody>
                                                 <tr class="tabela-ocupante">
@@ -501,7 +501,7 @@
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarMunicipios">
                                                             <button style="background: none; border: none">
-                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item, listaMunicipiosEvento)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                             </button>
                                                             <button style="background: none; border: none">
                                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>

@@ -320,7 +320,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
     }
 
-    public editarDocumentoAtleta(item){        
+    public editarDocumentoAtleta(item, lista){    
+        lista.forEach((element) => {
+            element.mostrarEditarDocumento = false;
+        });    
         item.mostrarEditarDocumento = true;
         this.editarDocumentoAtletaSelect = item.tp_documento;
         this.inputEditarNumeroDocumentoAtleta = item.nr_documento;
@@ -359,7 +362,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.listaContatoAtleta = await this.getInfo(urlGetContatoAtleta, this.setToken);
     }
 
-    public editarContatoAtleta(item){
+    public editarContatoAtleta(item, lista){
+        lista.forEach((element) => {
+            element.mostrarEditarContato = false;
+        });
         item.mostrarEditarContato = true;
         this.editarContatoSelect = item.tp_contato;
         this.inputEditarContatoAtleta = item.ds_contato;

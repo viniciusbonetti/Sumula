@@ -65,7 +65,10 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
         item.mostrarEditarModalidade = false;
     }
 
-    public mostrarEdicaoModalidade(item) {
+    public mostrarEdicaoModalidade(item, lista) {
+        lista.forEach((element) => {
+            element.mostrarEditarModalidade = false;
+        });
         item.mostrarEditarModalidade = true;
     }
 

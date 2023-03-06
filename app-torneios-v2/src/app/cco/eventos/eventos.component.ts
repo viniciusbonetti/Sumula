@@ -118,6 +118,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         } else if (this.num == "3") {
             alert("informações salvas");
             this.num = "";
+            this.limparFormEvento();
             this.finalizarCadastro();
         }
     }
@@ -236,6 +237,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getEdits() {
+        await this.getModalidades();
+        await this.getCargosCco();
         await this.getOcupantes();
         await this.getModalidadesEvento();
         await this.getMunicipiosEvento();
@@ -359,6 +362,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             formMunicipioEvento.append("id_municipio", item.id_municipio.id);
             const path = this.paths.municipioevento + `/${item.id}`;
             await this.putInfo(path, formMunicipioEvento, this.setToken);
+            this.mostrarEditarMunicipios = false;
             this.showToast("bottom", "Municipio do Evento atualizado com sucesso!", "success");
         }
 
@@ -396,7 +400,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.getEdits();
     }
 
-    public mostrarEditarModalidade(item) {
+    public mostrarEditarModalidade(item, lista) {
+        lista.forEach((element) => {
+            element.editarModalidadeEvento = false;
+        });
         item.editarModalidadeEvento = true;
         this.editarModalidadeSelect = item.id_modalidade.id;
         this.inputEditarIdadeInicial = item.nr_idadeinicio;
@@ -404,11 +411,17 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.editarNaipeSelect = item.tp_naipe;
     }
 
-    public editarEncarregados(item) {
+    public editarEncarregados(item, lista) {
+        lista.forEach((element) => {
+            element.mostrarEditarEncarregados = false;
+        });
         item.mostrarEditarEncarregados = true;
     }
 
-    public editarMunicipiosEvento(item) {
+    public editarMunicipiosEvento(item, lista) {
+        lista.forEach((element) => {
+            element.mostrarEditarMunicipios = false;
+        });
         item.mostrarEditarMunicipios = true;
         this.mostrarEditarMunicipios = true;
         this.limparFormMunicipio();

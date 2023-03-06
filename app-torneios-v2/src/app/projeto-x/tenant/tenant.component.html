@@ -76,7 +76,7 @@
                                         <td>
                                             <div *ngIf="!item.mostrarEditar">
                                                 <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="botaoMostrarEditar(item)"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="botaoMostrarEditar(item, listaEmpresas)"></i>
                                                 </button>
                                                 <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
                                                     <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)"></i>

@@ -25,10 +25,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     public editarInputFileTenant = "";
     public image = "";
     public extension = "";
-
-    public itensPagina = 5;
-    public pagAtual = 1;
-
+    
     public listaEstados = {};
     public pathTenant = `/tenant`;
 
@@ -85,7 +82,10 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         localStorage.setItem("listaEstados", JSON.stringify(this.listaEstados));
     }
 
-    public botaoMostrarEditar(item) {
+    public botaoMostrarEditar(item, lista) {
+        lista.forEach((element) => {
+            element.mostrarEditar = false;
+        });
         item.mostrarEditar = true;
     }
 

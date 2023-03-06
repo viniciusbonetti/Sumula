@@ -77,7 +77,7 @@
                                         <td>
                                             <div *ngIf="!item.mostrarEditarModalidade">
                                                 <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoModalidade(item)"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoModalidade(item, listaModalidades)"></i>
                                                 </button>
                                                 <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
                                                     <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item)"></i>
