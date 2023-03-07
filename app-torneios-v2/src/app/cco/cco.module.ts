@@ -9,9 +9,10 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { CargosComponent } from "./cargos/cargos.component";
 import { ModalidadesComponent } from "./modalidades/modalidades.component";
 import { EventosComponent, EventosModal } from "./eventos/eventos.component";
+import { LocalidadeComponent } from './localidade/localidade.component';
 
 @NgModule({
     imports: [CommonModule, RouterModule.forChild(CcoRoutes), FormsModule, MaterialModule, NgxPaginationModule],
-    declarations: [CargosComponent, ModalidadesComponent, EventosComponent, EventosModal],
+    declarations: [CargosComponent, ModalidadesComponent, EventosComponent, EventosModal, LocalidadeComponent],
 })
 export class CcoModule {}

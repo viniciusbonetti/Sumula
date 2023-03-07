@@ -32,7 +32,8 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         tenant: "/tenant",
         tenantusuario: "/tenantusuario",
         user: "/user",
-        geral:"/geral"
+        localidades:"/localidade",
+        geral:"/geral",
     }
 
     public axiosResponse:boolean = false;

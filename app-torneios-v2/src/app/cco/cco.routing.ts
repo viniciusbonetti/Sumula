@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { CargosComponent } from "./cargos/cargos.component";
 import { ModalidadesComponent } from "./modalidades/modalidades.component";
 import { EventosComponent } from "./eventos/eventos.component";
+import { LocalidadeComponent } from "./localidade/localidade.component";
 
 
 export const CcoRoutes: Routes = [
@@ -25,5 +26,12 @@ export const CcoRoutes: Routes = [
         path: 'eventos',
         title: 'Eventos - Sumula',
         component: EventosComponent
+    }]},
+    {
+      path: '',
+      children: [ {
+        path: 'localidades',
+        title: 'Localidades - Sumula',
+        component: LocalidadeComponent
     }]},
 ];

@@ -56,6 +56,7 @@ export const ROUTES: RouteInfo[] = [
             { path: "cargos", title: "Cargos", ab: "C" },
             { path: "modalidades", title: "Modalidades", ab: "M" },
             { path: "eventos", title: "Eventos", ab: "E" },
+            { path: "localidades", title: "Localidades", ab: "L" },
         ],
     },
     {
