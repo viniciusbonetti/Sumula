@@ -33,6 +33,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public editarModalidadeEvento: boolean = false;
     public mostrarEditarEncarregados: boolean = false;
     public mostrarEditarMunicipios: boolean = false;
+    public liberarProximo: boolean = false;
     public ativarTabs = false;
 
     public listaEventos: Array<{ id: string; nm_evento: string; dt_inicio: string; dt_fim: string; nm_tenant: string }> = [];
@@ -90,32 +91,13 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         let tabIndex: number = 0;
         let tabPaneAtual = "";
         let tabPaneNext = "";
-
-        Array.from(tabPanes).forEach(function (tab, index) {
-            if (tab.classList.contains("active")) {
-                tabIndex = index;
-                nextIndex = index + 1;
-            }
-        });
-
-        if (nextIndex < tabPanes.length) {
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
-            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
-            // Remove os ativos do elemento atual
-            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove("active");
-            document.getElementById(tabPaneAtual).classList.remove("active");
-            // Adiciona os ativos no elemento proximo
-            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
-            tabHeaders[nextIndex].classList.add("active");
-            document.getElementById(tabPaneNext).classList.add("active");
-        }
+        
 
         if (this.num == "") {
             if (this.editar) {
-                this.sendEventos("put");
+                await this.sendEventos("put");
             } else {
-                this.sendEventos("post");
+                await this.sendEventos("post");
             }
         } else if (this.num == "1") {
             if (this.listaModalidadesEvento.length > 0) {
@@ -135,7 +117,28 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             await this.limparFormEvento();
             await this.finalizarCadastro();
         }
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
+                tabIndex = index;
+                nextIndex = index + 1;
+            }
+        });
+
+        if (nextIndex < tabPanes.length && this.liberarProximo == true) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+            tabHeaders[nextIndex].classList.add("active");
+            document.getElementById(tabPaneNext).classList.add("active");
+        }
     }
+
     public async botaoVoltar() {
         let tabHeaders = document.getElementsByClassName("tabHeader");
         let tabPanes = document.getElementsByClassName("tab-pane");
@@ -182,15 +185,16 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = false;
         this.editar = false;
         this.ativarTabs = false;
+        this.liberarProximo = false;
     }
 
     public async cancelar(tela, item) {
         if (tela == "evento") {
-            this.inputNomeEvento = "";
-            this.inputDataInicio = "";
-            this.inputDataFim = "";
-            this.inputNomeTenant = "";
-            this.novoCadastro = !this.novoCadastro;
+            // this.inputNomeEvento = "";
+            // this.inputDataInicio = "";
+            // this.inputDataFim = "";
+            // this.inputNomeTenant = "";
+            // this.novoCadastro = !this.novoCadastro;
             await this.limparFormEvento();
             await this.finalizarCadastro();
         } else if (tela == "modalidades") {
@@ -237,9 +241,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             await this.putInfo(path, formEventos, this.setToken);
             this.showToast("bottom", "Registro de Evento atualizado com sucesso!", "success");
         }
-
+        
         if (this.axiosResponse == true) {
             this.num = "1";
+            this.liberarProximo = true;
             this.getCargosCco();
             this.getModalidades();
             if (this.editar) {

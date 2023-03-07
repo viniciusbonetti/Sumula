@@ -17,6 +17,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
     public listaDelegacoes: Array<{ id: string; nm_delegacao: string }> = [];
     public listaDelegacoesFiltrada: Array<{}> = [];
     public listaMunicipios: Array<{}> = [];
+    public listaMunicipiosEditar: Array<{}> = [];
     public listaEstado = JSON.parse(localStorage.getItem("listaEstados"));
 
     public inputNomeDelegacao: string = "";
@@ -44,9 +45,16 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
         this.pagAtual = 1;
     }
 
-    public async getMunicipio(select) {
+    public async getMunicipio(select, opcao) {
         let path = this.paths.municipio + `/${select}`;
-        this.listaMunicipios = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            if(opcao == 'criar'){
+                this.listaMunicipios = resposta.data.data;
+            } else if(opcao == 'editar'){
+                this.listaMunicipiosEditar = resposta.data.data;
+            }
+        }
     }
 
     public cadastrar() {
@@ -54,9 +62,11 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
     }
 
     public async getDelegacao() {
-        this.listaDelegacoes = await this.getInfo(this.paths.delegacao, this.setToken);
-
-        this.listaDelegacoesFiltrada = this.listaDelegacoes;
+        let resposta = await this.getInfo(this.paths.delegacao, this.setToken);
+        if(resposta.status == 200){
+            this.listaDelegacoes = resposta.data.data;
+            this.listaDelegacoesFiltrada = this.listaDelegacoes;
+        }
     }
 
     public async sendDelegacao() {
@@ -87,12 +97,8 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
             element.mostrarEditarDelegacao = false;
         });
         item.mostrarEditarDelegacao = true;
-        // this.inputEditarDelegacao = item.nm_delegacao;
-        // this.editarEstadoSelect = item.id_municipio.estado.id;
-        // this.editarMunicipioSelect = item.id_municipio.id;
 
-        // this.getMunicipio(this.editarEstadoSelect);
-        this.getMunicipio(item.id_municipio.estado.id);
+        this.getMunicipio(item.id_municipio.estado.id, 'editar');
     }
 
     public async editarDelegacao(item) {

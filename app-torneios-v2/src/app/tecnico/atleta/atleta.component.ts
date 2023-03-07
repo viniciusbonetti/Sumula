@@ -63,6 +63,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public mostrarEditarDocumento: boolean = false;
     public mostrarEditarContato: boolean = false;
     public editarFormAtleta: boolean = false;
+    public liberarProximo: boolean = false;
     public ativarTabs = false;
 
     public num = "";
@@ -89,14 +90,15 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     }
 
     public async getListaAtletas() {
-        this.listaAtletas = await this.getInfo(this.paths.atleta, this.setToken);
-
-        // Tratamento para a coluna tp_genero
-        this.listaAtletas.forEach((la) => {
-            la["tp_genero"] = la["tp_genero"] == "m" ? "Masculino" : "Feminino";
-        });
-
-        this.listaAtletasFiltrada = this.listaAtletas;
+        let resposta = await this.getInfo(this.paths.atleta, this.setToken);
+        if(resposta.status == 200){
+            this.listaAtletas = resposta.data.data;
+            // Tratamento para a coluna tp_genero
+            this.listaAtletas.forEach((la) => {
+                la["tp_genero"] = la["tp_genero"] == "m" ? "Masculino" : "Feminino";
+            });
+            this.listaAtletasFiltrada = this.listaAtletas;
+        }
     }
 
     public cadastrar() {
@@ -107,7 +109,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.num = index;
     }
 
-    public botaoAvancar() {
+    public async botaoAvancar() {
         let tabHeaders = document.getElementsByClassName("tabHeader");
         let tabPanes = document.getElementsByClassName("tab-pane");
         let nextIndex: number = 0;
@@ -115,31 +117,11 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         let tabPaneAtual = "";
         let tabPaneNext = "";
 
-        Array.from(tabPanes).forEach(function (tab, index) {
-            if (tab.classList.contains("active")) {
-                tabIndex = index;
-                nextIndex = index + 1;
-            }
-        });
-
-        if (nextIndex < tabPanes.length) {
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
-            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
-            // Remove os ativos do elemento atual
-            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove("active");
-            document.getElementById(tabPaneAtual).classList.remove("active");
-            // Adiciona os ativos no elemento proximo
-            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
-            tabHeaders[nextIndex].classList.add("active");
-            document.getElementById(tabPaneNext).classList.add("active");
-        }
-
         if (this.num == "") {
             if (this.editarFormAtleta) {
-                this.sendFormAtleta("put");
+                await this.sendFormAtleta("put");                
             } else {
-                this.sendFormAtleta("post");
+                await this.sendFormAtleta("post");
             }
         } else if (this.num == "1") {
             if (this.checkboxAtleta.length > 0) {
@@ -161,11 +143,32 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         } else if (this.num == "3") {
             alert("informações salvas");
             this.num = "";
-            this.finalizarCadastro();
+            await this.finalizarCadastro();
+            await this.limpaFormAtleta();
+        }
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
+                tabIndex = index;
+                nextIndex = index + 1;
+            }
+        });
+
+        if (nextIndex < tabPanes.length && this.liberarProximo == true) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
+            // Remove os ativos do elemento atual
+            tabHeaders[tabIndex].setAttribute("aria-selected", "false");
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
+            // Adiciona os ativos no elemento proximo
+            tabHeaders[nextIndex].setAttribute("aria-selected", "true");
+            tabHeaders[nextIndex].classList.add("active");
+            document.getElementById(tabPaneNext).classList.add("active");
         }
     }
 
-    public botaoVoltar() {
+    public async botaoVoltar() {
         let tabHeaders = document.getElementsByClassName("tabHeader");
         let tabPanes = document.getElementsByClassName("tab-pane");
         let prevIndex: number = 0;
@@ -194,8 +197,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         }
 
         if (this.num == "") {
-            this.limparFormContatoAtleta();
-            this.limparFormDocumentoAtleta();
+            await this.limpaFormAtleta();
         } else if (this.num == "1") {
             if (this.editar) {
                 this.sendModalidadesAtleta("put");
@@ -218,12 +220,16 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = false;
         this.editarFormAtleta = false;
         this.editar = false;
-        this.limpaFormAtleta();
+        this.ativarTabs = false;
+        this.liberarProximo = false;
     }
 
     public async getListaMunicipio() {
         const path = this.paths.municipio + `/${this.estadoSelect}`;
-        this.listaMunicipio = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            this.listaMunicipio = resposta.data.data;
+        }
     }
 
     public async sendFormAtleta(metodo) {
@@ -237,7 +243,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         formAtleta.append("id_municipio", this.municipioSelect);
         formAtleta.append("nr_cep", this.inputCepAtleta);
         if (metodo == "post") {
-            let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);
+            let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);            
             this.idAtleta = sendAtleta.id;
             this.showToast("bottom", "Registro do Atleta criado com sucesso!", "success");
         } else if (metodo == "put") {
@@ -246,9 +252,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             await this.putInfo(path, formAtleta, this.setToken);
             this.showToast("bottom", "Registro do Atleta atualizado com sucesso!", "success");
         }
-
+        
         if (this.axiosResponse == true) {
             this.num = "1";
+            this.liberarProximo = true;
             if (this.editar) {
                 this.getEdits();
             }
@@ -262,7 +269,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     }
 
     public async getModalidades() {
-        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
+        let resposta = await this.getInfo(this.paths.modalidade, this.setToken);
+        if(resposta.status == 200){
+            this.listaModalidades = resposta.data.data;
+        }
     }
 
     public setCheckbox(id, isChecked) {
@@ -335,7 +345,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async getDocumentoAtleta() {
         const urlGetDocumentoAtleta = this.paths.documentoatleta + `/t${this.idAtleta}`;
-        this.listaDocumentoAtleta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
+        let resposta = await this.getInfo(urlGetDocumentoAtleta, this.setToken);
+        if(resposta.status == 200){
+            this.listaDocumentoAtleta = resposta.data.data;
+        }
     }
 
     public editarDocumentoAtleta(item, lista) {
@@ -377,7 +390,10 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async getContatoAtleta() {
         const urlGetContatoAtleta = this.paths.contatoatleta + `/t${this.idAtleta}`;
-        this.listaContatoAtleta = await this.getInfo(urlGetContatoAtleta, this.setToken);
+        let resposta = await this.getInfo(urlGetContatoAtleta, this.setToken);
+        if(resposta.status == 200){
+            this.listaContatoAtleta = resposta.data.data;
+        }
     }
 
     public editarContatoAtleta(item, lista) {
@@ -446,23 +462,26 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public async getModalidadesRegistro() {
         const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
-        let listaModalidadesRegistro = await this.getInfo(path, this.setToken);
-
-        listaModalidadesRegistro.forEach((element) => {
-            this.listaModalidades.forEach((element2) => {
-                if (element2["id"] == element.st_ativo) {
-                    element2["checked"] = true;
-                    this.checkboxAtleta.push(element.id_modalidade.id);
-                }
+        let listaModalidadesRegistro = [];
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            listaModalidadesRegistro = resposta.data.data;
+            listaModalidadesRegistro.forEach((element) => {
+                this.listaModalidades.forEach((element2) => {
+                    if (element2["id"] == element.st_ativo) {
+                        element2["checked"] = true;
+                        this.checkboxAtleta.push(element.id_modalidade.id);
+                    }
+                });
             });
-        });
+        }
+
     }
 
-    public cancelar(tela, item) {
+    public async cancelar(tela, item) {
         if (tela == "atleta") {
-            this.limpaFormAtleta();
-            this.novoCadastro = false;
-            this.editar = false;
+            await this.limpaFormAtleta();
+            await this.finalizarCadastro();
         } else if (tela == "documento") {
             item.mostrarEditarDocumento = false;
             this.mostrarEditarDocumento = false;
@@ -482,6 +501,12 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputCepAtleta = "";
         this.estadoSelect = "";
         this.municipioSelect = "";
+        this.listaContatoAtleta = [];
+        this.listaDocumentoAtleta = [];
+        this.getModalidadesRegistro();
+
+        this.limparFormContatoAtleta();
+        this.limparFormDocumentoAtleta();
     }
 
     public async excluir(item, tela) {

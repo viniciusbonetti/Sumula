@@ -40,9 +40,11 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
     }
 
     public async getModalidades() {
-        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
-
-        this.listaModalidadesFiltrada = this.listaModalidades;
+        let resposta = await this.getInfo(this.paths.modalidade, this.setToken);
+        if(resposta.status == 200){
+            this.listaModalidades = resposta.data.data;
+            this.listaModalidadesFiltrada = this.listaModalidades;
+        }
     }
 
     public async sendModalidade() {

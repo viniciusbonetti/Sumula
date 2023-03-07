@@ -40,9 +40,12 @@ export class CargosComponent extends ControllerComponent implements OnInit {
 
     public async getListaCargos() {
         const path = this.paths.cargocco + `/t${this.tenant}`;
-        this.listaCargosCco = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            this.listaCargosCco = resposta.data.data;
+            this.listaCargosCcoFiltrada = this.listaCargosCco;
+        }
 
-        this.listaCargosCcoFiltrada = this.listaCargosCco;
     }
 
     public async sendCargo(event) {

@@ -44,8 +44,11 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public async getTenantUsuarios() {
-        this.listaTenantUsuario = await this.getInfo(this.paths.tenantusuario, this.setToken);
-        this.listaTenantUsuarioFiltrado = this.listaTenantUsuario;
+        let resposta = await this.getInfo(this.paths.tenantusuario, this.setToken);
+        if(resposta.status == 200){
+            this.listaTenantUsuario = resposta.data.data;
+            this.listaTenantUsuarioFiltrado = this.listaTenantUsuario;
+        }
     }
 
     public cadastrar() {
@@ -194,7 +197,10 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
     }
 
     public async getTenant() {
-        this.listaTenant = await this.getInfo(this.paths.tenant, this.setToken);
+        let resposta = await this.getInfo(this.paths.tenant, this.setToken);
+        if(resposta.status == 200){
+            this.listaTenant = resposta.data.data;
+        }
     }
 
     public setCheckbox(id, isChecked) {
@@ -231,13 +237,9 @@ export class UsuariosTenantComponent extends ControllerComponent implements OnIn
         this.ativarTabs = true;
         this.idUsuario = item.id;
 
-        const path = this.paths.tenantusuario + `/i${item.id}&t${this.tenant}`;
-
-        let getInfoEvento = await this.getInfo(path, this.setToken);
-
-        this.idUsuario = getInfoEvento[0].id_usuario.id;
-        this.inputNome = getInfoEvento[0].id_usuario.nm_usuario;
-        this.inputEmail = getInfoEvento[0].id_usuario.ds_email;
+        this.idUsuario = item.id_usuario.id;
+        this.inputNome = item.id_usuario.nm_usuario;
+        this.inputEmail = item.id_usuario.ds_email;
         this.getEdits();
     }
 

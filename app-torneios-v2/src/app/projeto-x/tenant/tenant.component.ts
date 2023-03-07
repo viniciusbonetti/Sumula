@@ -25,7 +25,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     public editarInputFileTenant = "";
     public image = "";
     public extension = "";
-    
+
     public listaEstados = {};
     public pathTenant = `/tenant`;
 
@@ -34,9 +34,9 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         this.getEstado();
     }
 
-    public searchTable(event: any){
+    public searchTable(event: any) {
         const conteudo = event.target.value.toUpperCase();
-        const columns = ['id', 'nm_tenant'];
+        const columns = ["id", "nm_tenant"];
 
         this.listaEmpresasFiltrada = this.filterTable(columns, this.listaEmpresas, conteudo);
         this.pagAtual = 1;
@@ -45,13 +45,15 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     public async getListaEmpresas() {
         const path = this.pathTenant;
 
-        this.listaEmpresas = await this.getInfo(path, this.setToken);
-        // Repassa no array para transformar tudo em letra maiuscula
-        this.listaEmpresas.forEach(lista => {
-            lista['nm_tenant'] = lista['nm_tenant'].toUpperCase();
-        });
-
-        this.listaEmpresasFiltrada = this.listaEmpresas;
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            this.listaEmpresas = resposta.data.data;
+            // Repassa no array para transformar tudo em letra maiuscula
+            this.listaEmpresas.forEach((lista) => {
+                lista["nm_tenant"] = lista["nm_tenant"].toUpperCase();
+            });
+            this.listaEmpresasFiltrada = this.listaEmpresas;
+        }
     }
 
     public async adicionarEmpresa() {
@@ -78,7 +80,8 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     }
 
     public async getEstado() {
-        this.listaEstados = await this.getInfo(this.paths.estado, this.setToken);
+        let listaEstados = await this.getInfo(this.paths.estado, this.setToken);
+        this.listaEstados = listaEstados.data.data;
         localStorage.setItem("listaEstados", JSON.stringify(this.listaEstados));
     }
 
@@ -130,20 +133,20 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     }
 
     public async excluir(item) {
-        const type = 'warning-message-and-cancel';
-        this.mensagemTitulo = 'Deseja deletar o Tenant?'
-        this.mensagemAlerta = 'Esta ação não será reversível e irá deletar todos os registros relacionados ao Tenant!'
+        const type = "warning-message-and-cancel";
+        this.mensagemTitulo = "Deseja deletar o Tenant?";
+        this.mensagemAlerta = "Esta ação não será reversível e irá deletar todos os registros relacionados ao Tenant!";
         await this.showSwal(type);
-        if(this.resultado){
+        if (this.resultado) {
             this.idRegistroTenant = item.id;
-    
+
             const path = this.paths.tenant + `/${this.idRegistroTenant}`;
-    
+
             await this.deleteInfo(path, this.setToken);
-    
+
             this.idRegistroTenant = "";
             this.getListaEmpresas();
-        }        
+        }
     }
 
     public cancelarEdicao(item) {
