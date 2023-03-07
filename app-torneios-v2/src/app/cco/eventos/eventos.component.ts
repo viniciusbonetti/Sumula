@@ -1,5 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { ControllerComponent } from "src/app/controller/controller.component";
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+
+export interface DialogData {
+    nomeEventoModal: string;
+    inicioEventoModal: string;
+    fimEventoModal: string;
+    modalidadesEventoModal: string;
+    encarregadosEventoModal: string;
+    municipiosEventoModal: string;
+}
 
 @Component({
     selector: "app-eventos",
@@ -61,6 +71,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public idEvento = "";
     public idRegistroModalidade = "";
 
+    constructor(public dialog: MatDialog) {
+        super();
+    }
+
     ngOnInit(): void {
         this.getEventos();
     }
@@ -69,32 +83,32 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = !this.novoCadastro;
     }
 
-    public botaoAvancar() {
-        let tabHeaders = document.getElementsByClassName('tabHeader');
-        let tabPanes = document.getElementsByClassName('tab-pane');
+    public async botaoAvancar() {
+        let tabHeaders = document.getElementsByClassName("tabHeader");
+        let tabPanes = document.getElementsByClassName("tab-pane");
         let nextIndex: number = 0;
         let tabIndex: number = 0;
-        let tabPaneAtual = '';
-        let tabPaneNext = '';
-        
-        Array.from(tabPanes).forEach(function(tab, index) {
-            if(tab.classList.contains('active')){
+        let tabPaneAtual = "";
+        let tabPaneNext = "";
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
                 tabIndex = index;
-                nextIndex = (index+1);
+                nextIndex = index + 1;
             }
         });
 
-        if(nextIndex < tabPanes.length){
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
-            tabPaneNext = tabHeaders[nextIndex].getAttribute('href').replace('#', '');
+        if (nextIndex < tabPanes.length) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPaneNext = tabHeaders[nextIndex].getAttribute("href").replace("#", "");
             // Remove os ativos do elemento atual
             tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove('active');
-            document.getElementById(tabPaneAtual).classList.remove('active');
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
             // Adiciona os ativos no elemento proximo
             tabHeaders[nextIndex].setAttribute("aria-selected", "true");
-            tabHeaders[nextIndex].classList.add('active');
-            document.getElementById(tabPaneNext).classList.add('active');
+            tabHeaders[nextIndex].classList.add("active");
+            document.getElementById(tabPaneNext).classList.add("active");
         }
 
         if (this.num == "") {
@@ -118,41 +132,41 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         } else if (this.num == "3") {
             alert("informações salvas");
             this.num = "";
-            this.limparFormEvento();
-            this.finalizarCadastro();
+            await this.limparFormEvento();
+            await this.finalizarCadastro();
         }
     }
-    public botaoVoltar() {
-        let tabHeaders = document.getElementsByClassName('tabHeader');
-        let tabPanes = document.getElementsByClassName('tab-pane');
+    public async botaoVoltar() {
+        let tabHeaders = document.getElementsByClassName("tabHeader");
+        let tabPanes = document.getElementsByClassName("tab-pane");
         let prevIndex: number = 0;
         let tabIndex: number = 0;
-        let tabPaneAtual = '';
-        let tabPanePrev = '';
-        
-        Array.from(tabPanes).forEach(function(tab, index) {
-            if(tab.classList.contains('active')){
+        let tabPaneAtual = "";
+        let tabPanePrev = "";
+
+        Array.from(tabPanes).forEach(function (tab, index) {
+            if (tab.classList.contains("active")) {
                 tabIndex = index;
-                prevIndex = (index-1);
+                prevIndex = index - 1;
             }
         });
 
-        if(prevIndex >= 0){
-            tabPaneAtual = tabHeaders[tabIndex].getAttribute('href').replace('#', '');
-            tabPanePrev = tabHeaders[prevIndex].getAttribute('href').replace('#', '');
+        if (prevIndex >= 0) {
+            tabPaneAtual = tabHeaders[tabIndex].getAttribute("href").replace("#", "");
+            tabPanePrev = tabHeaders[prevIndex].getAttribute("href").replace("#", "");
             // Remove os ativos do elemento atual
             tabHeaders[tabIndex].setAttribute("aria-selected", "false");
-            tabHeaders[tabIndex].classList.remove('active');
-            document.getElementById(tabPaneAtual).classList.remove('active');
+            tabHeaders[tabIndex].classList.remove("active");
+            document.getElementById(tabPaneAtual).classList.remove("active");
             // Adiciona os ativos no elemento proximo
             tabHeaders[prevIndex].setAttribute("aria-selected", "true");
-            tabHeaders[prevIndex].classList.add('active');
-            document.getElementById(tabPanePrev).classList.add('active');
+            tabHeaders[prevIndex].classList.add("active");
+            document.getElementById(tabPanePrev).classList.add("active");
         }
 
         if (this.num == "") {
-            this.limparFormEvento();
-            this.finalizarCadastro();
+            await this.limparFormEvento();
+            await this.finalizarCadastro();
         } else if (this.num == "1") {
             this.editar = true;
             this.num = "";
@@ -167,15 +181,18 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.idEvento = "";
         this.novoCadastro = false;
         this.editar = false;
+        this.ativarTabs = false;
     }
 
-    public cancelar(tela, item) {
+    public async cancelar(tela, item) {
         if (tela == "evento") {
             this.inputNomeEvento = "";
             this.inputDataInicio = "";
             this.inputDataFim = "";
             this.inputNomeTenant = "";
             this.novoCadastro = !this.novoCadastro;
+            await this.limparFormEvento();
+            await this.finalizarCadastro();
         } else if (tela == "modalidades") {
             item.editarModalidadeEvento = false;
             this.editarModalidadeEvento = false;
@@ -198,9 +215,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public async getEventos() {
         const path = this.paths.evento + `/t${this.tenant}`;
-        this.listaEventos = await this.getInfo(path, this.setToken);
-
-        this.listaEventosFiltrado = this.listaEventos;
+        let resposta = await this.getInfo(path, this.setToken);
+        this.listaEventos = resposta.data.data;
+        if(resposta.status == 200){
+            this.listaEventosFiltrado = this.listaEventos;
+        }
     }
 
     public async sendEventos(metodo) {
@@ -223,29 +242,45 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             this.num = "1";
             this.getCargosCco();
             this.getModalidades();
-            if(this.editar){
+            if (this.editar) {
                 this.getEdits();
             }
         }
     }
 
-    public limparFormEvento() {
+    public async limparFormEvento() {
         this.inputNomeEvento = "";
         this.inputDataInicio = "";
         this.inputDataFim = "";
         this.inputNomeTenant = "";
+        this.listaModalidadesEvento = [];
+        this.listaOcupantes = [];
+        this.listaMunicipiosEvento = [];
+
+        this.limparFormModalidade();
+        this.limparFormOcupante();
+        this.limparFormMunicipio();
     }
 
     public async getEdits() {
-        await this.getModalidades();
-        await this.getCargosCco();
-        await this.getOcupantes();
-        await this.getModalidadesEvento();
-        await this.getMunicipiosEvento();
+        if (this.editar) {
+            this.getModalidadesEvento();
+            this.getMunicipiosEvento();
+            this.getOcupantes();
+        } else {
+            await this.getModalidadesEvento();
+            await this.getMunicipiosEvento();
+            await this.getOcupantes();
+        }
+        this.getModalidades();
+        this.getCargosCco();
     }
 
     public async getModalidades() {
-        this.listaModalidades = await this.getInfo(this.paths.modalidade, this.setToken);
+        let resposta = await this.getInfo(this.paths.modalidade, this.setToken);
+        if(resposta.status == 200){
+            this.listaModalidades = resposta.data.data;
+        }
     }
 
     public async sendModalidadesEvento(metodo, item) {
@@ -280,9 +315,14 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getModalidadesEvento() {
+        this.listaModalidadesEvento = [];
         const path = this.paths.modalidadeevento + `/i${this.idEvento}&t${this.tenant}`;
 
-        this.listaModalidadesEvento = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+
+        if (resposta.status == 200) {
+            this.listaModalidadesEvento = resposta.data.data;
+        }
     }
 
     public limparFormModalidade() {
@@ -295,7 +335,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public async getCargosCco() {
         const path = this.paths.cargocco + `/t${this.tenant}`;
 
-        this.listaCargosCco = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if(resposta.status == 200){
+            this.listaCargosCco = resposta.data.data;
+        }
     }
 
     public async sendNovoOcupante(metodo, item) {
@@ -333,17 +376,26 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getOcupantes() {
+        this.listaOcupantes = [];
         const path = this.paths.ccoevento + `/i${this.idEvento}&t${this.tenant}`;
-        this.listaOcupantes = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if (resposta.status == 200) {
+            this.listaOcupantes = resposta.data.data;
+        }
     }
 
     public async getMunicipio(metodo, item) {
+        let resposta
         if (metodo == "criar") {
             const path = this.paths.municipio + `/${this.estadoSelect}`;
-            this.listaMunicipios = await this.getInfo(path, this.setToken);
+            resposta = await this.getInfo(path, this.setToken);
         } else if (metodo == "editar") {
             const path = this.paths.municipio + `/${item}`;
-            this.listaMunicipios = await this.getInfo(path, this.setToken);
+            resposta = await this.getInfo(path, this.setToken);
+        }        
+
+        if(resposta.status == 200){
+            this.listaMunicipios = resposta.data.data;
         }
     }
 
@@ -370,9 +422,13 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getMunicipiosEvento() {
+        this.listaMunicipiosEvento = [];
         const path = this.paths.municipioevento + `/i${this.idEvento}&t${this.tenant}`;
 
-        this.listaMunicipiosEvento = await this.getInfo(path, this.setToken);
+        let resposta = await this.getInfo(path, this.setToken);
+        if (resposta.status == 200) {
+            this.listaMunicipiosEvento = resposta.data.data;
+        }
     }
 
     public limparFormMunicipio() {
@@ -380,24 +436,27 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.municipioSelect = "";
     }
 
-    public tabs(index){
+    public tabs(index) {
         this.num = index;
     }
 
-    public async editarEvento(item) {
-        this.novoCadastro = true;
-        this.editar = true;
-        this.ativarTabs = true;
+    public async editarEvento(item, opcao) {
         this.idEvento = item.id;
 
-        const path = this.paths.evento + `/i${item.id}&t${this.tenant}`;
+        this.inputNomeEvento = item.nm_evento;
+        this.inputDataInicio = item.dt_inicio;
+        this.inputDataFim = item.dt_fim;
 
-        let getInfoEvento = await this.getInfo(path, this.setToken);
-
-        this.inputNomeEvento = getInfoEvento[0].nm_evento;
-        this.inputDataInicio = getInfoEvento[0].dt_inicio;
-        this.inputDataFim = getInfoEvento[0].dt_fim;
-        this.getEdits();
+        if (opcao == "editar") {
+            this.novoCadastro = true;
+            this.ativarTabs = true;
+            this.editar = true;
+            this.ativarTabs = true;
+            await this.getEdits();
+        } else if (opcao == "mostrar") {
+            await this.getEdits();
+            await this.openDialog(item);
+        }
     }
 
     public mostrarEditarModalidade(item, lista) {
@@ -468,4 +527,34 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             }
         }
     }
+
+    openDialog(item) {
+        const dialogRef = this.dialog.open(EventosModal, {
+            data: {
+                nomeEventoModal: item.nm_evento,
+                inicioEventoModal: item.dt_inicio,
+                fimEventoModal: item.dt_fim,
+                modalidadesEventoModal: this.listaModalidadesEvento,
+                encarregadosEventoModal: this.listaOcupantes,
+                municipiosEventoModal: this.listaMunicipiosEvento,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.editarEvento(item, "editar");
+            } else {
+                this.limparFormEvento();
+            }
+        });
+    }
+}
+
+@Component({
+    selector: "eventos-modal",
+    templateUrl: "EventosModal.html",
+})
+export class EventosModal {
+    constructor(public dialogRef: MatDialogRef<EventosModal>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    ngOnInit() {}
 }

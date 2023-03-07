@@ -163,6 +163,7 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
     public setToken: any = { headers: this.headers };
     public userInfo = {};
     public menuItems: any[];
+    public userInicial= '';
     ps: any;
     isMobileMenu() {
         if ($(window).width() > 991) {
@@ -178,8 +179,13 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
             this.ps = new PerfectScrollbar(elemSidebar);
         }
         const path = '/user/'+this.userId;
-        this.userInfo = await this.getInfo(path, this.setToken);
-        this.userInfo['inicial'] = this.userInfo['nm_usuario'][0].toLowerCase();
+        // this.userInfo = await this.getInfo(path, this.setToken);
+        let info = await this.getInfo(path, this.setToken);
+        
+        this.userInfo = info.data.data.nm_usuario;        
+        
+        this.userInicial= this.userInfo[0].toLowerCase();
+        
 
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(function(value, key) {

@@ -1,0 +1,48 @@
+<div class="card" style="box-shadow: none;">
+    <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
+        <h4 class="card-title p-2">Ficha técnica do evento:</h4>
+        <p class="card-category">{{data.nomeEventoModal}}</p>
+    </div>
+    <mat-dialog-content class="mat-typography" style="width: 100vh;">
+        <div class="p-2">
+            <h2>Informações do evento </h2>
+            <p>Nome do evento: {{data.nomeEventoModal}}</p>
+            <p>Início: {{data.inicioEventoModal}}</p>
+            <p>Fim: {{data.fimEventoModal}}</p>
+        </div>
+    
+        <div>
+            <h2>Modalidades</h2>
+            <div *ngFor="let item of data.modalidadesEventoModal">
+                <p> {{item.id_modalidade.nm_modalidade}}: {{item.tp_naipe}} de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}} </p>
+            </div>
+            <div *ngIf="!data.modalidadesEventoModal.length">
+                <p>Nenhuma modalidade cadastrada</p>
+            </div>
+        </div>
+
+        <div>
+            <h2>Encarregados</h2>
+            <div *ngFor="let item of data.encarregadosEventoModal">
+                <p> {{item.id_cargocco.nm_cargo}}: {{item.nm_ocupante}} </p>
+            </div>
+            <div *ngIf="!data.encarregadosEventoModal.length">
+                <p>Nenhum encarregado cadastrado</p>
+            </div>
+        </div>
+
+        <div>
+            <h2>Municípios</h2>
+            <div *ngFor="let item of data.municipiosEventoModal">
+                <p> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </p>
+            </div>
+            <div *ngIf="!data.municipiosEventoModal.length">
+                <p>Nenhum município cadastrado</p>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="true" class="btn-info">Editar</button>
+    </mat-dialog-actions>
+</div>

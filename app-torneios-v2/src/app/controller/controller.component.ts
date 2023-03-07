@@ -48,9 +48,10 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         let urlGet = this.baseUrl + path;
         try {
             let getInfo = await axios.get(urlGet, header);
-            return getInfo.data.data;
+            
+            return getInfo;
         } catch (error) {
-            this.mostrarErros(error);
+            return error.response;
         }
 
     }

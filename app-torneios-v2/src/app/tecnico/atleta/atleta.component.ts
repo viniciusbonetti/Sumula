@@ -218,6 +218,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = false;
         this.editarFormAtleta = false;
         this.editar = false;
+        this.limpaFormAtleta();
     }
 
     public async getListaMunicipio() {
@@ -393,7 +394,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputContatoAtleta = "";
     }
 
-    public async mostrarEdicaoAtleta(item, option) {
+    public async mostrarEdicaoAtleta(item, opcao) {
         this.idAtleta = item.id;
 
         this.inputNomeCompletoAtleta = item.nm_atleta;
@@ -404,17 +405,17 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.inputNmrEnderecoAtleta = item.nr_endereco;
         this.inputCepAtleta = item.nr_cep;
         this.estadoSelect = item.id_municipio.id_estado;
-        this.municipioSelect = item.id_municipio.id;        
+        this.municipioSelect = item.id_municipio.id;
 
         this.getListaMunicipio();
         this.getEdits();
 
-        if (option == "editar") {
+        if (opcao == "editar") {
             this.novoCadastro = true;
             this.editarFormAtleta = true;
             this.editar = true;
             this.ativarTabs = true;
-        } else if (option == "mostrar") {
+        } else if (opcao == "mostrar") {
             await this.openDialog(item);
         }
     }
@@ -429,7 +430,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 enderecoAtletaModal: item.ds_endereco,
                 nrEnderecoAtletaModal: item.nr_endereco,
                 cepAtletaModal: item.nr_cep,
-                estadoAtletaModal:  item.id_municipio.estado.nm_estado,
+                estadoAtletaModal: item.id_municipio.estado.nm_estado,
                 municipioAtletaModal: item.id_municipio.nm_municipio,
             },
         });
@@ -437,6 +438,8 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this.mostrarEdicaoAtleta(item, "editar");
+            } else {
+                this.limpaFormAtleta();
             }
         });
     }
@@ -457,15 +460,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
 
     public cancelar(tela, item) {
         if (tela == "atleta") {
-            this.inputNomeCompletoAtleta = "";
-            this.inputApelidoAtleta = "";
-            this.inputDataNascimentoAtleta = "";
-            this.generoSelect = "";
-            this.inputEnderecoAtleta = "";
-            this.inputNmrEnderecoAtleta = "";
-            this.inputCepAtleta = "";
-            this.estadoSelect = "";
-            this.municipioSelect = "";
+            this.limpaFormAtleta();
             this.novoCadastro = false;
             this.editar = false;
         } else if (tela == "documento") {
@@ -475,6 +470,18 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             item.mostrarEditarContato = false;
             this.mostrarEditarContato = false;
         }
+    }
+
+    public limpaFormAtleta() {
+        this.inputNomeCompletoAtleta = "";
+        this.inputApelidoAtleta = "";
+        this.inputDataNascimentoAtleta = "";
+        this.generoSelect = "";
+        this.inputEnderecoAtleta = "";
+        this.inputNmrEnderecoAtleta = "";
+        this.inputCepAtleta = "";
+        this.estadoSelect = "";
+        this.municipioSelect = "";
     }
 
     public async excluir(item, tela) {

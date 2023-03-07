@@ -38,8 +38,11 @@
                                             {{ item.dt_fim | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
+                                            <button (click)="editarEvento(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'left'">
+                                                <i class="fa-solid fa-square-list fa-2x text-warning"></i>
+                                            </button>
                                             <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
-                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEvento(item)"></i>
+                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEvento(item, 'editar')"></i>
                                             </button>
                                             <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'evento')"></i>
