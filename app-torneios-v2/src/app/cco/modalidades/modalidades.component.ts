@@ -60,6 +60,13 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
         this.showToast("bottom", "Registro de Modalidade criado com sucesso!", "success");
     }
 
+    public cancelarNovoCadastro() {
+        this.inputNomeModalidade = "";
+        this.inputTipoModalidade = "";
+        this.idModalidade = "";
+        this.novoCadastro = false;
+    }
+
     public cancelarCadastro(item) {
         this.inputNomeModalidade = "";
         this.inputTipoModalidade = "";
@@ -68,6 +75,7 @@ export class ModalidadesComponent extends ControllerComponent implements OnInit 
     }
 
     public mostrarEdicaoModalidade(item, lista) {
+        this.novoCadastro = false;
         lista.forEach((element) => {
             element.mostrarEditarModalidade = false;
         });
