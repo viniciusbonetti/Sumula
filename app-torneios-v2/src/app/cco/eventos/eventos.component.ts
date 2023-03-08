@@ -47,6 +47,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public listaModalidades: Array<{}> = [];
     public listaModalidadesEvento: Array<{}> = [];
     public listaNaipe: Array<{}> = [];
+    public listaLocalidades: Array<{}> = [];
+    public listaLocalidadesEvento: Array<{}> = [];
 
     public inputNomeEvento: string = "";
     public inputDataInicio: string = "";
@@ -58,6 +60,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public inputIdadeFinal: string = "";
     public inputEditarIdadeInicial: string = "";
     public inputEditarIdadeFinal: string = "";
+    public enderecoLocalidade: string = "";
 
     public cargoSelect = "";
     public estadoSelect = "";
@@ -67,6 +70,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public naipeSelect = "";
     public editarModalidadeSelect = "";
     public editarNaipeSelect = "";
+    public localidadeSelect = "";
 
     public idEditarEvento = "";
     public idEvento = "";
@@ -490,6 +494,62 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.mostrarEditarMunicipios = true;
         this.limparFormMunicipio();
         this.getMunicipio("editar", item.id_municipio.estado.id);
+    }
+
+    public async getLocalidades(metodo, item){
+        let resposta;
+        if (metodo == "criar") {
+            const path = this.paths.localidades + `/m${this.municipioSelect}&t${this.tenant}`;
+            resposta = await this.getInfo(path, this.setToken);
+        } else if (metodo == "editar") {
+            const path = this.paths.localidades + `/${item}`;
+            resposta = await this.getInfo(path, this.setToken);
+        }
+
+        if(resposta.status == 200){
+            this.listaLocalidades = resposta.data.data;
+            console.log(this.localidadeSelect);
+        }        
+    }
+
+    public async cadastrarLocalidadeEvento(metodo){
+        const formLocalidadeEvento = new FormData();
+        console.log(this.localidadeSelect);
+        
+        formLocalidadeEvento.append('id_localidade', this.localidadeSelect);
+        formLocalidadeEvento.append('id_evento', this.idEvento);
+        if(metodo == 'post'){
+            await this.postInfo(this.paths.localidadeevento, formLocalidadeEvento, this.setToken);
+            this.showToast("bottom", "Localidade do evento criado com sucesso!", "success");
+        }else if(metodo == 'put'){
+
+        }
+
+        this.getLocalidadesEvento();
+    }
+    
+    public async getLocalidadesEvento(){
+        this.listaLocalidadesEvento = [];
+        const path = this.paths.localidadeevento + `/i${this.idEvento}&t${this.tenant}`;
+        
+        let resposta = await this.getInfo(path, this.setToken);
+        if (resposta.status == 200) {
+            this.listaLocalidadesEvento = resposta.data.data;
+        }
+    }
+
+    public setEnderecoLocalidade(metodo, event){
+        console.log(event);
+        
+        if(metodo == 'criar'){
+            // this.enderecoLocalidade = this.teste;
+            // console.log(this.enderecoLocalidade);
+            
+        }
+    }
+    
+    public limparFormLocalidadeEvento(){
+
     }
 
     public async excluir(item, tela) {
