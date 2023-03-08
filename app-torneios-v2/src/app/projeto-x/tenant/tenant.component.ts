@@ -77,6 +77,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         this.novaEmpresaImg = "";
         this.inputFileTenant = "";
         this.novaEmpresaNome = "";
+        this.novoCadastro = false;
     }
 
     public async getEstado() {
@@ -86,6 +87,7 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     }
 
     public botaoMostrarEditar(item, lista) {
+        this.novoCadastro = false;
         lista.forEach((element) => {
             element.mostrarEditar = false;
         });
