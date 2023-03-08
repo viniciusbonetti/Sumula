@@ -108,3 +108,18 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.eventoModal{
+  .mat-tooltip{
+    color: #000 !important;
+  }
+}
+
+.text-pill{
+  display: block;
+  color: #fff;
+  font-size: 1em;
+  background-color: $pjxLaranja;
+  border-radius: 15px;
+  padding: 5px 10px;
+}
