@@ -28,13 +28,13 @@
                                         <td></td>
                                         <td>
                                             <mat-form-field class="example-full-width">
-                                                <input name="nm_modalidade" matInput placeholder="" type="text" name="nm_modalidade" [(ngModel)]="inputNomeModalidade" />
+                                                <input name="nm_modalidade" matInput placeholder="Nome da Modalidade" type="text" name="nm_modalidade" [(ngModel)]="inputNomeModalidade" required />
                                             </mat-form-field>
                                             <span class="form-error nm_modalidade"></span>
                                         </td>
                                         <td>
                                             <mat-form-field class="example-full-width">
-                                                <input name="tp_modalidade" matInput placeholder="" type="text" name="tp_modalidade" [(ngModel)]="inputTipoModalidade" />
+                                                <input name="tp_modalidade" matInput placeholder="Sigla da Modalidade" type="text" name="tp_modalidade" [(ngModel)]="inputTipoModalidade" required />
                                             </mat-form-field>
                                             <span class="form-error tp_modalidade"></span>
                                         </td>
@@ -58,7 +58,7 @@
                                             </p>
                                             <div *ngIf="item.mostrarEditarModalidade">
                                                 <mat-form-field class="example-full-width">
-                                                    <input matInput type="text" name="nm_modalidade" id=""  [(ngModel)]="item.nm_modalidade" />
+                                                    <input matInput type="text" name="nm_modalidade" placeholder="Nome da Modalidade" id=""  [(ngModel)]="item.nm_modalidade" />
                                                 </mat-form-field>
                                                 <span class="form-error nm_modalidade"></span>
                                             </div>
@@ -69,7 +69,7 @@
                                             </p>
                                             <div *ngIf="item.mostrarEditarModalidade">
                                                 <mat-form-field class="example-full-width">
-                                                    <input matInput type="text" name="tp_modalidade" id=""  [(ngModel)]="item.tp_modalidade" />
+                                                    <input matInput type="text" name="tp_modalidade" placeholder="Sigla da Modalidade" id=""  [(ngModel)]="item.tp_modalidade" />
                                                 </mat-form-field>
                                                 <span class="form-error tp_modalidade"></span>
                                             </div>
