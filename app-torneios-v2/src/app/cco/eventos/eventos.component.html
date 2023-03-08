@@ -84,13 +84,15 @@
                                     <li class="nav-item">
                                         <a class="nav-link tabHeader" href="#municipios" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('3')"> MUNICIPIOS </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link tabHeader" href="#localidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('4')"> LOCALIDADES </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="card-body p-0">
                             <div class="tab-content">
-
                                 <div class="tab-pane active" id="eventos">
                                     <div class="col-md-12 d-flex flex-column align-items-center">
                                         <div class="col-md-7">
@@ -99,14 +101,14 @@
                                             </mat-form-field>
                                             <span class="form-error nm_evento"></span>
                                         </div>
-    
+
                                         <div class="col-md-7">
                                             <mat-form-field>
                                                 <input matInput placeholder="" type="datetime-local" name="dt_inicio" [(ngModel)]="inputDataInicio" required />
                                             </mat-form-field>
                                             <span class="form-error dt_inicio"></span>
                                         </div>
-    
+
                                         <div class="col-md-7">
                                             <mat-form-field>
                                                 <input matInput placeholder="" type="datetime-local" name="dt_fim" [(ngModel)]="inputDataFim" required />
@@ -179,7 +181,7 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-    
+
                                                 <tr *ngFor="let item of listaModalidadesEvento">
                                                     <td>
                                                         {{ item.id }}
@@ -197,7 +199,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error id_modalidade"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.editarModalidadeEvento">
                                                         {{ item.nr_idadeinicio }}
                                                     </td>
@@ -207,7 +209,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error nr_idadeinicio"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.editarModalidadeEvento">
                                                         {{ item.nr_idadefinal }}
                                                     </td>
@@ -217,7 +219,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error nr_idadefinal"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.editarModalidadeEvento">
                                                         {{ item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto" | uppercase) }}
                                                     </td>
@@ -233,7 +235,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error tp_naipe"></span>
                                                     </td>
-    
+
                                                     <td>
                                                         <div *ngIf="!item.editarModalidadeEvento">
                                                             <button style="background: none; border: none">
@@ -326,12 +328,12 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-    
+
                                                 <tr *ngFor="let item of listaOcupantes">
                                                     <td>
                                                         {{ item.id }}
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarEncarregados">
                                                         {{ item.id_cargocco.nm_cargo | uppercase }}
                                                     </td>
@@ -345,7 +347,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error id_cargocco"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarEncarregados">
                                                         {{ item.nm_ocupante | uppercase }}
                                                     </td>
@@ -355,7 +357,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error nm_ocupante"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarEncarregados" [ngSwitch]="item.tp_documento">
                                                         <p *ngSwitchCase="'H'">CARTEIRA DE HABILITAÇÃO</p>
                                                         <p *ngSwitchCase="'T'">CARTEIRA DE TRABALHO</p>
@@ -383,7 +385,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error tp_documento"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarEncarregados">
                                                         {{ item.nr_documento }}
                                                     </td>
@@ -393,7 +395,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error nr_documento"></span>
                                                     </td>
-    
+
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarEncarregados">
                                                             <button style="background: none; border: none">
@@ -463,16 +465,14 @@
                                                         <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormMunicipio()"></i>
                                                         </button>
-                                                        <!-- <button (click)="cadastrarNovoMunicipio('post')">confirmar</button>
-                                                        <button (click)="limparFormMunicipio()">X</button> -->
                                                     </td>
                                                 </tr>
-    
+
                                                 <tr *ngFor="let item of listaMunicipiosEvento">
                                                     <td>
                                                         {{ item.id }}
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarMunicipios">
                                                         {{ item.id_municipio.estado.nm_estado | uppercase }}
                                                     </td>
@@ -486,7 +486,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error id_estado"></span>
                                                     </td>
-    
+
                                                     <td *ngIf="!item.mostrarEditarMunicipios">
                                                         {{ item.id_municipio.nm_municipio | uppercase }}
                                                     </td>
@@ -500,7 +500,7 @@
                                                         </mat-form-field>
                                                         <span class="form-error id_municipio"></span>
                                                     </td>
-    
+
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarMunicipios">
                                                             <button style="background: none; border: none">
@@ -518,10 +518,6 @@
                                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('municipios', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
                                                             </button>
                                                         </div>
-                                                        <!-- <button (click)="editarMunicipiosEvento(item)" *ngIf="!item.mostrarEditarMunicipios">editar</button>
-                                                        <button (click)="excluir(item, 'municipios')" *ngIf="!item.mostrarEditarMunicipios">excluir</button>
-                                                        <button (click)="cadastrarNovoMunicipio('put', item)" *ngIf="item.mostrarEditarMunicipios">confirmar</button>
-                                                        <button (click)="cancelar('municipios', item)" *ngIf="item.mostrarEditarMunicipios">cancelar</button> -->
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -531,10 +527,131 @@
                                             <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
                                         </div>
                                     </div>
-                                    <!-- <div *ngSwitchCase="'3'">
-                                    </div> -->
                                 </div>
 
+                                <div class="tab-pane" id="localidades">
+                                    <div>
+                                        <mat-form-field class="" appearance="fill">
+                                            <mat-label>Estado</mat-label>
+                                            <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" [disabled]="mostrarEditarMunicipios" required>
+                                                <option disabled value="">Selecione o estado</option>
+                                                <option *ngFor="let itemSelectCriar of listaEstado" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_estado | uppercase }}</option>
+                                            </select>
+                                            <span class="form-error id_estado"></span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <mat-form-field class="" appearance="fill">
+                                            <mat-label>Municipio</mat-label>
+                                            <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" [disabled]="mostrarEditarMunicipios" required>
+                                                <option disabled value="">Selecione o Municipio</option>
+                                                <option *ngFor="let itemSelectCriar of listaMunicipios" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_municipio | uppercase }} / {{ itemSelectCriar.id_estado.sg_estado }}</option>
+                                            </select>
+                                        </mat-form-field>
+                                        <span class="form-error id_municipio"></span>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table text-center table-hover">
+                                            
+                                            <thead class="text-primary col-md-12">
+                                                <th class="col-md-3">ID</th>
+                                                <th class="col-md-3">Estados</th>
+                                                <th class="col-md-3">Municipios</th>
+                                                <th class="col-md-3"></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="tabela-ocupante">
+                                                    <td></td>
+                                                    <td>
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Estado</mat-label>
+                                                            <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" [disabled]="mostrarEditarMunicipios" required>
+                                                                <option disabled value="">Selecione o estado</option>
+                                                                <option *ngFor="let itemSelectCriar of listaEstado" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_estado | uppercase }}</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error id_estado"></span>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Municipio</mat-label>
+                                                            <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" [disabled]="mostrarEditarMunicipios" required>
+                                                                <option disabled value="">Selecione o Municipio</option>
+                                                                <option *ngFor="let itemSelectCriar of listaMunicipios" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_municipio | uppercase }} / {{ itemSelectCriar.id_estado.sg_estado }}</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error id_municipio"></span>
+                                                    </td>
+                                                    <td>
+                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('post')"></i>
+                                                        </button>
+                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormMunicipio()"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngFor="let item of listaMunicipiosEvento">
+                                                    <td>
+                                                        {{ item.id }}
+                                                    </td>
+
+                                                    <td *ngIf="!item.mostrarEditarMunicipios">
+                                                        {{ item.id_municipio.estado.nm_estado | uppercase }}
+                                                    </td>
+                                                    <td *ngIf="item.mostrarEditarMunicipios">
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Estado</mat-label>
+                                                            <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id" (ngModelChange)="getMunicipio('editar', item.id_municipio.estado.id)" required>
+                                                                <option disabled value="">Selecione o estado</option>
+                                                                <option *ngFor="let itemSelectEditar of listaEstado" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_estado | uppercase }}</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error id_estado"></span>
+                                                    </td>
+
+                                                    <td *ngIf="!item.mostrarEditarMunicipios">
+                                                        {{ item.id_municipio.nm_municipio | uppercase }}
+                                                    </td>
+                                                    <td *ngIf="item.mostrarEditarMunicipios">
+                                                        <mat-form-field class="" appearance="fill">
+                                                            <mat-label>Municipio</mat-label>
+                                                            <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id" required>
+                                                                <option disabled value="">Selecione o Municipio</option>
+                                                                <option *ngFor="let itemSelectEditar of listaMunicipios" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_municipio | uppercase }} / {{ itemSelectEditar.id_estado.sg_estado }}</option>
+                                                            </select>
+                                                        </mat-form-field>
+                                                        <span class="form-error id_municipio"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <div *ngIf="!item.mostrarEditarMunicipios">
+                                                            <button style="background: none; border: none">
+                                                                <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item, listaMunicipiosEvento)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                            </button>
+                                                            <button style="background: none; border: none">
+                                                                <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div *ngIf="item.mostrarEditarMunicipios">
+                                                            <button style="background: none; border: none">
+                                                                <i class="fa-solid fa-square-check fa-2x text-success" (click)="cadastrarNovoMunicipio('put', item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                            </button>
+                                                            <button style="background: none; border: none">
+                                                                <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('municipios', item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
+                                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

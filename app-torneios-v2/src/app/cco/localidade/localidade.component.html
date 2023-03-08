@@ -9,7 +9,7 @@
                     <div class="card-body p-0 d-flex flex-column justify-content-between">
                         <div>
                             <div class="d-flex align-items-center justify-content-between">
-                                <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo cargo</button>
+                                <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Nova localidade</button>
                                 <mat-form-field class="float-right col-md-3">
                                     <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                                 </mat-form-field>
@@ -18,7 +18,7 @@
                                 <table class="table text-center table-hover">
                                     <thead class="text-primary">
                                         <th class="col-md-2">ID <mat-icon (click)="sortTable('id', listaLocalidadesFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('id', listaLocalidadesFiltrada, 'DESC', $event)" class="sort-icon si-down si-active">arrow_downward</mat-icon></th>
-                                        <th class="col-md-8">Cargo <mat-icon (click)="sortTable('ds_localidade', listaLocalidadesFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('ds_localidade', listaLocalidadesFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
+                                        <th class="col-md-8">Localidade <mat-icon (click)="sortTable('ds_localidade', listaLocalidadesFiltrada, 'ASC', $event)" class="sort-icon">arrow_upward</mat-icon> <mat-icon (click)="sortTable('ds_localidade', listaLocalidadesFiltrada, 'DESC', $event)" class="sort-icon si-down">arrow_downward</mat-icon></th>
                                         <th class="col-md-2"></th>
                                     </thead>
 
@@ -57,20 +57,12 @@
                                             </td>
 
                                             <td>
-                                                <div *ngIf="!item.mostrarEditarLocalidade">
+                                                <div>
                                                     <button style="background: none; border: none">
-                                                        <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoCargo(item, listaLocalidades)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                        <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoLocalidade(item)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
                                                     </button>
                                                     <button style="background: none; border: none">
                                                         <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item)" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
-                                                    </button>
-                                                </div>
-                                                <div *ngIf="item.mostrarEditarLocalidade">
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarCargo(item, $event)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
-                                                    </button>
-                                                    <button style="background: none; border: none">
-                                                        <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
                                                     </button>
                                                 </div>
                                             </td>
@@ -78,9 +70,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div class="text-right">
-                            <pagination-controls (pageChange)="pagAtual = $event" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+                            <div class="text-right">
+                                <pagination-controls (pageChange)="pagAtual = $event" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,27 +86,31 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <mat-form-field>
-                                        <input matInput placeholder="Nome do local" name="ds_localidade" [(ngModel)]="inputNomeLocalidade" />
+                                        <input matInput placeholder="Nome do local" name="ds_localidade" [(ngModel)]="inputNomeLocalidade" required/>
                                     </mat-form-field>
+                                    <span class="form-error ds_localidade"></span>
                                 </div>
 
                                 <div class="col-md-6">
                                     <mat-form-field>
-                                        <input matInput placeholder="Endereço" name="ds_endereco" [(ngModel)]="inputEnderecoLocalidade" />
+                                        <input matInput placeholder="Endereço" name="ds_endereco" [(ngModel)]="inputEnderecoLocalidade" required/>
                                     </mat-form-field>
+                                    <span class="form-error ds_endereco"></span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <mat-form-field>
-                                        <input matInput placeholder="Número" name="nr_localidade" [(ngModel)]="inputNumeroLocalidade" />
+                                        <input matInput placeholder="Número" name="nr_localidade" [(ngModel)]="inputNumeroLocalidade" required/>
                                     </mat-form-field>
+                                    <span class="form-error nr_localidade"></span>
                                 </div>
 
                                 <div class="col-md-6">
                                     <mat-form-field>
-                                        <input matInput placeholder="Bairro" name="ds_bairro" [(ngModel)]="inputBairroLocalidade" />
+                                        <input matInput placeholder="Bairro" name="ds_bairro" [(ngModel)]="inputBairroLocalidade" required/>
                                     </mat-form-field>
+                                    <span class="form-error ds_bairro"></span>
                                 </div>
                             </div>
 
@@ -141,9 +137,9 @@
                             </div>
                         </form>
                         <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Cancelar</button>
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="cancelar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Cancelar</button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post', $event)" *ngIf="!editar">salvar <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put', $event)" *ngIf="editar">salvar <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
                         </div>
                     </div>
                 </div>
