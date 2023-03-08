@@ -34,10 +34,10 @@
                                                 <span class="form-error nm_cargo"></span>
                                             </td>
                                             <td>
-                                                <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendCargo($event)"></i>
                                                 </button>
-                                                <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro()"></i>
                                                 </button>
                                             </td>
@@ -61,18 +61,18 @@
                                             <td >
                                                 <div *ngIf="!item.mostrarEditarCargo">
                                                     <button style="background: none;border: none;">
-                                                        <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoCargo(item, listaCargosCco)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                        <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoCargo(item, listaCargosCco)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
                                                     </button>
                                                     <button style="background: none;border: none;">
-                                                        <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                        <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
                                                     </button>
                                                 </div>
                                                 <div *ngIf="item.mostrarEditarCargo">
                                                     <button style="background: none;border: none;">
-                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarCargo(item, $event)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                        <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarCargo(item, $event)" matTooltip="Salvar" [matTooltipPosition]="'below'"></i>
                                                     </button>
                                                     <button style="background: none;border: none;">
-                                                        <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                        <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'below'"></i>
                                                     </button>
                                                 </div>
                                             </td>
