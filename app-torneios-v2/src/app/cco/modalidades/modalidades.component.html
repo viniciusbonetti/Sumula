@@ -1,8 +1,8 @@
-<div class="main-content">
-    <div class="container-fluid">
-        <div class="row">
+<div class="main-conten h-100t">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-header card-header-danger d-flex align-items-center">
                         <h4 class="card-title p-2">Modalidades</h4>
                         <p class="card-category">Adicionar e editar modalidades</p>
@@ -39,10 +39,10 @@
                                             <span class="form-error tp_modalidade"></span>
                                         </td>
                                         <td>
-                                            <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                            <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendModalidade()"></i>
                                             </button>
-                                            <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                            <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro()"></i>
                                             </button>
                                         </td>
@@ -76,18 +76,18 @@
                                         </td>
                                         <td>
                                             <div *ngIf="!item.mostrarEditarModalidade">
-                                                <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                <button style="background: none;border: none;" matTooltip="Editar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoModalidade(item, listaModalidades)"></i>
                                                 </button>
-                                                <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                <button style="background: none;border: none;" matTooltip="Excluir" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item)"></i>
                                                 </button>
                                             </div>
                                             <div *ngIf="item.mostrarEditarModalidade">
-                                                <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarModalidade(item)"></i>
                                                 </button>
-                                                <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro(item)"></i>
                                                 </button>
                                             </div>
