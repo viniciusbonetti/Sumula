@@ -1,8 +1,8 @@
-<div class="main-content">
-    <div class="container-fluid">
-        <div class="row">
+<div class="main-content h-100">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-header card-header-danger d-flex align-items-center">
                         <h4 class="card-title p-2">Delegações</h4>
                         <p class="card-category">Adicionar e editar delegações</p>
@@ -29,7 +29,7 @@
                                         <td></td>
                                         <td class="p-0">
                                             <mat-form-field class="example-full-width">
-                                                <input matInput name="nm_delegacao" matInput placeholder="" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" />
+                                                <input matInput name="nm_delegacao" matInput placeholder="Nome da Delegação" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" required />
                                             </mat-form-field>
                                             <span class="form-error nm_delegacao"></span>
                                         </td>
@@ -45,19 +45,19 @@
                                         </td>
                                         <td>
                                             <mat-form-field class="" appearance="fill">
-                                                <mat-label>Municipio</mat-label>
+                                                <mat-label>Município</mat-label>
                                                 <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
-                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option disabled value="">Selecione o Município</option>
                                                     <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
                                                 </select>
                                             </mat-form-field>
                                             <span class="form-error id_municipio"></span>
                                         </td>
                                         <td>
-                                            <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                            <button style="background: none;border: none;" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDelegacao()"></i>
                                             </button>
-                                            <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                            <button style="background: none;border: none;" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarCadastro()"></i>
                                             </button>
                                         </td>
@@ -70,7 +70,7 @@
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
                                             <mat-form-field class="example-full-width">
-                                                <input matInput type="text" name="nm_delegacao" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
+                                                <input matInput type="text" name="nm_delegacao" placeholder="Nome da Delegação" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
                                             </mat-form-field>
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
@@ -85,7 +85,7 @@
                                                     <option *ngFor="let itemSelectEstado of listaEstado" value="{{ itemSelectEstado.id }}">{{ itemSelectEstado.nm_estado }}</option>
                                                 </select>
                                             </mat-form-field>
-                                            <span class="form-error id_estado"></span>                                            
+                                            <span class="form-error id_estado"></span>
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
                                             {{ item.id_municipio.estado.nm_estado | uppercase }}
@@ -93,33 +93,33 @@
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
                                             <mat-form-field class="" appearance="fill" >
-                                                <mat-label>Municipio</mat-label>
+                                                <mat-label>Município</mat-label>
                                                 <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id">
-                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option disabled value="">Selecione o Município</option>
                                                     <option *ngFor="let itemSelectMunicipio of listaMunicipiosEditar" value="{{ itemSelectMunicipio.id }}">{{ itemSelectMunicipio.nm_municipio }} / {{ itemSelectMunicipio.id_estado.sg_estado }}</option>
                                                 </select>
                                             </mat-form-field>
                                             <span class="form-error id_municipio"></span>
                                         </td>
-                                        <td *ngIf="!item.mostrarEditarDelegacao">                                            
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
                                             {{ item.id_municipio.nm_municipio | uppercase }}
                                         </td>
                                         
                                         <td class="col-md-2">
                                             <div *ngIf="!item.mostrarEditarDelegacao">
                                                 <button style="background: none;border: none;">
-                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" matTooltip="Editar" [matTooltipPosition]="'left'"></i>
+                                                    <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoDelegacao(item, listaDelegacoes)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
                                                 </button>
                                                 <button style="background: none;border: none;">
-                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)" matTooltip="Excluir" [matTooltipPosition]="'right'"></i>
+                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger " (click)="excluir(item)" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
                                                 </button>
                                             </div>
                                             <div *ngIf="item.mostrarEditarDelegacao">
                                                 <button style="background: none;border: none;">
-                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarDelegacao(item)" matTooltip="Salvar" [matTooltipPosition]="'left'"></i>
+                                                    <i class="fa-solid fa-square-check fa-2x text-success" (click)="editarDelegacao(item)" matTooltip="Salvar" [matTooltipPosition]="'below'"></i>
                                                 </button>
                                                 <button style="background: none;border: none;">
-                                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'right'"></i>
+                                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelarEdicao(item)" matTooltip="Cancelar" [matTooltipPosition]="'below'"></i>
                                                 </button>
                                             </div>
                                         </td>

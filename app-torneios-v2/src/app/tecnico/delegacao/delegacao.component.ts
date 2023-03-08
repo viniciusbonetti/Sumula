@@ -86,6 +86,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
         this.inputNomeDelegacao = "";
         this.estadoSelect = "";
         this.municipioSelect = "";
+        this.novoCadastro = false;
     }
 
     public cancelarEdicao(item) {
@@ -93,6 +94,7 @@ export class DelegacaoComponent extends ControllerComponent implements OnInit {
     }
 
     public mostrarEdicaoDelegacao(item, listaDelegacoes) {
+        this.novoCadastro = false;
         listaDelegacoes.forEach((element) => {
             element.mostrarEditarDelegacao = false;
         });
