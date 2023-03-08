@@ -1,43 +1,67 @@
-<div class="card" style="box-shadow: none;">
+<div class="card eventoModal" style="box-shadow: none;">
     <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
         <h4 class="card-title p-2">Ficha técnica do evento:</h4>
         <p class="card-category">{{data.nomeEventoModal}}</p>
     </div>
     <mat-dialog-content class="mat-typography" style="width: 100vh;">
-        <div class="p-2">
-            <h2>Informações do evento </h2>
-            <p>Nome do evento: {{data.nomeEventoModal}}</p>
-            <p>Início: {{data.inicioEventoModal}}</p>
-            <p>Fim: {{data.fimEventoModal}}</p>
+        <h2 class="text-center pt-2">Informações do evento </h2>
+        <div class="col-12 pb-2 d-flex justify-content-between align-items-center">
+            <div class="row mx-auto">
+                <span class="text-pill mx-2" title="Nome do Evento"><i class="fa-solid fa-lg fa-medal mr-2"></i> {{data.nomeEventoModal | uppercase}}</span>
+                <span class="text-pill mx-2" title="Data Inicial"><i class="fa-solid fa-lg fa-hourglass-start mr-2"></i> {{data.inicioEventoModal | date : "dd/MM/yyyy HH:mm"}}</span>
+                <span class="text-pill mx-2" title="Data Final"><i class="fa-solid fa-lg fa-hourglass-end mr-2"></i> {{data.fimEventoModal | date : "dd/MM/yyyy HH:mm"}}</span>
+            </div>
         </div>
-    
-        <div>
-            <h2>Modalidades</h2>
-            <div *ngFor="let item of data.modalidadesEventoModal">
-                <p> {{item.id_modalidade.nm_modalidade}}: {{item.tp_naipe}} de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}} </p>
-            </div>
-            <div *ngIf="!data.modalidadesEventoModal.length">
-                <p>Nenhuma modalidade cadastrada</p>
-            </div>
+        
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Modalidades do Evento</h2>
+            <table class="table text-center table-hover">
+                <thead class="text-primary">
+                    <th class="col-md-4">MODALIDADE</th>
+                    <th class="col-md-4">NAIPE</th>
+                    <th class="col-md-4">IDADE</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data.modalidadesEventoModal">
+                        <td> {{item.id_modalidade.nm_modalidade}} </td>
+                        <td> {{item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto") }} </td>
+                        <td> de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}} </td>
+                    </tr>
+                    <tr *ngIf="!data.modalidadesEventoModal.length">
+                        <td colspan="3" class="text-center">Nenhuma modalidade cadastrada</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <div>
-            <h2>Encarregados</h2>
-            <div *ngFor="let item of data.encarregadosEventoModal">
-                <p> {{item.id_cargocco.nm_cargo}}: {{item.nm_ocupante}} </p>
-            </div>
-            <div *ngIf="!data.encarregadosEventoModal.length">
-                <p>Nenhum encarregado cadastrado</p>
-            </div>
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Encarregados do Evento</h2>
+            <table class="table text-center table-hover">
+                <thead class="text-primary">
+                    <th class="col-md-4">CARGO</th>
+                    <th class="col-md-8">NOME</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data.encarregadosEventoModal">
+                        <td>{{item.id_cargocco.nm_cargo | uppercase}}</td>
+                        <td>{{item.nm_ocupante | uppercase}}</td>
+                    </tr>
+                    <tr *ngIf="!data.encarregadosEventoModal.length">
+                        <td colspan="2" class="text-center">Nenhum encarregado cadastrado</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <div>
-            <h2>Municípios</h2>
-            <div *ngFor="let item of data.municipiosEventoModal">
-                <p> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </p>
-            </div>
-            <div *ngIf="!data.municipiosEventoModal.length">
-                <p>Nenhum município cadastrado</p>
+        <div class="col-12 py-2 d-flex justify-content-between align-items-center">
+            <h2>Municípios do Evento</h2>
+            <div class="row mx-auto justify-content-between align-items-center">
+                <div *ngFor="let item of data.municipiosEventoModal">
+                    <span class="text-pill mx-1 my-1"> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </span>
+                </div>
+                <div *ngIf="!data.municipiosEventoModal.length">
+                    <span class="text-pill">Nenhum município cadastrado</span>
+                </div>
             </div>
         </div>
     </mat-dialog-content>
