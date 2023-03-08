@@ -29,7 +29,7 @@
                                         <td></td>
                                         <td class="p-0">
                                             <mat-form-field class="example-full-width">
-                                                <input matInput name="nm_delegacao" matInput placeholder="" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" />
+                                                <input matInput name="nm_delegacao" matInput placeholder="Nome da Delegação" type="text" name="nm_delegacao" [(ngModel)]="inputNomeDelegacao" required />
                                             </mat-form-field>
                                             <span class="form-error nm_delegacao"></span>
                                         </td>
@@ -45,9 +45,9 @@
                                         </td>
                                         <td>
                                             <mat-form-field class="" appearance="fill">
-                                                <mat-label>Municipio</mat-label>
+                                                <mat-label>Município</mat-label>
                                                 <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
-                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option disabled value="">Selecione o Município</option>
                                                     <option *ngFor="let item of listaMunicipios" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
                                                 </select>
                                             </mat-form-field>
@@ -70,7 +70,7 @@
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
                                             <mat-form-field class="example-full-width">
-                                                <input matInput type="text" name="nm_delegacao" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
+                                                <input matInput type="text" name="nm_delegacao" placeholder="Nome da Delegação" id="" *ngIf="item.mostrarEditarDelegacao" [(ngModel)]="item.nm_delegacao" />
                                             </mat-form-field>
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
@@ -85,7 +85,7 @@
                                                     <option *ngFor="let itemSelectEstado of listaEstado" value="{{ itemSelectEstado.id }}">{{ itemSelectEstado.nm_estado }}</option>
                                                 </select>
                                             </mat-form-field>
-                                            <span class="form-error id_estado"></span>                                            
+                                            <span class="form-error id_estado"></span>
                                         </td>
                                         <td *ngIf="!item.mostrarEditarDelegacao">
                                             {{ item.id_municipio.estado.nm_estado | uppercase }}
@@ -93,15 +93,15 @@
 
                                         <td *ngIf="item.mostrarEditarDelegacao">
                                             <mat-form-field class="" appearance="fill" >
-                                                <mat-label>Municipio</mat-label>
+                                                <mat-label>Município</mat-label>
                                                 <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id">
-                                                    <option disabled value="">Selecione o Municipio</option>
+                                                    <option disabled value="">Selecione o Município</option>
                                                     <option *ngFor="let itemSelectMunicipio of listaMunicipiosEditar" value="{{ itemSelectMunicipio.id }}">{{ itemSelectMunicipio.nm_municipio }} / {{ itemSelectMunicipio.id_estado.sg_estado }}</option>
                                                 </select>
                                             </mat-form-field>
                                             <span class="form-error id_municipio"></span>
                                         </td>
-                                        <td *ngIf="!item.mostrarEditarDelegacao">                                            
+                                        <td *ngIf="!item.mostrarEditarDelegacao">
                                             {{ item.id_municipio.nm_municipio | uppercase }}
                                         </td>
                                         
