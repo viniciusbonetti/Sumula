@@ -1,8 +1,8 @@
-<div class="main-content h-100" *ngIf="!novoCadastro">
+<div class="main-content h-100">
     <div class="container-fluid h-100">
         <div class="row h-100">
             <div class="col-md-12">
-                <div class="card h-100">
+                <div class="card h-100" *ngIf="!novoCadastro">
                     <div class="card-header card-header-danger d-flex align-items-center">
                         <h4 class="card-title p-2">Tenant Usuários</h4>
                         <p class="card-category">Adicionar e editar empresas aos usuários</p>
@@ -50,83 +50,73 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div *ngIf="novoCadastro">
-    <div class="main-content h-100">
-        <div class="container-fluid h-100">
-            <div class="row h-100">
-                <div class="col-md-12">
-                    <div class="card h-100">
-                        <div class="card-header card-header-danger d-flex align-items-center">
-                            <div class="wizard-navigation">
-                                <ul class="nav nav-pills">
-                                    <li class="nav-item">
-                                        <a class="nav-link tabHeader active" href="#usuario" data-toggle="tab" role="tab" (click)="tabs('')"> USUÁRIOS </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link tabHeader" href="#tenants" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> TENANTS </a>
-                                    </li>
-                                </ul>
-                            </div>
+                <div class="card h-100" *ngIf="novoCadastro">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <div class="wizard-navigation">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link tabHeader active" href="#usuario" data-toggle="tab" role="tab" (click)="tabs('')"> USUÁRIOS </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link tabHeader" href="#tenants" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> TENANTS </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="usuario">
-                                    <div class="col-md-12 d-flex flex-column align-items-center">
-                                        <div class="col-md-7">
-                                            <mat-form-field class="example-full-width">
-                                                <input matInput placeholder="Nome completo" type="text" name="nm_usuario" [(ngModel)]="inputNome" />
-                                            </mat-form-field>
-                                            <span class="form-error nm_usuario"></span>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <mat-form-field class="example-full-width">
-                                                <input matInput placeholder="email@email.com" type="email" name="ds_email" [(ngModel)]="inputEmail" />
-                                            </mat-form-field>
-                                            <span class="form-error ds_email"></span>
-                                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="usuario">
+                                <div class="col-md-12 d-flex flex-column align-items-center">
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Nome completo" type="text" name="nm_usuario" [(ngModel)]="inputNome" />
+                                        </mat-form-field>
+                                        <span class="form-error nm_usuario"></span>
                                     </div>
-                                    <div class="col-md-12 d-flex flex-column align-items-center" *ngIf="!editar">
-                                        <div class="col-md-7">
-                                            <mat-form-field class="example-full-width">
-                                                <input matInput placeholder="Senha" type="text" name="sn_usuario" [(ngModel)]="inputSenha" />
-                                            </mat-form-field>
-                                            <span class="form-error sn_usuario"></span>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <mat-form-field class="example-full-width">
-                                                <input matInput placeholder="Confirme sua senha" type="text" name="c_sn_usuario" [(ngModel)]="inputConfirmaSenha" />
-                                            </mat-form-field>
-                                            <span class="form-error c_sn_usuario"></span>
-                                        </div>
-                                    </div>
-                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Cancelar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="email@email.com" type="email" name="ds_email" [(ngModel)]="inputEmail" />
+                                        </mat-form-field>
+                                        <span class="form-error ds_email"></span>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="tenants">
-                                    <div>
-                                        <mat-label>Tenant</mat-label>
-                                        <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
-                                            <li style="list-style: none" class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
-                                                <mat-checkbox type="checkbox" name="id_tenant" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event)">
-                                                    {{ item.nm_tenant | uppercase }}
-                                                </mat-checkbox>
-                                            </li>
-                                        </ul>
-                                        <span class="form-error id_tenant"></span>
+                                <div class="col-md-12 d-flex flex-column align-items-center" *ngIf="!editar">
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Senha" type="text" name="sn_usuario" [(ngModel)]="inputSenha" />
+                                        </mat-form-field>
+                                        <span class="form-error sn_usuario"></span>
                                     </div>
-                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
+                                    <div class="col-md-7">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Confirme sua senha" type="text" name="c_sn_usuario" [(ngModel)]="inputConfirmaSenha" />
+                                        </mat-form-field>
+                                        <span class="form-error c_sn_usuario"></span>
                                     </div>
+                                </div>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Cancelar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tenants">
+                                <div>
+                                    <mat-label>Tenant</mat-label>
+                                    <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
+                                        <li style="list-style: none" class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
+                                            <mat-checkbox type="checkbox" name="id_tenant" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event)">
+                                                {{ item.nm_tenant | uppercase }}
+                                            </mat-checkbox>
+                                        </li>
+                                    </ul>
+                                    <span class="form-error id_tenant"></span>
+                                </div>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Voltar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
                                 </div>
                             </div>
                         </div>
