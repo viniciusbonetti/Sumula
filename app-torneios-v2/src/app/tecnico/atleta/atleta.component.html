@@ -1,9 +1,9 @@
-<div *ngIf="!novoCadastro">
-    <div class="main-content">
-        <div class="container-fluid">
-            <div class="row">
+<div class="h-100" *ngIf="!novoCadastro">
+    <div class="main-content h-100">
+        <div class="container-fluid h-100">
+            <div class="row h-100">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-header card-header-danger d-flex align-items-center">
                             <h4 class="card-title p-2">Atletas</h4>
                             <p class="card-category">Adicionar e editar atletas</p>
@@ -61,10 +61,10 @@
                                                 <button (click)="mostrarEdicaoAtleta(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'left'">
                                                     <i class="fa-solid fa-square-list fa-2x text-warning"></i>
                                                 </button>
-                                                <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEdicaoAtleta(item, 'editar')"></i>
                                                 </button>
-                                                <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'">
                                                     <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'atleta')"></i>
                                                 </button>
                                             </td>
@@ -138,9 +138,9 @@
                                             <div class="col-md-6">
                                                 <div class="">
                                                     <mat-form-field appearance="fill">
-                                                        <mat-label>Genero</mat-label>
+                                                        <mat-label>Gênero</mat-label>
                                                         <select matNativeControl required name="tp_genero" [(ngModel)]="generoSelect">
-                                                            <option disabled value="">Selecione o genero</option>
+                                                            <option disabled value="">Selecione o gênero</option>
                                                             <option value="m">Masculino</option>
                                                             <option value="f">Feminino</option>
                                                         </select>
@@ -181,9 +181,9 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <mat-form-field appearance="fill">
-                                                    <mat-label>Municipio</mat-label>
+                                                    <mat-label>Município</mat-label>
                                                     <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect">
-                                                        <option disabled value="">Selecione o municipio</option>
+                                                        <option disabled value="">Selecione o município</option>
                                                         <option *ngFor="let item of listaMunicipio" value="{{ item.id }}">{{ item.nm_municipio }} / {{ item.id_estado.sg_estado }}</option>
                                                     </select>
                                                 </mat-form-field>
@@ -256,10 +256,10 @@
                                                         <span class="form-error ds_midia"></span>
                                                     </td>
                                                     <td>
-                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                             <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('post')"></i>
                                                         </button>
-                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'below'">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormDocumentoAtleta()"></i>
                                                         </button>
                                                     </td>
@@ -316,18 +316,18 @@
 
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarDocumento">
-                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarDocumentoAtleta(item, listaDocumentoAtleta)"></i>
                                                             </button>
-                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'documento')"></i>
                                                             </button>
                                                         </div>
                                                         <div *ngIf="item.mostrarEditarDocumento">
-                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendDocumentoAtleta('put', item)"></i>
                                                             </button>
-                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('documento', item)"></i>
                                                             </button>
                                                         </div>
@@ -376,10 +376,10 @@
                                                         <span class="form-error ds_contato"></span>
                                                     </td>
                                                     <td>
-                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                        <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                             <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('post')"></i>
                                                         </button>
-                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'right'">
+                                                        <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'below'">
                                                             <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="limparFormContatoAtleta()"></i>
                                                         </button>
                                                     </td>
@@ -421,19 +421,19 @@
                                                     </td>
                                                     <td>
                                                         <div *ngIf="!item.mostrarEditarContato">
-                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'left'">
+                                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarContatoAtleta(item, listaContatoAtleta)"></i>
                                                             </button>
-                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'right'">
+                                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'contato')"></i>
                                                             </button>
                                                         </div>
 
                                                         <div *ngIf="item.mostrarEditarContato">
-                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'left'">
+                                                            <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendContatoAtleta('put', item)"></i>
                                                             </button>
-                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'right'">
+                                                            <button style="background: none; border: none" matTooltip="Cancelar" [matTooltipPosition]="'below'">
                                                                 <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('contato', item)"></i>
                                                             </button>
                                                         </div>
