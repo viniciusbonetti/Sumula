@@ -71,6 +71,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public editarModalidadeSelect = "";
     public editarNaipeSelect = "";
     public localidadeSelect = "";
+    public localEndereco = "";
 
     public idEditarEvento = "";
     public idEvento = "";
@@ -539,7 +540,12 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public setEnderecoLocalidade(metodo, event){
-        console.log(event);
+        this.listaLocalidades.forEach(localidades => {
+            if(localidades['id'] == event){
+                this.localEndereco = localidades['ds_endereco'] + ', ' + localidades['nr_localidade'] + ' - ' + localidades['ds_bairro'];
+                this.localEndereco = this.localEndereco.toLocaleUpperCase();
+            }
+        });
         
         if(metodo == 'criar'){
             // this.enderecoLocalidade = this.teste;
