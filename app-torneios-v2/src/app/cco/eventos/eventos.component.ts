@@ -74,9 +74,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public localidadeSelect = "";
     public localEndereco = "";
     public editarLocalEndereco = "";
-    public editarEstadoSelect = "";
-    public editarMunicipioSelect = "";
+    public editarEstadoSelectLocalidade = "";
+    public editarMunicipioSelectLocalidade = "";
     public editarLocalidadeSelect = "";
+    public editarEstadoSelectMunicipios = "";
+    public editarMunicipioSelectMunicipios = "";
 
     public idEditarEvento = "";
     public idEvento = "";
@@ -94,7 +96,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.novoCadastro = !this.novoCadastro;
     }
 
-    public async botaoAvancar() {
+    public async botaoAvancar() {        
         let tabHeaders = document.getElementsByClassName("tabHeader");
         let tabPanes = document.getElementsByClassName("tab-pane");
         let nextIndex: number = 0;
@@ -111,7 +113,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             }
         } else if (this.num == "1") {
             if (this.listaModalidadesEvento.length > 0) {
-                this.num = "2";
+                this.num = "2";                
             } else {
                 alert("cadastre uma modalidade");
             }
@@ -122,10 +124,20 @@ export class EventosComponent extends ControllerComponent implements OnInit {
                 alert("cadastre um encarregado");
             }
         } else if (this.num == "3") {
-            alert("informações salvas");
-            this.num = "";
-            await this.limparFormEvento();
-            await this.finalizarCadastro();
+            if(this.listaMunicipiosEvento.length > 0){
+                this.num = '4';
+            }else {
+                alert('cadastre um municipio');
+            }
+        }else if(this.num == '4'){
+            if(this.listaLocalidadesEvento.length >0){
+                alert("informações salvas");
+                await this.limparFormEvento();
+                await this.finalizarCadastro();
+                this.num = "";
+            }else {
+                alert('cadastre uma localidade')
+            }
         }
 
         Array.from(tabPanes).forEach(function (tab, index) {
@@ -401,8 +413,14 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async getMunicipio(metodo, item) {
-        let resposta;
+        this.municipioSelect = '';
+
+        this.editarMunicipioSelectMunicipios = '';
+
+        this.editarEstadoSelectLocalidade = '';
+        this.editarMunicipioSelectLocalidade = '';
         
+        let resposta;
         if (metodo == "criar") {
             const path = this.paths.municipio + `/${this.estadoSelect}`;
             resposta = await this.getInfo(path, this.setToken);
@@ -495,18 +513,21 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         item.mostrarEditarEncarregados = true;
     }
 
-    public editarMunicipiosEvento(item, lista) {
+    public async editarMunicipiosEvento(item, lista) {        
         lista.forEach((element) => {
             element.mostrarEditarMunicipios = false;
         });
         item.mostrarEditarMunicipios = true;
         this.mostrarEditarMunicipios = true;
         this.limparFormMunicipio();
-        this.getMunicipio("editar", item.id_municipio.estado.id);
+        await this.getMunicipio("editar", item.id_municipio.estado.id);
+        this.editarEstadoSelectMunicipios = item.id_municipio.estado.id;
+        this.editarMunicipioSelectMunicipios = item.id_municipio.id;
     }
 
     public async getLocalidades(metodo, item){
         let resposta;
+        this.editarLocalidadeSelect = '';
         
         if (metodo == "criar") {
             const path = this.paths.localidades + `/m${this.municipioSelect}&t${this.tenant}`;
@@ -518,14 +539,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         
         if(resposta.status == 200){
             this.listaLocalidades = resposta.data.data;
-        }        
+        }
     }
 
     public async cadastrarLocalidadeEvento(metodo, item){
-        console.log(metodo);
-        
-        console.log(item.id_localidade.id);
-        
         const formLocalidadeEvento = new FormData();        
         formLocalidadeEvento.append('id_evento', this.idEvento);
         if(metodo == 'post'){
@@ -533,7 +550,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             await this.postInfo(this.paths.localidadeevento, formLocalidadeEvento, this.setToken);
             this.showToast("bottom", "Localidade do evento criado com sucesso!", "success");
         }else if(metodo == 'put'){            
-            formLocalidadeEvento.append('id_localidade', item.id_localidade.id);
+            formLocalidadeEvento.append('id_localidade', this.editarLocalidadeSelect);
             const path = this.paths.localidadeevento + `/${item.id}`;
             await this.putInfo(path, formLocalidadeEvento, this.setToken);
         }
@@ -564,21 +581,22 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         await this.getMunicipio("editar", item.id_localidade.municipio.id_estado);
         await this.getLocalidades("editar", item.id_localidade.id_municipio);
         
-        // this.editarEstadoSelect = item.id_localidade.municipio.id_estado;
-        // this.editarMunicipioSelect = item.id_localidade.id_municipio;
-        this.localidadeSelect = item.id_localidade.id;
+        
+        this.editarEstadoSelectLocalidade = item.id_localidade.municipio.id_estado;
+        this.editarMunicipioSelectLocalidade = item.id_localidade.id_municipio;
+        this.editarLocalidadeSelect = item.id_localidade.id;
         
         
         this.setEnderecoLocalidade(item.id_localidade.id, 'editar');
     }
 
     public limparEditarLocalidadeEvento(){
-        this.editarEstadoSelect = '';
-        this.editarMunicipioSelect = '';
+        this.editarEstadoSelectLocalidade = '';
+        this.editarMunicipioSelectLocalidade = '';
         this.editarLocalidadeSelect = '';
     }
 
-    public setEnderecoLocalidade(event, metodo){        
+    public setEnderecoLocalidade(event, metodo){
         this.listaLocalidades.forEach(localidades => {
             if(localidades['id'] == event){
                 if(metodo == 'criar'){
