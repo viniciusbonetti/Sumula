@@ -63,7 +63,7 @@
                         <div class="wizard-navigation">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
-                                    <a class="nav-link tabHeader active" href="#eventos" data-toggle="tab" role="tab" (click)="tabs('0')"> EVENTO </a>
+                                    <a class="nav-link tabHeader active" href="#eventos" data-toggle="tab" role="tab" (click)="tabs('')"> EVENTO </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link tabHeader" href="#modalidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
@@ -465,7 +465,7 @@
                                                 <td *ngIf="item.mostrarEditarMunicipios">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Estado</mat-label>
-                                                        <select matNativeControl required name="id_estado" [(ngModel)]="item.id_municipio.estado.id" (ngModelChange)="getMunicipio('editar', item.id_municipio.estado.id)" required>
+                                                        <select matNativeControl required name="id_estado" [(ngModel)]="editarEstadoSelectMunicipios" (ngModelChange)="getMunicipio('editar', editarEstadoSelectMunicipios)" required>
                                                             <option disabled value="">Selecione o estado</option>
                                                             <option *ngFor="let itemSelectEditar of listaEstado" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_estado | uppercase }}</option>
                                                         </select>
@@ -479,7 +479,7 @@
                                                 <td *ngIf="item.mostrarEditarMunicipios">
                                                     <mat-form-field class="" appearance="fill">
                                                         <mat-label>Município</mat-label>
-                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="item.id_municipio.id" required>
+                                                        <select matNativeControl required name="id_municipio" [(ngModel)]="editarMunicipioSelectMunicipios" required>
                                                             <option disabled value="">Selecione o município</option>
                                                             <option *ngFor="let itemSelectEditar of listaMunicipios" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_municipio | uppercase }} / {{ itemSelectEditar.id_estado.sg_estado }}</option>
                                                         </select>
@@ -520,7 +520,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="" appearance="fill">
                                             <mat-label>Estado</mat-label>
-                                            <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" [disabled]="mostrarEditarMunicipios" required>
+                                            <select matNativeControl required name="id_estado" [(ngModel)]="estadoSelect" (ngModelChange)="getMunicipio('criar')" [disabled]="mostrarEditarLocalidade" required>
                                                 <option disabled value="">Selecione o estado</option>
                                                 <option *ngFor="let itemSelectCriar of listaEstado" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_estado | uppercase }}</option>
                                             </select>
@@ -531,7 +531,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="" appearance="fill">
                                             <mat-label>Município</mat-label>
-                                            <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" (ngModelChange)="getLocalidades('criar')" [disabled]="mostrarEditarMunicipios" required>
+                                            <select matNativeControl required name="id_municipio" [(ngModel)]="municipioSelect" (ngModelChange)="getLocalidades('criar')" [disabled]="mostrarEditarLocalidade" required>
                                                 <option disabled value="">Selecione o município</option>
                                                 <option *ngFor="let itemSelectCriar of listaMunicipios" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.nm_municipio | uppercase }} / {{ itemSelectCriar.id_estado.sg_estado }}</option>
                                             </select>
@@ -542,7 +542,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="" appearance="fill">
                                             <mat-label>Localidades</mat-label>
-                                            <select matNativeControl required name="id_localidade" [(ngModel)]="localidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'criar')" [disabled]="mostrarEditarMunicipios" required>
+                                            <select matNativeControl required name="id_localidade" [(ngModel)]="localidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'criar')" [disabled]="mostrarEditarLocalidade" required>
                                                 <option disabled value="">Selecione a localidade</option>
                                                 <option *ngFor="let itemSelectCriar of listaLocalidades;" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.ds_localidade | uppercase }} </option>
                                             </select>
@@ -588,7 +588,7 @@
                                                     <div class="col-md-4">
                                                         <mat-form-field class="" appearance="fill">
                                                             <mat-label>Estado</mat-label>
-                                                            <select matNativeControl name="id_estado" [(ngModel)]="item.id_localidade.municipio.id_estado" (ngModelChange)="getMunicipio('editar', item.id_localidade.municipio.id_estado)" [disabled]="mostrarEditarMunicipios" required>
+                                                            <select matNativeControl name="id_estado" [(ngModel)]="editarEstadoSelectLocalidade" (ngModelChange)="getMunicipio('editar', editarEstadoSelectLocalidade)" required>
                                                                 <option disabled value="">Selecione o estado</option>
                                                                 <option *ngFor="let itemSelectEditar of listaEstado" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_estado | uppercase }}</option>
                                                             </select>
@@ -599,7 +599,7 @@
                                                     <div class="col-md-4">
                                                         <mat-form-field class="" appearance="fill">
                                                             <mat-label>Município</mat-label>
-                                                            <select matNativeControl name="id_municipio" [(ngModel)]="item.id_localidade.id_municipio" (ngModelChange)="getLocalidades('editar', item.id_localidade.id_municipio)" [disabled]="mostrarEditarMunicipios" required>
+                                                            <select matNativeControl name="id_municipio" [(ngModel)]="editarMunicipioSelectLocalidade" (ngModelChange)="getLocalidades('editar', editarMunicipioSelectLocalidade)" required>
                                                                 <option disabled value="">Selecione o município</option>
                                                                 <option *ngFor="let itemSelectEditar of listaMunicipios" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.nm_municipio | uppercase }} / {{ itemSelectEditar.id_estado.sg_estado }}</option>
                                                             </select>
@@ -610,7 +610,7 @@
                                                     <div class="col-md-4">
                                                         <mat-form-field class="" appearance="fill">
                                                             <mat-label>Localidades</mat-label>
-                                                            <select matNativeControl name="id_localidade" [(ngModel)]="localidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'editar')" [disabled]="mostrarEditarMunicipios" required>
+                                                            <select matNativeControl name="id_localidade" [(ngModel)]="editarLocalidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'editar')" required>
                                                                 <option disabled value="">Selecione a localidade</option>
                                                                 <option *ngFor="let itemSelectEditar of listaLocalidades;" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.ds_localidade | uppercase }} </option>
                                                             </select>
