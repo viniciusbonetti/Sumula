@@ -45,7 +45,8 @@
     }
 
     &[data-background-color="black"]{
-        background-color: #30302f;
+        //background-color: #30302f;
+        background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(74,74,73,1) 75%);
     }
 
     &[data-background-color="red"]{
@@ -420,7 +421,7 @@
     }
 
     &[data-color="white"]{
-        @include set-background-color-button($orange-color);
+        @include set-background-color-button($pjxVerdeMedio);
         @include sidebar-active-color($white-color);
     }
 

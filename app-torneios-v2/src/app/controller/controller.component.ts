@@ -242,4 +242,13 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         }
         return listaFiltrada;
     }
+
+    /** Função para limpar string
+     * @params string   (string) -> texto para limpar
+     * return newString (string) -> texto formatado
+    */
+    public limpaString(string){
+        let newString = string.replace(/[,.-]/g, '');
+        return newString;
+    }
 }

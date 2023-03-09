@@ -241,7 +241,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         formAtleta.append("ds_endereco", this.inputEnderecoAtleta);
         formAtleta.append("nr_endereco", this.inputNmrEnderecoAtleta);
         formAtleta.append("id_municipio", this.municipioSelect);
-        formAtleta.append("nr_cep", this.inputCepAtleta.replace('.', '').replace('-', ''));
+        formAtleta.append("nr_cep", this.limpaString(this.inputCepAtleta));
         if (metodo == "post") {
             let sendAtleta = await this.postInfo(this.paths.atleta, formAtleta, this.setToken);            
             this.idAtleta = sendAtleta.id;
