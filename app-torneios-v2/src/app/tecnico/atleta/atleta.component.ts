@@ -228,7 +228,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         const path = this.paths.municipio + `/${this.estadoSelect}`;
         let resposta = await this.getInfo(path, this.setToken);
         if(resposta.status == 200){
-            this.listaMunicipio = resposta.data.data;
+            this.listaMunicipio = resposta.data.data;            
         }
     }
 
