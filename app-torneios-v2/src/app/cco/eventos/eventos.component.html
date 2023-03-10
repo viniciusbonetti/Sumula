@@ -38,6 +38,9 @@
                                             {{ item.dt_fim | date : "dd/MM/yyyy HH:mm" }}
                                         </td>
                                         <td>
+                                            <button style="background: none; border: none" matTooltip="Increver delegações" [matTooltipPosition]="'below'">
+                                                <i class="fa-solid fa-users-medical text-info" (click)="incricaoDelegacaoEvento(item)"></i>
+                                            </button>
                                             <button (click)="editarEvento(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-square-list fa-2x text-warning"></i>
                                             </button>
@@ -76,9 +79,6 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link tabHeader" href="#localidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('4')"> LOCALIDADES </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#delegacao" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('5')"> DELEGAÇÕES </a>
                                 </li>
                             </ul>
                         </div>
@@ -649,100 +649,6 @@
                                     <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
                                         <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane" id="delegacao">
-                                <div class="table-responsive">
-                                    <table class="table text-center table-hover">
-                                        <thead class="text-primary col-md-12">
-                                            <th class="col-md-2">ID</th>
-                                            <th class="col-md-2">Modalidade</th>
-                                            <th class="col-md-2">Idade mínima</th>
-                                            <th class="col-md-2">Idade máxima</th>
-                                            <th class="col-md-2">Naipe</th>
-                                            <th class="col-md-2"></th>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let item of listaModalidadesEvento">
-                                                <td>
-                                                    {{ item.id }}
-                                                </td>
-                                                <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ item.id_modalidade.nm_modalidade | uppercase }}
-                                                </td>
-                                                <td *ngIf="item.editarModalidadeEvento">
-                                                    <mat-form-field class="" appearance="fill">
-                                                        <mat-label>Modalidade</mat-label>
-                                                        <select matNativeControl name="id_modalidade" [(ngModel)]="editarModalidadeSelect" required>
-                                                            <option disabled value="">Selecione a modalidade</option>
-                                                            <option *ngFor="let itemSelect of listaModalidades" value="{{ itemSelect.id }}">{{ itemSelect.nm_modalidade | uppercase }}</option>
-                                                        </select>
-                                                    </mat-form-field>
-                                                    <span class="form-error id_modalidade"></span>
-                                                </td>
-
-                                                <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ item.nr_idadeinicio }}
-                                                </td>
-                                                <td *ngIf="item.editarModalidadeEvento">
-                                                    <mat-form-field>
-                                                        <input matInput placeholder="Idade Mínima" type="text" name="nr_idadeinicio" [(ngModel)]="inputEditarIdadeInicial" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error nr_idadeinicio"></span>
-                                                </td>
-
-                                                <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ item.nr_idadefinal }}
-                                                </td>
-                                                <td *ngIf="item.editarModalidadeEvento">
-                                                    <mat-form-field>
-                                                        <input matInput placeholder="Idade Máxima" type="text" name="nr_idadefinal" [(ngModel)]="inputEditarIdadeFinal" required />
-                                                    </mat-form-field>
-                                                    <span class="form-error nr_idadefinal"></span>
-                                                </td>
-
-                                                <td *ngIf="!item.editarModalidadeEvento">
-                                                    {{ item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto" | uppercase) }}
-                                                </td>
-                                                <td *ngIf="item.editarModalidadeEvento">
-                                                    <mat-form-field class="" appearance="fill">
-                                                        <mat-label>Naipe</mat-label>
-                                                        <select matNativeControl name="tp_naipe" [(ngModel)]="editarNaipeSelect" required>
-                                                            <option disabled value="">Selecione o naipe</option>
-                                                            <option value="M">Masculino</option>
-                                                            <option value="F">Feminino</option>
-                                                            <option value="X">Misto</option>
-                                                        </select>
-                                                    </mat-form-field>
-                                                    <span class="form-error tp_naipe"></span>
-                                                </td>
-
-                                                <td>
-                                                    <div *ngIf="!item.editarModalidadeEvento">
-                                                        <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item, listaModalidadesEvento)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
-                                                        </button>
-                                                        <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div *ngIf="item.editarModalidadeEvento">
-                                                        <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-square-check fa-2x text-success" (click)="sendModalidadesEvento('put', item)" matTooltip="Salvar" [matTooltipPosition]="'below'"></i>
-                                                        </button>
-                                                        <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-rectangle-xmark fa-2x text-danger" (click)="cancelar('modalidades', item)" matTooltip="Cancelar" [matTooltipPosition]="'below'"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-danger" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x mr-1"></i> Voltar</button>
-                                        <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar()">Próximo <i class="fa-solid fa-square-arrow-right fa-2x ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>

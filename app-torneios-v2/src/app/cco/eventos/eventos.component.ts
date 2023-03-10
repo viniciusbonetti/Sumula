@@ -2,13 +2,22 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { ControllerComponent } from "src/app/controller/controller.component";
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
-export interface DialogData {
+export interface DialogDataFicha {
     nomeEventoModal: string;
     inicioEventoModal: string;
     fimEventoModal: string;
     modalidadesEventoModal: string;
     encarregadosEventoModal: string;
     municipiosEventoModal: string;
+}
+
+export interface DialogDataInscricaoDelegacao {
+    token: string;
+    idEventoModal: string;
+    idTenantModal: string;
+    nomeEventoModal: string;
+    listaModalidadesEventoModalInscricao: string;
+    listaEstadoModalInscricao: string;
 }
 
 @Component({
@@ -97,8 +106,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     }
 
     public async botaoAvancar() {
-        console.log(this.num);
-
         let tabHeaders = document.getElementsByClassName("tabHeader");
         let tabPanes = document.getElementsByClassName("tab-pane");
         let nextIndex: number = 0;
@@ -114,7 +121,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             }
         } else if (this.num == "1") {
             if (this.listaModalidadesEvento.length > 0) {
-                console.log("teste");
                 this.num = "2";
             } else {
                 alert("cadastre uma modalidade");
@@ -475,7 +481,6 @@ export class EventosComponent extends ControllerComponent implements OnInit {
 
     public tabs(index) {
         this.num = index;
-        console.log(this.num);
     }
 
     public async editarEvento(item, opcao) {
@@ -687,6 +692,38 @@ export class EventosComponent extends ControllerComponent implements OnInit {
             }
         });
     }
+
+    public async incricaoDelegacaoEvento(item) {
+        this.listaModalidadesEvento = [];
+        const path = this.paths.modalidadeevento + `/i${item.id}&t${this.tenant}`;
+
+        let resposta = await this.getInfo(path, this.setToken);
+
+        if (resposta.status == 200) {
+            this.listaModalidadesEvento = resposta.data.data;
+        }
+        console.log(this.listaModalidadesEvento);
+
+        const dialogRef = this.dialog.open(InscricaoDelegacaoModal, {
+            data: {
+                token: this.setToken,
+                idEventoModal: item.id,
+                idTenantModal: this.tenant,
+                nomeEventoModal: item.nm_evento,
+                listaModalidadesEventoModalInscricao: this.listaModalidadesEvento,
+                listaEstadoModalInscricao: this.listaEstado,
+                municipiosEventoModal: this.listaMunicipiosEvento,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            // if (result) {
+            //     this.editarEvento(item, "editar");
+            // } else {
+            //     this.limparFormEvento();
+            // }
+        });
+    }
 }
 
 @Component({
@@ -694,6 +731,105 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     templateUrl: "EventosModal.html",
 })
 export class EventosModal {
-    constructor(public dialogRef: MatDialogRef<EventosModal>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    constructor(public dialogRef: MatDialogRef<EventosModal>, @Inject(MAT_DIALOG_DATA) public data: DialogDataFicha) {}
     ngOnInit() {}
+}
+
+@Component({
+    selector: "incricao-delegacao-modal",
+    templateUrl: "InscricaoDelegacaoModal.html",
+})
+export class InscricaoDelegacaoModal extends ControllerComponent {
+    constructor(public dialogRef: MatDialogRef<InscricaoDelegacaoModal>, @Inject(MAT_DIALOG_DATA) public data: DialogDataInscricaoDelegacao) {
+        super();
+    }
+
+    public listaMunicipiosModalInscricao: Array<{}> = [];
+    public listaDelegacao: Array<{}> = [];
+    public checkboxDelegacoes: Array<{}> = [];
+
+    public selectModalidadeInscricao: string = "";
+    public selectEstadoInscricao: string = "";
+    public selectMunicipioInscricao: string = "";
+
+    ngOnInit() {
+        this.getDelegacoes();
+    }
+
+    public async getMunicipio(metodo, item) {
+        this.selectMunicipioInscricao = "";
+
+        let resposta;
+        if (metodo == "criar") {
+            const path = this.paths.municipio + `/${this.selectEstadoInscricao}`;
+            resposta = await this.getInfo(path, this.data.token);
+        } else if (metodo == "editar") {
+            const path = this.paths.municipio + `/${item}`;
+            resposta = await this.getInfo(path, this.data.token);
+        }
+
+        if (resposta.status == 200) {
+            this.listaMunicipiosModalInscricao = resposta.data.data;
+        }
+    }
+
+    public async getDelegacoes() {
+        let resposta = await this.getInfo(this.paths.delegacao, this.data.token);
+        this.listaDelegacao = resposta.data.data;
+    }
+
+    public setCheckbox(id, isChecked) {
+        if (isChecked.checked) {
+            this.checkboxDelegacoes.push(id);
+        } else {
+            let index = this.checkboxDelegacoes.findIndex((x) => x == id);
+            this.checkboxDelegacoes.splice(index, 1);
+        }
+    }
+
+    public async sendInscricaoDelegacao(metodo) {
+        const formInscricaoDelegacao = new FormData();
+        formInscricaoDelegacao.append("id_modalidadeevento", this.selectModalidadeInscricao);
+        formInscricaoDelegacao.append("id_delegacao", this.checkboxDelegacoes.toString());
+        formInscricaoDelegacao.append("id_tenant", this.data.idTenantModal);
+
+        if (metodo == "post") {
+            await this.postInfo(this.paths.inscricaodelegacao, formInscricaoDelegacao, this.data.token);
+            this.showToast("bottom", "Delegações inscritas com sucesso!", "success");
+        } else if (metodo == "put") {
+            const path = this.paths.inscricaodelegacao + `/${this.data.idTenantModal}`;
+            await this.putInfo(path, formInscricaoDelegacao, this.data.token);
+            this.showToast("bottom", "Delegações do evento atualizadas com sucesso!", "success");
+        }
+        this.getInscricaoDelegacao();
+        this.checkboxDelegacoes = [];
+    }
+
+    public filtrar() {
+        this.getInscricaoDelegacao();
+    }
+
+    public async getInscricaoDelegacao() {
+        this.listaDelegacao.forEach((element2) => {
+            element2["checked"] = false;
+        });
+        const path = this.paths.inscricaodelegacao + `/m${this.selectModalidadeInscricao}&t${this.data.idTenantModal}`;
+        this.checkboxDelegacoes = [];
+        let listaDelegacaoRegistro = [];
+        let resposta = await this.getInfo(path, this.data.token);
+
+        if (resposta.status == 200) {
+            listaDelegacaoRegistro = resposta.data.data;
+            listaDelegacaoRegistro.forEach((element) => {
+                this.listaDelegacao.forEach((element2) => {
+                    if (element2["id"] == element.id_delegacao.id) {
+                        element2["checked"] = true;
+                        this.checkboxDelegacoes.push(element.id_delegacao.id);
+                    }
+                });
+            });
+        } else if(resposta.status == 404){
+            
+        }
+    }
 }

@@ -317,7 +317,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 this.listaModalidades.forEach((element2) => {
                     if (element2["id"] == element.id_modalidade.id) {
                         if(element.st_ativo == true){
-                            console.log(element.st_ativo);
                             element2["checked"] = true;
                             console.log(element2);
                             this.checkboxAtleta.push(element.id_modalidade.id);

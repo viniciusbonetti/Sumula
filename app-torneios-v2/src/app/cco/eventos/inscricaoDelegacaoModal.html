@@ -1,0 +1,63 @@
+<div class="card eventoModal" style="box-shadow: none">
+    <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
+        <h4 class="card-title p-2">Inscrever delegações no evento:</h4>
+        <p class="card-category">{{data.nomeEventoModal}}</p>
+    </div>
+    <mat-dialog-content class="mat-typography" style="width: 100vh">
+        <div class="d-flex justify-content-between align-items-center">            
+            <div class="col-4 pb-2 d-flex justify-content-between align-items-center flex-column">
+                <h2 class="text-center pt-2">Estado:</h2>
+                <mat-form-field class="" appearance="fill">
+                    <mat-label>Estado</mat-label>
+                    <select matNativeControl name="id_esdado" [(ngModel)]="selectEstadoInscricao" (ngModelChange)="getMunicipio('criar','')" required>
+                        <option disabled selected value="">Selecione o estado</option>
+                        <option *ngFor="let item of data.listaEstadoModalInscricao" value="{{ item.id }}">{{ item.nm_estado | uppercase }}</option>
+                    </select>
+                </mat-form-field>
+                <span class="form-error id_esdado"></span>
+            </div>
+            <div class="col-4 pb-2 d-flex justify-content-between align-items-center flex-column">
+                <h2 class="text-center pt-2">Municipio:</h2>
+                <mat-form-field class="" appearance="fill">
+                    <mat-label>Municipio</mat-label>
+                    <select matNativeControl name="id_municipio" [(ngModel)]="selectMunicipioInscricao" required>
+                        <option disabled selected value="">Selecione o municipio</option>
+                        <option *ngFor="let item of listaMunicipiosModalInscricao" value="{{ item.id }}">{{ item.nm_municipio | uppercase }} / {{ item.id_estado.sg_estado }}</option>
+                    </select>
+                </mat-form-field>
+                <span class="form-error id_municipio"></span>
+            </div>
+            <div class="col-4 pb-2 d-flex justify-content-between align-items-center flex-column">
+                <h2 class="text-center pt-2">Modalidade:</h2>
+                <mat-form-field class="" appearance="fill">
+                    <mat-label>Modalidade</mat-label>
+                    <select matNativeControl name="id_modalidade" [(ngModel)]="selectModalidadeInscricao" required>
+                        <option disabled selected value="">Selecione a modalidade</option>
+                        <option *ngFor="let item of data.listaModalidadesEventoModalInscricao" value="{{ item.id }}">{{ item.id_modalidade.nm_modalidade | uppercase }} / {{item.tp_naipe}}: {{item.nr_idadeinicio}} à {{ item.nr_idadefinal }} anos </option>
+                    </select>
+                </mat-form-field>
+                <span class="form-error id_modalidade"></span>
+            </div>
+        </div>
+
+
+        <div class="d-flex align-items-center justify-content-end pr-3">
+            <button mat-raised-button class="btn bg-info" (click)="filtrar()" >Filtrar</button>
+        </div>
+
+        <div>
+            <mat-label>Selecione as delegações:</mat-label>
+            <ul class="d-flex flex-wrap flex-column lista-checkbox m-0" style="list-style: none;">
+                <li class="lista-checkbox-item" *ngFor="let item of listaDelegacao">
+                    <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{item.nm_delegacao}} </mat-checkbox>
+                </li>
+            </ul>
+            <span class="form-error id_modalidade"></span>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('post')" >Enviar</button>
+        <!-- <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('post')" >Enviar</button> -->
+    </mat-dialog-actions>
+</div>
