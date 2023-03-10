@@ -460,9 +460,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             this.editar = true;
             this.ativarTabs = true;
         } else if (opcao == "mostrar") {
-            console.log(this.listaContatoAtleta);
-            console.log(this.listaDocumentoAtleta);
-            console.log(this.listaModalidadesRegistro);
             await this.openDialog(item);
         }
     }
