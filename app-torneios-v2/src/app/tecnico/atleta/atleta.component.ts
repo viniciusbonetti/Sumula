@@ -12,6 +12,9 @@ export interface DialogData {
     cepAtletaModal: string;
     estadoAtletaModal: string;
     municipioAtletaModal: string;
+    contatoAtletaModal: string,
+    documentoAtletaModal: string,
+    modalidadeAtletaModal: string,
 }
 
 @Component({
@@ -48,6 +51,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
     public listaDocumentoAtleta: Array<{}> = [];
     public listaContatoAtleta: Array<{}> = [];
     public listaAtletasFiltrada: Array<{}> = [];
+    public listaModalidadesRegistro = [];
 
     public estadoSelect = "";
     public municipioSelect = "";
@@ -308,18 +312,16 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         });
         const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
         this.checkboxAtleta = [];
-        let listaModalidadesRegistro = [];
+        this.listaModalidadesRegistro = [];
         let resposta = await this.getInfo(path, this.setToken);
 
         if(resposta.status == 200){
-            listaModalidadesRegistro = resposta.data.data;
-            listaModalidadesRegistro.forEach((element) => {
+            this.listaModalidadesRegistro = resposta.data.data;
+            this.listaModalidadesRegistro.forEach((element) => {
                 this.listaModalidades.forEach((element2) => {
                     if (element2["id"] == element.id_modalidade.id) {
                         if(element.st_ativo == true){
-                            console.log(element.st_ativo);
                             element2["checked"] = true;
-                            console.log(element2);
                             this.checkboxAtleta.push(element.id_modalidade.id);
                         }
                     }
@@ -450,7 +452,7 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
         this.municipioSelect = item.id_municipio.id;
 
         this.getListaMunicipio();
-        this.getEdits();
+        await this.getEdits();
 
         if (opcao == "editar") {
             this.novoCadastro = true;
@@ -458,6 +460,9 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             this.editar = true;
             this.ativarTabs = true;
         } else if (opcao == "mostrar") {
+            console.log(this.listaContatoAtleta);
+            console.log(this.listaDocumentoAtleta);
+            console.log(this.listaModalidadesRegistro);
             await this.openDialog(item);
         }
     }
@@ -474,6 +479,9 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 cepAtletaModal: item.nr_cep,
                 estadoAtletaModal: item.id_municipio.estado.nm_estado,
                 municipioAtletaModal: item.id_municipio.nm_municipio,
+                contatoAtletaModal: this.sortTable('tp_contato', this.listaContatoAtleta, 'ASC', '', true),
+                documentoAtletaModal: this.sortTable('tp_documento', this.listaDocumentoAtleta, 'ASC', '', true),
+                modalidadeAtletaModal: this.listaModalidadesRegistro,
             },
         });
 
