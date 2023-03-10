@@ -8,14 +8,14 @@ export const TecnicoRoutes: Routes = [
       path: '',
       children: [ {
         path: 'delegacao',
-        title: 'Delegação - Sumula',
+        title: 'Delegação - Scout',
         component: DelegacaoComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'atleta',
-        title: 'Atleta - Sumula',
+        title: 'Atleta - Scout',
         component: AtletaComponent
     }]},
 ];

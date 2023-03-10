@@ -16,7 +16,7 @@ export const AppRoutes: Routes = [
             {
                 path: "",
                 loadChildren: () => import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
-                title: 'Dashboard - Sumula',
+                title: 'Dashboard - Scout',
             },
             {
                 path: "projeto-x",

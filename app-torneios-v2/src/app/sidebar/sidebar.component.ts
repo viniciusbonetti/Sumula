@@ -48,7 +48,7 @@ export const ROUTES: RouteInfo[] = [
     },
     {
         path: "/cco",
-        title: "Cco",
+        title: "CCO",
         type: "sub",
         icontype: "grid_on",
         collapse: "cco",
@@ -61,7 +61,7 @@ export const ROUTES: RouteInfo[] = [
     },
     {
         path: "/tecnico",
-        title: "Tecnico",
+        title: "Técnico",
         type: "sub",
         icontype: "grid_on",
         collapse: "tecnico",

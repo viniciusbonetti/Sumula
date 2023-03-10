@@ -10,28 +10,28 @@ export const CcoRoutes: Routes = [
       path: '',
       children: [ {
         path: 'cargos',
-        title: 'Cargos - Sumula',
+        title: 'Cargos - Scout',
         component: CargosComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'modalidades',
-        title: 'Modalidades - Sumula',
+        title: 'Modalidades - Scout',
         component: ModalidadesComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'eventos',
-        title: 'Eventos - Sumula',
+        title: 'Eventos - Scout',
         component: EventosComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'localidades',
-        title: 'Localidades - Sumula',
+        title: 'Localidades - Scout',
         component: LocalidadeComponent
     }]},
 ];

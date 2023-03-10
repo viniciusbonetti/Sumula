@@ -8,14 +8,14 @@ export const ProjetoXRoutes: Routes = [
       path: '',
       children: [ {
         path: 'tenant',
-        title: 'Tenant - Sumula',
+        title: 'Tenant - Scout',
         component: TenantComponent
     }]},
     {
       path: '',
       children: [ {
         path: 'usuarios-tenant',
-        title: 'Usuarios Tenant - Sumula',
+        title: 'Usuários Tenant - Scout',
         component: UsuariosTenantComponent
     }]},
 ];
