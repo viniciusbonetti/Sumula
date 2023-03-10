@@ -18,7 +18,7 @@
             font-weight: $font-weight-bold;
             min-width: 100px;
             text-align: center;
-            color: $pills-color;
+            color: #fff;
             transition: all .3s;
             border-radius: 30px;
             padding: 10px 15px;
@@ -29,8 +29,8 @@
 
             &.active{
                 color: $white-color;
-                background-color: $brand-primary;
-                @include shadow-big-color($brand-primary);
+                background-color: $brand-greenLight;
+                @include shadow-big-color($brand-greenLight);
             }
         }
 
