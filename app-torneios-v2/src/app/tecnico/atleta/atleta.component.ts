@@ -298,8 +298,34 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
             await this.putInfo(path, formModalidadeAtleta, this.setToken);
             this.showToast("bottom", "Modalidades do Atleta atualizadas com sucesso!", "success");
         }
-        this.getModalidadesRegistro();
+        // this.getModalidadesRegistro();
         this.checkboxAtleta = [];
+    }
+
+    public async getModalidadesRegistro() {
+        this.listaModalidades.forEach((element2) => {
+            element2["checked"] = false;
+        });
+        const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
+        this.checkboxAtleta = [];
+        let listaModalidadesRegistro = [];
+        let resposta = await this.getInfo(path, this.setToken);
+
+        if(resposta.status == 200){
+            listaModalidadesRegistro = resposta.data.data;
+            listaModalidadesRegistro.forEach((element) => {
+                this.listaModalidades.forEach((element2) => {
+                    if (element2["id"] == element.id_modalidade.id) {
+                        if(element.st_ativo == true){
+                            console.log(element.st_ativo);
+                            element2["checked"] = true;
+                            console.log(element2);
+                            this.checkboxAtleta.push(element.id_modalidade.id);
+                        }
+                    }
+                });
+            });
+        }
     }
 
     public adicionarFotoDocumento(event) {
@@ -458,23 +484,6 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 this.limpaFormAtleta();
             }
         });
-    }
-
-    public async getModalidadesRegistro() {
-        const path = this.paths.modalidadeatleta + `/t${this.idAtleta}`;
-        let listaModalidadesRegistro = [];
-        let resposta = await this.getInfo(path, this.setToken);
-        if(resposta.status == 200){
-            listaModalidadesRegistro = resposta.data.data;
-            listaModalidadesRegistro.forEach((element) => {
-                this.listaModalidades.forEach((element2) => {
-                    if (element2["id"] == element.st_ativo) {
-                        element2["checked"] = true;
-                        this.checkboxAtleta.push(element.id_modalidade.id);
-                    }
-                });
-            });
-        }
     }
 
     public async cancelar(tela, item) {
