@@ -438,7 +438,7 @@ body.swal2-shown {
 
 .swal2-modal {
   background-color: #fff;
-  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-family: 'Outfit','Helvetica Neue',Helvetica,Arial,sans-serif;
   border-radius: 5px;
   box-sizing: border-box;
   text-align: center;
@@ -796,7 +796,7 @@ body.swal2-shown {
 }
 
 .swal2-icon.swal2-warning {
-  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-family: 'Outfit','Helvetica Neue',Helvetica,Arial,sans-serif;
   color: #f8bb86;
   border-color: #facea8;
 }
@@ -808,7 +808,7 @@ body.swal2-shown {
 }
 
 .swal2-icon.swal2-question {
-  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-family: 'Outfit','Helvetica Neue',Helvetica,Arial,sans-serif;
   color: #87adbd;
   border-color: #c9dae1;
 }
@@ -1925,7 +1925,7 @@ svg {
 }
 
 .mat-calendar {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Outfit", Roboto, "Helvetica Neue", sans-serif;
 }
 
 .mat-calendar-period-button {
@@ -4704,7 +4704,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .mat-option {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Outfit", Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
 }
 .mat-option .mat-option-ripple.mat-ripple {

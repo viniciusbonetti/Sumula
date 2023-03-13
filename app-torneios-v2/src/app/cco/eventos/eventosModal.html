@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-12 py-2">
-            <h2 class="text-center m-0">Encarregados do Evento</h2>
+            <h2 class="text-center m-0">Comissão Central Organizadora</h2>
             <table class="table text-center table-hover">
                 <thead class="text-primary">
                     <th class="col-md-4">CARGO</th>
@@ -53,10 +53,10 @@
             </table>
         </div>
 
-        <div class="col-12 py-2 d-flex justify-content-between align-items-center">
-            <h2>Municípios do Evento</h2>
-            <div class="row mx-auto justify-content-between align-items-center">
-                <div *ngFor="let item of data.municipiosEventoModal">
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Municípios do Evento</h2>
+            <div class="row mx-auto align-items-center">
+                <div class="col-md-4 text-center" *ngFor="let item of data.municipiosEventoModal">
                     <span class="text-pill mx-1 my-1"> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </span>
                 </div>
                 <div *ngIf="!data.municipiosEventoModal.length">

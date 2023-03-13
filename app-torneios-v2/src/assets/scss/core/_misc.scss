@@ -1,7 +1,17 @@
+@font-face {
+  font-family: "Outfit";
+  src: url("../../fonts/Outfit-VariableFont_wght.ttf");
+}
+
 body{
     background-color: #eee;
     color: $black-color;
     font-weight: 300;
+    font-family: 'Outfit' !important;
+}
+
+.mat-body, .mat-body-1, .mat-typography .mat-body, .mat-typography .mat-body-1, .mat-typography{
+  font-family: 'Outfit' !important;
 }
 
 legend {
