@@ -754,8 +754,11 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
     public selectMunicipioInscricao: string = "";
 
     // booleans
-    public editarInscricaoDelegacao:boolean = false
-    public habilitarBotaoEnviar:boolean = false
+    public editarInscricaoDelegacao: boolean = false;
+    public habilitarBotaoEnviar: boolean = false;
+
+    // misc
+    public mensagemModalInscricao:string = 'Para selecionar as delegações, selecione uma modalidade';
 
     ngOnInit() {
         this.getDelegacoes();
@@ -812,8 +815,23 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
 
     public async filtrar() {
         await this.getInscricaoDelegacao();
-        this.filtrarEstado();
-        this.habilitarBotaoEnviar = true
+        console.log(this.selectModalidadeInscricao);
+        
+        if (this.selectModalidadeInscricao != "") {
+            this.habilitarBotaoEnviar = true;
+        }
+        if (this.selectEstadoInscricao != "") {
+            this.filtrarEstado();
+            if(this.listaDelegacaoFiltrada.length == 0){
+                this.mensagemModalInscricao = 'Este estado não contém delegações inscritas';
+            }
+        }
+        if (this.selectMunicipioInscricao != "") {
+            this.filtrarMunicipio();
+            if(this.listaDelegacaoFiltrada.length == 0){
+                this.mensagemModalInscricao = 'Este municipio não contém delegações inscritas';
+            }
+        }
     }
 
     public async getInscricaoDelegacao() {
@@ -828,9 +846,10 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
         if (resposta.status == 200) {
             listaDelegacaoRegistro = resposta.data.data;
             this.filtroListaDelegacao = listaDelegacaoRegistro;
-            
             listaDelegacaoRegistro.forEach((element) => {
+                this.listaDelegacaoFiltrada = [];
                 this.listaDelegacao.forEach((element2) => {
+                    this.listaDelegacaoFiltrada.push(element2);
                     if (element2["id"] == element.id_delegacao.id) {
                         element2["checked"] = true;
                         this.checkboxDelegacoes.push(element.id_delegacao.id);
@@ -838,19 +857,29 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
                 });
             });
         }
-        if(this.checkboxDelegacoes.length > 0){
+        if (this.checkboxDelegacoes.length > 0) {
             this.editarInscricaoDelegacao = true;
             console.log("editar");
-        } else if(this.checkboxDelegacoes.length == 0){
+        } else if (this.checkboxDelegacoes.length == 0) {
             this.editarInscricaoDelegacao = false;
             console.log("criar");
-        }        
+        }
     }
 
-    public filtrarEstado(){
-        this.listaDelegacao.forEach(element => {
-            if(this.selectEstadoInscricao == element['id_municipio'].id_estado){
-                this.listaDelegacaoFiltrada.push(element)                
+    public filtrarEstado() {
+        this.listaDelegacaoFiltrada = [];
+        this.listaDelegacao.forEach((element) => {
+            if (this.selectEstadoInscricao == element["id_municipio"].id_estado) {
+                this.listaDelegacaoFiltrada.push(element);
+            }
+        });
+    }
+
+    public filtrarMunicipio() {
+        this.listaDelegacaoFiltrada = [];
+        this.listaDelegacao.forEach((element) => {
+            if (this.selectMunicipioInscricao == element["id_municipio"].id) {
+                this.listaDelegacaoFiltrada.push(element);
             }
         });
     }
