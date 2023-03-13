@@ -3,6 +3,7 @@ import { ControllerComponent } from "src/app/controller/controller.component";
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 export interface DialogDataFicha {
+    token: string;
     nomeEventoModal: string;
     inicioEventoModal: string;
     fimEventoModal: string;
@@ -674,6 +675,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     openDialog(item) {
         const dialogRef = this.dialog.open(EventosModal, {
             data: {
+                token: this.setToken,
                 nomeEventoModal: item.nm_evento,
                 inicioEventoModal: item.dt_inicio,
                 fimEventoModal: item.dt_fim,
@@ -726,9 +728,37 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     selector: "eventos-modal",
     templateUrl: "EventosModal.html",
 })
-export class EventosModal {
-    constructor(public dialogRef: MatDialogRef<EventosModal>, @Inject(MAT_DIALOG_DATA) public data: DialogDataFicha) {}
+export class EventosModal extends ControllerComponent {
+    constructor(public dialogRef: MatDialogRef<EventosModal>, @Inject(MAT_DIALOG_DATA) public data: DialogDataFicha) {
+        super();
+    }
+
+    public listaModalidadesEventoModal: Array<{}> = [];
+
     ngOnInit() {}
+
+    public async getInscDelegModalidadeModal(modalidade){
+        this.listaModalidadesEventoModal = [];
+        const path = this.paths.inscricaodelegacao + `/m${modalidade}&t${this.tenant}`;
+
+        let resposta = await this.getInfo(path, this.data.token);
+
+        if (resposta.data.data.length > 0) {
+            this.listaModalidadesEventoModal = resposta.data.data;
+            this.mensagemTitulo = "Delegações Inscritas na Modalidade";
+            this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
+            this.listaModalidadesEventoModal.forEach(modEvento => {
+                this.mensagemAlerta += "<p class='sa-p'>" + modEvento['id_delegacao']['nm_delegacao'] + " <span class='text-small'>(" + modEvento['id_delegacao']['municipio']['nm_municipio'] + "/"+ modEvento['id_delegacao']['municipio']['estado']['sg_estado'] +")</span> </p>";
+            });
+            this.mensagemAlerta += "</div>";
+            await this.showSwal("custom-html");
+        }
+        else{
+            this.mensagemTitulo = "Delegações Inscritas na Modalidade";
+            this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma delegação inscrita para esta modalidade.</p></div>";
+            await this.showSwal("custom-html");
+        }
+    }
 }
 
 @Component({

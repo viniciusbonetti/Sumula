@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of data.modalidadesEventoModal">
-                        <td> {{item.id_modalidade.nm_modalidade}} </td>
+                        <td title="Clique aqui para visualizar as delegações inscritas"> <span class="open-alert" (click)="getInscDelegModalidadeModal(item.id)"> {{item.id_modalidade.nm_modalidade}}</span> </td>
                         <td> {{item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto") }} </td>
                         <td> de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}} </td>
                     </tr>

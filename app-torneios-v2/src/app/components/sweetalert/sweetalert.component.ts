@@ -110,14 +110,15 @@ export class SweetAlertComponent {
 
       } else if (type == 'custom-html') {
           swal.fire({
-              title: 'HTML example',
+              title: this.mensagemTitulo,
               buttonsStyling: false,
               customClass:{
                 confirmButton: "btn btn-success",
               },
-              html: 'You can use <b>bold text</b>, ' +
-                  '<a href="http://github.com">links</a> ' +
-                  'and other HTML tags'
+              // html: 'You can use <b>bold text</b>, ' +
+              //     '<a href="http://github.com">links</a> ' +
+              //     'and other HTML tags'
+              html: this.mensagemAlerta
           });
 
       } else if (type == 'auto-close') {
