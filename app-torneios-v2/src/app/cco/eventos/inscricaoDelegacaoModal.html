@@ -47,17 +47,16 @@
 
         <div>
             <mat-label>Selecione as delegações:</mat-label>
-            <div class="p-5">
+            <div class="p-3">
                 <div *ngIf="listaDelegacaoFiltrada.length ">
-                    <ul class="d-flex flex-wrap flex-column lista-checkbox m-0" style="list-style: none;">
+                    <ul class="d-flex flex-wrap flex-column lista-checkbox m-0 p-0" style="list-style: none;">
                         <li class="lista-checkbox-item" *ngFor="let item of listaDelegacaoFiltrada">
-                            <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{item.nm_delegacao}} </mat-checkbox>
+                            <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{item.nm_delegacao}} <span class="text-small">({{ item.id_municipio.estado.sg_estado }})</span> </mat-checkbox>
                         </li>
                     </ul>
                 </div>
                 <div *ngIf="!listaDelegacaoFiltrada.length ">
                     {{ mensagemModalInscricao }}
-                    <!-- Para selecionar as delegações, selecione uma modalidade -->
                 </div>
             </div>
         </div>

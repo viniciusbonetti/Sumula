@@ -814,6 +814,8 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
     public async getDelegacoes() {
         let resposta = await this.getInfo(this.paths.delegacao, this.data.token);
         this.listaDelegacao = resposta.data.data;
+        console.log(this.listaDelegacao);
+        
     }
 
     public setCheckbox(id, isChecked) {
