@@ -174,18 +174,30 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
     }
 
     /** Função para ordenar a tabela
-     * @params column        (string) -> coluna desejada para ordenar
-     * @params listaOriginal (array)  -> lista com os dados para ser ordenado
-     * @params order         (string) -> ordem a ser utilizada (ASC/DESC)
-     * @params event         (array)  -> dados do elemento
+     * @params column        (string)  -> coluna desejada para ordenar
+     * @params listaOriginal (array)   -> lista com os dados para ser ordenado
+     * @params order         (string)  -> ordem a ser utilizada (ASC/DESC)
+     * @params event         (array)   -> dados do elemento
+     * @params convert       (boolean) -> converte dados especificos
      */
-    public sortTable(column, listaOriginal, order, event){
+    public sortTable(column, listaOriginal, order, event, convert?){
         // Passa por todos os elementos de setas, para limpar as classes e colocar a classe de ativo apenas no elemento clicado
-        let sortIcon = document.getElementsByClassName('sort-icon');
-        [].forEach.call(sortIcon, function(el) {
-            el.classList.remove('si-active');
-        });
-        event.srcElement.classList.add('si-active');
+        if(event != ""){
+            let sortIcon = document.getElementsByClassName('sort-icon');
+            [].forEach.call(sortIcon, function(el) {
+                el.classList.remove('si-active');
+            });
+            event.srcElement.classList.add('si-active');
+        }
+
+        if(convert){
+            if(column == "tp_contato"){
+                listaOriginal = this.convertList("tp_contato", listaOriginal);
+            }
+            else if(column == "tp_documento"){
+                listaOriginal = this.convertList("tp_documento", listaOriginal);
+            }
+        }
 
         let listaFiltrada = [];
         if(order === "ASC"){
@@ -250,5 +262,70 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public limpaString(string){
         let newString = string.replace(/[,.-]/g, '');
         return newString;
+    }
+
+    /** Função para converter siglas em texto
+     * @params column        (string) -> coluna desejada para converter
+     * @params listaOriginal (array)  -> lista com os dados para conversão
+    */
+    public convertList(column, listaOriginal){
+        switch (column) {
+            case 'tp_contato':
+                listaOriginal.forEach(lista => {
+                    switch (lista[column]) {
+                        case 'FF':
+                            lista[column] = 'TELEFONE FIXO';
+                        break;
+                        case 'FC':
+                            lista[column] = 'TELEFONE CELULAR';
+                        break;
+                        case 'EM':
+                            lista[column] = 'E-MAIL';
+                        break;
+                        case 'FB':
+                            lista[column] = 'FACEBOOK';
+                        break;
+                        case 'IN':
+                            lista[column] = 'INSTAGRAM';
+                        break;
+                        case 'OT':
+                            lista[column] = 'OUTRO';
+                        break;
+                    }
+                });
+            break;
+            case 'tp_documento':
+                listaOriginal.forEach(lista => {
+                    switch (lista[column]) {
+                        case 'H':
+                            lista[column] = 'CARTEIRA DE HABILITAÇÃO';
+                        break;
+                        case 'T':
+                            lista[column] = 'CARTEIRA DE TRABALHO';
+                        break;
+                        case 'C':
+                            lista[column] = 'CPF';
+                        break;
+                        case 'M':
+                            lista[column] = 'IDENTIDADE MILITAR';
+                        break;
+                        case 'P':
+                            lista[column] = 'PASSAPORTE';
+                        break;
+                        case 'E':
+                            lista[column] = 'REGISTRO NACIONAL DE ESTRANGEIRO';
+                        break;
+                        case 'R':
+                            lista[column] = 'RG';
+                        break;
+                        case 'O':
+                            lista[column] = 'OUTRO';
+                        break;
+                    }
+                });
+            break;
+        }
+
+        return listaOriginal;
     }
 }

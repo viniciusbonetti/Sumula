@@ -1,25 +1,79 @@
-<div class="card" style="box-shadow: none;">
+<div class="card eventoModal" style="box-shadow: none;">
     <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
         <h4 class="card-title p-2">Ficha técnica do atleta:</h4>
         <p class="card-category">{{data.nomeAtletaModal}}</p>
     </div>
     <mat-dialog-content class="mat-typography" style="width: 100vh;">
-        <div class="p-2">
-            <h2>Informações Pessoais </h2>
-            <p>Nome: {{data.nomeAtletaModal}}</p>
-            <p>Apelio: {{data.apelidoAtletaModal}}</p>
-            <p>Data de Nascimento: {{data.nascimentoAtletaModal}}</p>
-            <p>Genero / Naipe: {{data.generoAtletaModal}} </p>
+        <h2 class="text-center pt-2">Informações Pessoais </h2>
+        <div class="col-12 pb-2 d-flex justify-content-between align-items-center">
+            <div class="row mx-auto">
+                <span class="text-pill mx-2" title="Nome do Atleta"><i class="fa-solid fa-lg fa-id-card mr-2"></i> {{data.nomeAtletaModal | uppercase}}</span>
+                <span *ngIf="data.apelidoAtletaModal" class="text-pill mx-2" title="Apelido"><i class="fa-solid fa-lg fa-square-user mr-2"></i> {{data.apelidoAtletaModal | uppercase}}</span>
+                <span class="text-pill mx-2" title="Data de Nascimento"><i class="fa-solid fa-lg fa-cake-candles mr-2"></i> {{data.nascimentoAtletaModal | date : "dd/MM/yyyy"}}</span>
+                <span class="text-pill mx-2" title="Gênero"><i class="fa-solid fa-lg fa-venus-mars mr-2"></i> {{data.generoAtletaModal}}</span>
+            </div>
         </div>
-    
-        <div>
-            <h2>Informações de Residência</h2>
-            <p>Logradouro: {{data.enderecoAtletaModal}} </p>
-            <p>Número: {{data.nrEnderecoAtletaModal}} </p>
-            <p>CEP: {{data.cepAtletaModal}} </p>
-            <p>Estado: {{data.estadoAtletaModal}} </p>
-            <p>Município: {{data.municipioAtletaModal}} </p>
+        <div class="col-12 pb-2 d-flex justify-content-between align-items-center">
+            <div class="row mx-auto">
+                <span class="text-pill mx-2" title="Endereço do Atleta"><i class="fa-solid fa-lg fa-house mr-2"></i> {{data.enderecoAtletaModal | uppercase}}, {{data.nrEnderecoAtletaModal}} - {{data.cepAtletaModal}} - {{data.municipioAtletaModal}}, {{data.estadoAtletaModal}}</span>
+            </div>
         </div>
+
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Contatos do Atleta</h2>
+            <table class="table text-center table-hover">
+                <thead class="text-primary">
+                    <th class="col-md-4">TIPO</th>
+                    <th class="col-md-8">CONTATO</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data.contatoAtletaModal">
+                        <td>{{item.tp_contato | uppercase}}</td>
+                        <td>{{item.ds_contato | uppercase}}</td>
+                    </tr>
+                    <tr *ngIf="!data.contatoAtletaModal.length">
+                        <td colspan="2" class="text-center">Nenhum contato cadastrado.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Documentos do Atleta</h2>
+            <table class="table text-center table-hover">
+                <thead class="text-primary">
+                    <th class="col-md-4">TIPO</th>
+                    <th class="col-md-8">Nº DOCUMENTO</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data.documentoAtletaModal">
+                        <td>{{item.tp_documento | uppercase}}</td>
+                        <td>{{item.nr_documento | uppercase}}</td>
+                    </tr>
+                    <tr *ngIf="!data.documentoAtletaModal.length">
+                        <td colspan="2" class="text-center">Nenhum documento cadastrado.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12 py-2">
+            <h2 class="text-center m-0">Modalidades do Atleta</h2>
+            <table class="table text-center table-hover">
+                <thead class="text-primary">
+                    <th class="col-md-12">MODALIDADE</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data.modalidadeAtletaModal">
+                        <td *ngIf="item.st_ativo">{{item.id_modalidade.nm_modalidade | uppercase}}</td>
+                    </tr>
+                    <tr *ngIf="!data.modalidadeAtletaModal.length">
+                        <td class="text-center">Nenhuma modalidade cadastrada para este atleta.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
