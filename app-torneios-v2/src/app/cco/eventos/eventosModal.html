@@ -57,7 +57,7 @@
             <h2 class="text-center m-0">Municípios do Evento</h2>
             <div class="row mx-auto align-items-center">
                 <div class="col-md-4 text-center" *ngFor="let item of data.municipiosEventoModal">
-                    <span class="text-pill mx-1 my-1"> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </span>
+                    <span class="text-pill mx-1 my-1" (click)="getLocalMunicipio(item.id_municipio.id, item.id_evento.id)"> {{item.id_municipio.nm_municipio}} / {{item.id_municipio.estado.sg_estado}} </span>
                 </div>
                 <div *ngIf="!data.municipiosEventoModal.length">
                     <span class="text-pill">Nenhum município cadastrado</span>
