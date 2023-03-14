@@ -734,6 +734,7 @@ export class EventosModal extends ControllerComponent {
     }
 
     public listaModalidadesEventoModal: Array<{}> = [];
+    public listaLocalidadeEventoModal: Array<{}> = [];
 
     ngOnInit() {}
 
@@ -743,7 +744,7 @@ export class EventosModal extends ControllerComponent {
 
         let resposta = await this.getInfo(path, this.data.token);
 
-        if (resposta.data.data.length > 0) {
+        if (resposta.status == 200) {
             this.listaModalidadesEventoModal = resposta.data.data;
             this.mensagemTitulo = "Delegações Inscritas na Modalidade";
             this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
@@ -756,6 +757,29 @@ export class EventosModal extends ControllerComponent {
         else{
             this.mensagemTitulo = "Delegações Inscritas na Modalidade";
             this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma delegação inscrita para esta modalidade.</p></div>";
+            await this.showSwal("custom-html");
+        }
+    }
+
+    public async getLocalMunicipio(id_municipio, id_evento){
+        this.listaLocalidadeEventoModal = [];
+        const path = this.paths.localidadeevento + `/m${id_municipio}&t${id_evento}`;
+
+        let resposta = await this.getInfo(path, this.data.token);
+
+        if(resposta.status == 200){
+            this.listaLocalidadeEventoModal = resposta.data.data;
+            this.mensagemTitulo = "Localidades de Evento";
+            this.mensagemAlerta = "<div class='col-md-8 text-left mx-auto'>";
+            this.listaLocalidadeEventoModal.forEach(locEvento => {
+                this.mensagemAlerta += "<p class='sa-p'>" + locEvento['id_localidade']['ds_localidade'].toUpperCase() + " <span class='text-small'>(" + locEvento['id_localidade']['ds_endereco'] + ","+ locEvento['id_localidade']['ds_bairro'] +")</span> </p>";
+            });
+            this.mensagemAlerta += "</div>";
+            await this.showSwal("custom-html");
+        }
+        else{
+            this.mensagemTitulo = "Localidades de Evento";
+            this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma localidade disponível para este município.</p></div>";
             await this.showSwal("custom-html");
         }
     }
