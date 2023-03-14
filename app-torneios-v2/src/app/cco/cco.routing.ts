@@ -3,6 +3,7 @@ import { CargosComponent } from "./cargos/cargos.component";
 import { ModalidadesComponent } from "./modalidades/modalidades.component";
 import { EventosComponent } from "./eventos/eventos.component";
 import { LocalidadeComponent } from "./localidade/localidade.component";
+import { InscricaoAtletaComponent } from "./inscricao-atleta/inscricao-atleta.component";
 
 
 export const CcoRoutes: Routes = [
@@ -33,5 +34,12 @@ export const CcoRoutes: Routes = [
         path: 'localidades',
         title: 'Localidades - Scout',
         component: LocalidadeComponent
+    }]},
+    {
+      path: '',
+      children: [ {
+        path: 'inscricao-atleta',
+        title: 'Inscrição Atleta - Scout',
+        component: InscricaoAtletaComponent
     }]},
 ];

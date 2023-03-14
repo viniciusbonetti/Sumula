@@ -9,7 +9,6 @@ declare var $: any;
 })
 export class TenantComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
-    // public headers = { Authorization: this.getToken };
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken: any = { headers: this.headers };
 
@@ -25,13 +24,10 @@ export class TenantComponent extends ControllerComponent implements OnInit {
     public editarInputFileTenant = "";
     public image = "";
     public extension = "";
-
-    public listaEstados = {};
     public pathTenant = `/tenant`;
 
     ngOnInit() {
         this.getListaEmpresas();
-        this.getEstado();
     }
 
     public searchTable(event: any) {
@@ -78,12 +74,6 @@ export class TenantComponent extends ControllerComponent implements OnInit {
         this.inputFileTenant = "";
         this.novaEmpresaNome = "";
         this.novoCadastro = false;
-    }
-
-    public async getEstado() {
-        let listaEstados = await this.getInfo(this.paths.estado, this.setToken);
-        this.listaEstados = listaEstados.data.data;
-        localStorage.setItem("listaEstados", JSON.stringify(this.listaEstados));
     }
 
     public botaoMostrarEditar(item, lista) {

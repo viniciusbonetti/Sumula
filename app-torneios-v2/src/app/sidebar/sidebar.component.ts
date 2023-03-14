@@ -57,6 +57,7 @@ export const ROUTES: RouteInfo[] = [
             { path: "modalidades", title: "Modalidades", ab: "M" },
             { path: "eventos", title: "Eventos", ab: "E" },
             { path: "localidades", title: "Localidades", ab: "L" },
+            { path: "inscricao-atleta", title: "Inscrição Atleta", ab: "I A" },
         ],
     },
     {
