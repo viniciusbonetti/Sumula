@@ -13,7 +13,7 @@ import { LocalidadeComponent } from './localidade/localidade.component';
 import { InscricaoAtletaComponent } from './inscricao-atleta/inscricao-atleta.component';
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild(CcoRoutes), FormsModule, MaterialModule, NgxPaginationModule],
+    imports: [CommonModule, RouterModule.forChild(CcoRoutes), FormsModule, MaterialModule, NgxPaginationModule, ReactiveFormsModule],
     declarations: [CargosComponent, ModalidadesComponent, EventosComponent, EventosModal, LocalidadeComponent, InscricaoDelegacaoModal, InscricaoAtletaComponent],
 })
 export class CcoModule {}

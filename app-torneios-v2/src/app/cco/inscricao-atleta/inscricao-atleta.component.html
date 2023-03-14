@@ -1,1 +1,76 @@
-<p>inscricao-atleta works!</p>
+<div class="main-content h-100">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title p-2">Inscrição Atleta</h4>
+                    </div>
+                    <div>
+                        <div class="card-body p-3 row">
+                            <div class="col-4 p-3">
+                                <mat-form-field class="" appearance="fill">
+                                    <mat-label>Evento</mat-label>
+                                    <select matNativeControl name="id_evento" [(ngModel)]="selectEvento" (ngModelChange)="getModalidadesEvento(selectEvento)" required>
+                                        <option disabled selected value="">Selecione o evento</option>
+                                        <option *ngFor="let item of listaEventos" value="{{ item.id }}">{{ item.nm_evento | uppercase }}</option>
+                                    </select>
+                                </mat-form-field>
+                                <span class="form-error id_evento"></span>
+                            </div>
+    
+                            <div class="col-4 p-3">
+                                <mat-form-field class="" appearance="fill">
+                                    <mat-label>Modalidade</mat-label>
+                                    <select matNativeControl name="id_modalidade" [(ngModel)]="selectModalidadeEvento" (ngModelChange)="getDelegacaoEvento(selectModalidadeEvento)" required>
+                                        <option selected value="">Selecione a modalidade</option>
+                                        <option *ngFor="let item of listaModalidadesEvento" value="{{ item.id }}">{{ item.id_modalidade.nm_modalidade | uppercase }} / {{ item.tp_naipe }}: {{ item.nr_idadeinicio }} à {{ item.nr_idadefinal }} anos</option>
+                                    </select>
+                                </mat-form-field>
+                                <span class="form-error id_modalidade"></span>
+                            </div>
+    
+                            <div class="col-4 p-3">
+                                <mat-form-field class="" appearance="fill">
+                                    <mat-label>Delegação</mat-label>
+                                    <select matNativeControl name="id_delegacao" [(ngModel)]="selectDelegacaoEvento" required>
+                                        <option selected value="">Selecione a delegação</option>
+                                        <option *ngFor="let item of listaDelegacaoEvento" value="{{ item.id }}">{{ item.id_delegacao.nm_delegacao | uppercase }}</option>
+                                    </select>
+                                </mat-form-field>
+                                <span class="form-error id_delegacao"></span>
+                            </div>
+    
+                            <div class="col-6">
+                                <!-- <mat-form-field class="pl-2 pr-2">
+                                    <mat-label>Atleta</mat-label>
+                                    <input matInput (keyup)="keyUp($event.target.value)"/>
+                                    <mat-select>
+                                            <mat-option class="m-2">Selecione o atleta</mat-option>
+                                            <mat-option *ngFor="let item of listaAtletasFiltrada" [value]="item.id"> {{ item.nm_atleta }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width" appearance="fill">
+                                      <mat-label>Atleta</mat-label>
+                                      <input type="text"
+                                             placeholder="Selecione o atleta"
+                                             aria-label="Number"
+                                             matInput
+                                             [formControl]="myControl"
+                                             [matAutocomplete]="auto">
+                                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                          {{option}}
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                    </mat-form-field>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

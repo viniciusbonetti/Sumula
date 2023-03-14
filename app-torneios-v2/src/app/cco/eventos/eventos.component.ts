@@ -28,13 +28,7 @@ export interface DialogDataInscricaoDelegacao {
 export class EventosComponent extends ControllerComponent implements OnInit {
     public getToken = localStorage.getItem("Authorization");
     public tenant = localStorage.getItem("tenant");
-    public urlGet = `${this.baseUrl}/evento/t${this.tenant}`;
-    public urlPost = `${this.baseUrl}/evento/`;
-
-    public headers = {
-        Authorization: this.getToken,
-        "Content-Type": "application/json",
-    };
+    public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken = { headers: this.headers };
 
     public novoCadastro: boolean = false;
@@ -737,7 +731,7 @@ export class EventosModal extends ControllerComponent {
 
     ngOnInit() {}
 
-    public async getInscDelegModalidadeModal(modalidade){
+    public async getInscDelegModalidadeModal(modalidade) {
         this.listaModalidadesEventoModal = [];
         const path = this.paths.inscricaodelegacao + `/m${modalidade}&t${this.tenant}`;
 
@@ -747,13 +741,12 @@ export class EventosModal extends ControllerComponent {
             this.listaModalidadesEventoModal = resposta.data.data;
             this.mensagemTitulo = "Delegações Inscritas na Modalidade";
             this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
-            this.listaModalidadesEventoModal.forEach(modEvento => {
-                this.mensagemAlerta += "<p class='sa-p'>" + modEvento['id_delegacao']['nm_delegacao'] + " <span class='text-small'>(" + modEvento['id_delegacao']['municipio']['nm_municipio'] + "/"+ modEvento['id_delegacao']['municipio']['estado']['sg_estado'] +")</span> </p>";
+            this.listaModalidadesEventoModal.forEach((modEvento) => {
+                this.mensagemAlerta += "<p class='sa-p'>" + modEvento["id_delegacao"]["nm_delegacao"] + " <span class='text-small'>(" + modEvento["id_delegacao"]["municipio"]["nm_municipio"] + "/" + modEvento["id_delegacao"]["municipio"]["estado"]["sg_estado"] + ")</span> </p>";
             });
             this.mensagemAlerta += "</div>";
             await this.showSwal("custom-html");
-        }
-        else{
+        } else {
             this.mensagemTitulo = "Delegações Inscritas na Modalidade";
             this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma delegação inscrita para esta modalidade.</p></div>";
             await this.showSwal("custom-html");
@@ -788,7 +781,7 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
     public habilitarBotaoEnviar: boolean = false;
 
     // misc
-    public mensagemModalInscricao:string = 'Para selecionar as delegações, selecione uma modalidade';
+    public mensagemModalInscricao: string = "Para selecionar as delegações, selecione uma modalidade";
 
     ngOnInit() {
         this.getDelegacoes();
@@ -815,7 +808,6 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
         let resposta = await this.getInfo(this.paths.delegacao, this.data.token);
         this.listaDelegacao = resposta.data.data;
         console.log(this.listaDelegacao);
-        
     }
 
     public setCheckbox(id, isChecked) {
@@ -848,20 +840,20 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
     public async filtrar() {
         await this.getInscricaoDelegacao();
         console.log(this.selectModalidadeInscricao);
-        
+
         if (this.selectModalidadeInscricao != "") {
             this.habilitarBotaoEnviar = true;
         }
         if (this.selectEstadoInscricao != "") {
             this.filtrarEstado();
-            if(this.listaDelegacaoFiltrada.length == 0){
-                this.mensagemModalInscricao = 'Este estado não contém delegações inscritas';
+            if (this.listaDelegacaoFiltrada.length == 0) {
+                this.mensagemModalInscricao = "Este estado não contém delegações inscritas";
             }
         }
         if (this.selectMunicipioInscricao != "") {
             this.filtrarMunicipio();
-            if(this.listaDelegacaoFiltrada.length == 0){
-                this.mensagemModalInscricao = 'Este municipio não contém delegações inscritas';
+            if (this.listaDelegacaoFiltrada.length == 0) {
+                this.mensagemModalInscricao = "Este municipio não contém delegações inscritas";
             }
         }
     }
