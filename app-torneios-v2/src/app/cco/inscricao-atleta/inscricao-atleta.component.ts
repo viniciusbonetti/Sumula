@@ -1,8 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { ControllerComponent } from "src/app/controller/controller.component";
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+
+export interface Atleta {
+    id_atleta: string;
+    nm_atleta: string;
+    nm_apelido: string;
+    tp_genero: string;
+    nr_idade: string;
+}
 
 @Component({
     selector: "app-inscricao-atleta",
@@ -15,41 +23,44 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
     public tenant = localStorage.getItem("tenant");
     public headers = { Authorization: this.getToken, "Content-Type": "application/json" };
     public setToken = { headers: this.headers };
-    
+
     // listas
-    public listaEventos:Array<{}> = [];
-    public listaModalidadesEvento:Array<{}> = [];
-    public listaDelegacaoEvento:Array<{}> = [];
-    public listaAtletas:Array<{}> = [];
-    
+    public listaEventos: Array<{}> = [];
+    public listaModalidadesEvento: Array<{}> = [];
+    public listaDelegacaoEvento: Array<{}> = [];
+    public listaAtletas: Array<{}> = [];
+
     // select
-    public selectEvento:string = '';
-    public selectModalidadeEvento:string = '';
-    public selectDelegacaoEvento:string = '';
-    
+    public selectEvento: string = "";
+    public selectModalidadeEvento: string = "";
+    public selectDelegacaoEvento: string = "";
+
     // formcontrol
-    myControl = new FormControl('');
-    options: string[] = ['One', 'Two', 'Three'];
-    filteredOptions: Observable<string[]>;
-    
+    myControl = new FormControl("");
+    options: Atleta[] = [];
+    filteredOptions: Observable<Atleta[]>;
+
+    // misc
+    public nomeAtleta = "";
+
     ngOnInit(): void {
         this.getEventos();
         this.filteredOptions = this.myControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value || '')),
-          );
+            startWith(""),
+            map((value) => this._filter(value || "")),
+        );        
     }
 
-    public async getEventos(){
+    public async getEventos() {
         const path = this.paths.evento + `/t${this.tenant}`;
         let resposta = await this.getInfo(path, this.setToken);
         this.listaEventos = resposta.data.data;
     }
 
-    public async getModalidadesEvento(idEvento){
+    public async getModalidadesEvento(idEvento) {
         this.listaModalidadesEvento = [];
-        this.selectModalidadeEvento = '';
-        this.selectDelegacaoEvento = '';
+        this.selectModalidadeEvento = "";
+        this.selectDelegacaoEvento = "";
         const path = this.paths.modalidadeevento + `/i${idEvento}&t${this.tenant}`;
         let resposta = await this.getInfo(path, this.setToken);
         if (resposta.status == 200) {
@@ -57,7 +68,7 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
         }
     }
 
-    public async getDelegacaoEvento(modalidadeEvento){
+    public async getDelegacaoEvento(modalidadeEvento) {
         const path = this.paths.inscricaodelegacao + `/m${modalidadeEvento}&t${this.tenant}`;
 
         let resposta = await this.getInfo(path, this.setToken);
@@ -65,21 +76,40 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
         this.getAtletas();
     }
 
-    public async getAtletas(){
-        let resposta = await this.getInfo(this.paths.atleta, this.setToken);
-        if(resposta.status == 200){
-            this.listaAtletas = resposta.data.data;
+    public async getAtletas() {
+        const path = this.paths.geral;
+        const formGetAtletasModalidade = new FormData();
+        formGetAtletasModalidade.append("tipo_request", "listaAtletaModalidade");
+        formGetAtletasModalidade.append("id_modalidade", this.selectModalidadeEvento);
+        formGetAtletasModalidade.append("id_evento", this.selectEvento);
+        let resposta = await this.postInfo(path, formGetAtletasModalidade, this.setToken);
+        if (resposta.length > 0) {
+            this.options = resposta;
         }
+        // this.listaAtletas.forEach((element) => {
+        //     this.options.push(element);
+        // });
+        // console.log(this.options);
     }
 
-    public keyUp(inputValue){
-        console.log(inputValue);
-        
-    }
-
-    private _filter(value: string): string[] {
+    private _filter(value: string): Atleta[] {
         const filterValue = value.toLowerCase();
-    
-        return this.options.filter(option => option.toLowerCase().includes(filterValue));
-      }
+
+        return this.options.filter((option) => option.nm_atleta.toLowerCase().includes(filterValue));
+    }
+
+    public button(event) {
+        console.log(event);
+        // this.options.forEach(element => {
+        //     if(event.option.value.id_atleta == element.id_atleta){
+        //         this.nomeAtleta = element.nm_atleta
+        //     }
+        // });
+    }
+
+    displayNome(atleta: Atleta): string {
+        console.log(atleta);
+
+        return atleta && atleta.nm_atleta ? atleta.nm_atleta : "";
+    }
 }

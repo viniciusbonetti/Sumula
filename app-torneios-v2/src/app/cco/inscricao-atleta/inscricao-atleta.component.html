@@ -18,7 +18,7 @@
                                 </mat-form-field>
                                 <span class="form-error id_evento"></span>
                             </div>
-    
+
                             <div class="col-4 p-3">
                                 <mat-form-field class="" appearance="fill">
                                     <mat-label>Modalidade</mat-label>
@@ -29,7 +29,7 @@
                                 </mat-form-field>
                                 <span class="form-error id_modalidade"></span>
                             </div>
-    
+
                             <div class="col-4 p-3">
                                 <mat-form-field class="" appearance="fill">
                                     <mat-label>Delegação</mat-label>
@@ -40,7 +40,7 @@
                                 </mat-form-field>
                                 <span class="form-error id_delegacao"></span>
                             </div>
-    
+
                             <div class="col-6">
                                 <!-- <mat-form-field class="pl-2 pr-2">
                                     <mat-label>Atleta</mat-label>
@@ -52,20 +52,15 @@
                                 </mat-form-field> -->
                                 <form class="example-form">
                                     <mat-form-field class="example-full-width" appearance="fill">
-                                      <mat-label>Atleta</mat-label>
-                                      <input type="text"
-                                             placeholder="Selecione o atleta"
-                                             aria-label="Number"
-                                             matInput
-                                             [formControl]="myControl"
-                                             [matAutocomplete]="auto">
-                                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                          {{option}}
-                                        </mat-option>
-                                      </mat-autocomplete>
+                                        <mat-label>Atleta</mat-label>
+                                        <input type="text" placeholder="Selecione o atleta" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"/>
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayNome" (optionSelected)="button($event)">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id" >
+                                                {{ option.nm_atleta }}
+                                            </mat-option>
+                                        </mat-autocomplete>
                                     </mat-form-field>
-                                  </form>
+                                </form>
                             </div>
                         </div>
                     </div>
