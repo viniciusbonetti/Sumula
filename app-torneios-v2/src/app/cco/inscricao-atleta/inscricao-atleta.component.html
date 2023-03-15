@@ -33,7 +33,7 @@
                             <div class="col-4 p-3">
                                 <mat-form-field class="" appearance="fill">
                                     <mat-label>Delegação</mat-label>
-                                    <select matNativeControl name="id_delegacao" [(ngModel)]="selectDelegacaoEvento" required>
+                                    <select matNativeControl name="id_delegacao" [(ngModel)]="selectDelegacaoEvento" (ngModelChange)="getEquipeInscricao(selectDelegacaoEvento)" required>
                                         <option selected value="">Selecione a delegação</option>
                                         <option *ngFor="let item of listaDelegacaoEvento" value="{{ item.id }}">{{ item.id_delegacao.nm_delegacao | uppercase }}</option>
                                     </select>
@@ -41,26 +41,55 @@
                                 <span class="form-error id_delegacao"></span>
                             </div>
 
-                            <div class="col-6">
-                                <!-- <mat-form-field class="pl-2 pr-2">
-                                    <mat-label>Atleta</mat-label>
-                                    <input matInput (keyup)="keyUp($event.target.value)"/>
-                                    <mat-select>
-                                            <mat-option class="m-2">Selecione o atleta</mat-option>
-                                            <mat-option *ngFor="let item of listaAtletasFiltrada" [value]="item.id"> {{ item.nm_atleta }}</mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
+                            <div class="col-8">
                                 <form class="example-form">
                                     <mat-form-field class="example-full-width" appearance="fill">
                                         <mat-label>Atleta</mat-label>
-                                        <input type="text" placeholder="Selecione o atleta" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"/>
-                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayNome" (optionSelected)="button($event)">
-                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
-                                                {{ option.nm_atleta }}
+                                        <input class="teste" type="text" placeholder="Selecione o atleta" matInput [formControl]="myControl" [matAutocomplete]="auto" />
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayNome" (optionSelected)="selected($event)">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                {{ option.nm_atleta }} <span class="text-small">({{ option.nm_apelido }})</span> / {{ option.tp_genero | uppercase }} / {{ option.nr_idade }} anos
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
                                 </form>
+                            </div>
+
+                            <div class="col-4 d-flex justify-content-center align-items-center">
+                                <button style="background: none; border: none" matTooltip="Salvar" (click)="sendEquipeInscricao(selectDelegacaoEvento)" [matTooltipPosition]="'below'">
+                                    <i class="fa-solid fa-square-check fa-2x text-success"></i>
+                                </button>
+                                <button style="background: none; border: none" matTooltip="Limpar" (click)="cancelar()" [matTooltipPosition]="'below'">
+                                    <i class="fa-solid fa-rectangle-xmark fa-2x text-danger"></i>
+                                </button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <p class="text-center mt-5 text-pill" *ngIf="!listaEquipesInscricao.length">** SELECIONE UMA DELEGAÇÃO **</p>
+
+                                <table class="table text-center table-hover mt-5" *ngIf="listaEquipesInscricao.length">
+                                    <thead class="text-primary col-md-12">
+                                        <th class="col-md-2">ID</th>
+                                        <th class="col-md-2">Atleta</th>
+                                        <th class="col-md-2"></th>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngFor="let item of listaEquipesInscricao">
+                                            <td>
+                                                {{ item.id }}
+                                            </td>
+                                            <td>
+                                                {{ item.id_atleta.nm_atleta }}
+                                            </td>
+                                            <td>
+                                                <button style="background: none; border: none">
+                                                    <i class="fa-solid fa-trash-xmark fa-2x text-danger" matTooltip="Excluir" (click)="excluir(item, selectDelegacaoEvento)" [matTooltipPosition]="'below'"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

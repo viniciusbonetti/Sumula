@@ -28,7 +28,7 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
     public listaEventos: Array<{}> = [];
     public listaModalidadesEvento: Array<{}> = [];
     public listaDelegacaoEvento: Array<{}> = [];
-    public listaAtletas: Array<{}> = [];
+    public listaEquipesInscricao: Array<{}> = [];
 
     // select
     public selectEvento: string = "";
@@ -41,14 +41,14 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
     filteredOptions: Observable<Atleta[]>;
 
     // misc
-    public nomeAtleta = "";
+    public idAtleta:string = "";
 
     ngOnInit(): void {
         this.getEventos();
         this.filteredOptions = this.myControl.valueChanges.pipe(
             startWith(""),
-            map((value) => this._filter(value || "")),
-        );        
+            map((value) => this._filter(value || ""))
+        );
     }
 
     public async getEventos() {
@@ -86,10 +86,6 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
         if (resposta.length > 0) {
             this.options = resposta;
         }
-        // this.listaAtletas.forEach((element) => {
-        //     this.options.push(element);
-        // });
-        // console.log(this.options);
     }
 
     private _filter(value: string): Atleta[] {
@@ -99,17 +95,47 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
         return this.options.filter((option) => option.nm_atleta.toLowerCase().includes(filterValue));
     }
 
-    public button(event) {
-        console.log(event.option.value);
-        console.log(event.option.value.id_atleta);
-        // this.options.forEach(element => {
-        //     if(event.option.value.id_atleta == element.id_atleta){
-        //         this.nomeAtleta = element.nm_atleta
-        //     }
-        // );
+    public selected(event) {
+        this.idAtleta = event.option.value.id_atleta;
     }
 
     displayNome(option) {
-        return option.nm_atleta;
+        if(option != ''){
+            return option.nm_atleta;
+        } else {
+            return '';
+        }
+    }
+
+    public async getEquipeInscricao(delegacao) {
+        this.listaEquipesInscricao = [];
+        if (delegacao != "") {
+            const path = this.paths.equipeinscricao + `/t${delegacao}`;
+            let resposta = await this.getInfo(path, this.setToken);
+            if (resposta.status == 200) {
+                this.listaEquipesInscricao = resposta.data.data;
+            }
+        }
+    }
+
+    public async sendEquipeInscricao(delegacao){
+        const formEquipeInscricao = new FormData();
+        formEquipeInscricao.append('id_atleta', this.idAtleta);
+        formEquipeInscricao.append('id_inscricao', delegacao);
+        await this.postInfo(this.paths.equipeinscricao, formEquipeInscricao, this.setToken);
+        this.getEquipeInscricao(delegacao);
+
+        this.idAtleta = '';
+        this.myControl.setValue('');
+    }
+
+    public cancelar(){
+        this.myControl.setValue('');
+    }
+
+    public async excluir(item, delegacao){
+        const path = this.paths.equipeinscricao + `/${item.id}`
+        await this.deleteInfo(path, this.setToken);
+        this.getEquipeInscricao(delegacao);
     }
 }
