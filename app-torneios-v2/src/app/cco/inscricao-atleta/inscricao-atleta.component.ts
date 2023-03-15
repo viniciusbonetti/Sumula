@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { ControllerComponent } from "src/app/controller/controller.component";
 import { Observable } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+import { filter, map, startWith } from "rxjs/operators";
 
 export interface Atleta {
     id_atleta: string;
@@ -93,23 +93,23 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
     }
 
     private _filter(value: string): Atleta[] {
+        value = value.toString();
         const filterValue = value.toLowerCase();
 
         return this.options.filter((option) => option.nm_atleta.toLowerCase().includes(filterValue));
     }
 
     public button(event) {
-        console.log(event);
+        console.log(event.option.value);
+        console.log(event.option.value.id_atleta);
         // this.options.forEach(element => {
         //     if(event.option.value.id_atleta == element.id_atleta){
         //         this.nomeAtleta = element.nm_atleta
         //     }
-        // });
+        // );
     }
 
-    displayNome(atleta: Atleta): string {
-        console.log(atleta);
-
-        return atleta && atleta.nm_atleta ? atleta.nm_atleta : "";
+    displayNome(option) {
+        return option.nm_atleta;
     }
 }

@@ -55,7 +55,7 @@
                                         <mat-label>Atleta</mat-label>
                                         <input type="text" placeholder="Selecione o atleta" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"/>
                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayNome" (optionSelected)="button($event)">
-                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id" >
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
                                                 {{ option.nm_atleta }}
                                             </mat-option>
                                         </mat-autocomplete>
