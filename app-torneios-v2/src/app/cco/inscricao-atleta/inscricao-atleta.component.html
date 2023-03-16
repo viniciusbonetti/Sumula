@@ -48,7 +48,7 @@
                                         <input class="teste" type="text" placeholder="Selecione o atleta" matInput [formControl]="myControl" [matAutocomplete]="auto" />
                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayNome" (optionSelected)="selected($event)">
                                             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                                {{ option.nm_atleta }} <span class="text-small">({{ option.nm_apelido }})</span> / {{ option.tp_genero | uppercase }} / {{ option.nr_idade }} anos
+                                                {{ option.nm_atleta }} <span class="text-small">({{ option.nm_apelido }})</span> / {{ option.tp_genero | uppercase }} / {{ option.nr_idade }} anos / {{ option.dt_nascimento }}
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
