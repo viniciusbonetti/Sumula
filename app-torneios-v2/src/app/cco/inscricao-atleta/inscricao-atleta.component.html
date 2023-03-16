@@ -35,7 +35,7 @@
                                     <mat-label>Delegação</mat-label>
                                     <select matNativeControl name="id_delegacao" [(ngModel)]="selectDelegacaoEvento" (ngModelChange)="getEquipeInscricao(selectDelegacaoEvento)" required>
                                         <option selected value="">Selecione a delegação</option>
-                                        <option *ngFor="let item of listaDelegacaoEvento" value="{{ item.id }}">{{ item.id_delegacao.nm_delegacao | uppercase }}</option>
+                                        <option *ngFor="let item of listaDelegacaoEvento" value="{{ item.id_delegacao }}">{{ item.nm_delegacao | uppercase }}</option>
                                     </select>
                                 </mat-form-field>
                                 <span class="form-error id_delegacao"></span>

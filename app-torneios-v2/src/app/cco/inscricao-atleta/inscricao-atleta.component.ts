@@ -69,18 +69,19 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
     }
 
     public async getDelegacaoEvento(modalidadeEvento) {
-        const path = this.paths.inscricaodelegacao + `/m${modalidadeEvento}&t${this.tenant}`;
-
-        let resposta = await this.getInfo(path, this.setToken);
         const formTeste = new FormData();
-
         formTeste.append('tipo_request', 'listaDelegacaoAtleta')
         formTeste.append('id_modalidadeevento', modalidadeEvento)
-        let teste = await this.postInfo(this.paths.geral, formTeste,this.setToken);
-        console.log(teste);
-        
+        let resposta = await this.postInfo(this.paths.geral, formTeste,this.setToken);
 
-        this.listaDelegacaoEvento = resposta.data.data;
+        resposta = this.sortTable('nm_delegacao', resposta, 'ASC', '', true);
+        resposta.forEach(resp => {
+            resp.atleta = this.sortTable('nm_atleta', resp.atleta, 'ASC', '', true);
+        });
+
+        console.log(resposta);
+
+        this.listaDelegacaoEvento = resposta;
         this.getAtletas();
     }
 
