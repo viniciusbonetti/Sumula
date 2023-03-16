@@ -72,6 +72,14 @@ export class InscricaoAtletaComponent extends ControllerComponent implements OnI
         const path = this.paths.inscricaodelegacao + `/m${modalidadeEvento}&t${this.tenant}`;
 
         let resposta = await this.getInfo(path, this.setToken);
+        const formTeste = new FormData();
+
+        formTeste.append('tipo_request', 'listaDelegacaoAtleta')
+        formTeste.append('id_modalidadeevento', modalidadeEvento)
+        let teste = await this.postInfo(this.paths.geral, formTeste,this.setToken);
+        console.log(teste);
+        
+
         this.listaDelegacaoEvento = resposta.data.data;
         this.getAtletas();
     }

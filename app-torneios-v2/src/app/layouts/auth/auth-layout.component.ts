@@ -73,7 +73,7 @@ export class AuthLayoutComponent implements OnInit {
   sidebarClose() {
     var $toggle = document.getElementsByClassName('navbar-toggler')[0];
       const body = document.getElementsByTagName('body')[0];
-      this.toggleButton.classList.remove('toggled');
+      // this.toggleButton.classList.remove('toggled');
       var $layer = document.createElement('div');
       $layer.setAttribute('class', 'close-layer');
 
