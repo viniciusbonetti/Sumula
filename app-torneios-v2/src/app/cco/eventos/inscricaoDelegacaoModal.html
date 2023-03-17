@@ -9,9 +9,9 @@
                 <h2 class="text-center pt-2">Estado:</h2>
                 <mat-form-field class="" appearance="fill">
                     <mat-label>Estado</mat-label>
-                    <select matNativeControl name="id_esdado" [(ngModel)]="selectEstadoInscricao" (ngModelChange)="getMunicipio('criar','')" required>
+                    <select matNativeControl name="id_esdado" [(ngModel)]="selectEstadoInscricao" (ngModelChange)="getMunicipio()" required>
                         <option disabled selected value="">Selecione o estado</option>
-                        <option *ngFor="let item of listaEstado" value="{{ item.id }}">{{ item.nm_estado | uppercase }}</option>
+                        <option *ngFor="let item of listaDelegacao" value="{{ item.id_municipio.id_estado}}">{{ item.id_municipio.estado.nm_estado | uppercase }}</option>
                     </select>
                 </mat-form-field>
                 <span class="form-error id_esdado"></span>
@@ -22,7 +22,7 @@
                     <mat-label>Municipio</mat-label>
                     <select matNativeControl name="id_municipio" [(ngModel)]="selectMunicipioInscricao" required>
                         <option disabled selected value="">Selecione o municipio</option>
-                        <option *ngFor="let item of listaMunicipiosModalInscricao" value="{{ item.id }}">{{ item.nm_municipio | uppercase }} / {{ item.id_estado.sg_estado }}</option>
+                        <option *ngFor="let item of listaMunicipiosModalInscricao" value="{{ item.id_municipio }}">{{ item.nm_municipio | uppercase }} / {{ item.sg_estado }}</option>
                     </select>
                 </mat-form-field>
                 <span class="form-error id_municipio"></span>

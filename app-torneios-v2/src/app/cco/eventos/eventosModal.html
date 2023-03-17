@@ -1,10 +1,10 @@
-<div class="card eventoModal" style="box-shadow: none;">
+<div class="card eventoModal" style="box-shadow: none">
     <div class="card-header card-header-danger d-flex align-items-center w-100 ml-0">
         <h4 class="card-title p-2">Ficha técnica do evento:</h4>
         <p class="card-category">{{data.nomeEventoModal}}</p>
     </div>
-    <mat-dialog-content class="mat-typography" style="width: 100vh;">
-        <h2 class="text-center pt-2">Informações do evento </h2>
+    <mat-dialog-content class="mat-typography" style="width: 100vh">
+        <h2 class="text-center pt-2">Informações do evento</h2>
         <div class="col-12 pb-2 d-flex justify-content-between align-items-center">
             <div class="row mx-auto">
                 <span class="text-pill mx-2" title="Nome do Evento"><i class="fa-solid fa-lg fa-medal mr-2"></i> {{data.nomeEventoModal | uppercase}}</span>
@@ -12,23 +12,38 @@
                 <span class="text-pill mx-2" title="Data Final"><i class="fa-solid fa-lg fa-hourglass-end mr-2"></i> {{data.fimEventoModal | date : "dd/MM/yyyy HH:mm"}}</span>
             </div>
         </div>
-        
+
         <div class="col-12 py-2">
             <h2 class="text-center m-0">Modalidades do Evento</h2>
             <table class="table text-center table-hover">
                 <thead class="text-primary">
-                    <th class="col-md-4">MODALIDADE</th>
-                    <th class="col-md-4">NAIPE</th>
-                    <th class="col-md-4">IDADE</th>
+                    <th class="col-md-3">MODALIDADE</th>
+                    <th class="col-md-5">DELEGAÇÕES</th>
+                    <th class="col-md-2">NAIPE</th>
+                    <th class="col-md-2">IDADE</th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of data.modalidadesEventoModal">
-                        <td title="Clique aqui para visualizar as delegações inscritas"> <span class="open-alert" (click)="getInscDelegModalidadeModal(item.id)"> {{item.id_modalidade.nm_modalidade}}</span> </td>
-                        <td> {{item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto") }} </td>
-                        <td> de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}} </td>
+                    <tr *ngFor="let item of listaModalidadesEventoModal">
+                        <td>{{item.nm_modalidade}}</td>
+                        <td class="h-80">
+                            <div class="row col-12" *ngFor="let delegacoes of item.delegacoes ">
+                                <ul class="col-10 list-unstyled">
+                                    <li>
+                                        {{ delegacoes.nm_delegacao | uppercase}}
+                                    </li>
+                                </ul>
+                                <div class="col-2">
+                                    <button (click)="getAtletasDelegacaoEvento(item)" style="background: none; border: none; max-height: 70%;" matTooltip="Ficha técnica" [matTooltipPosition]="'below'">
+                                        <i class="fa-solid fa-square-list fa-2x text-warning"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{item.tp_naipe == "M" ? "Masculino" : item.tp_naipe == "F" ? "Feminino" : ("Misto") }}</td>
+                        <td>de {{item.nr_idadeinicio}} à {{item.nr_idadefinal}}</td>
                     </tr>
-                    <tr *ngIf="!data.modalidadesEventoModal.length">
-                        <td colspan="3" class="text-center">Nenhuma modalidade cadastrada</td>
+                    <tr *ngIf="!listaModalidadesEventoModal.length">
+                        <td colspan="4" class="text-center">Nenhuma modalidade cadastrada</td>
                     </tr>
                 </tbody>
             </table>

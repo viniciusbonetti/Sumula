@@ -4,10 +4,10 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dial
 
 export interface DialogDataFicha {
     token: string;
+    idEventoModal: string;
     nomeEventoModal: string;
     inicioEventoModal: string;
     fimEventoModal: string;
-    modalidadesEventoModal: string;
     encarregadosEventoModal: string;
     municipiosEventoModal: string;
 }
@@ -670,10 +670,10 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         const dialogRef = this.dialog.open(EventosModal, {
             data: {
                 token: this.setToken,
+                idEventoModal: this.idEvento,
                 nomeEventoModal: item.nm_evento,
                 inicioEventoModal: item.dt_inicio,
                 fimEventoModal: item.dt_fim,
-                modalidadesEventoModal: this.listaModalidadesEvento,
                 encarregadosEventoModal: this.listaOcupantes,
                 municipiosEventoModal: this.listaMunicipiosEvento,
             },
@@ -727,22 +727,43 @@ export class EventosModal extends ControllerComponent {
         super();
     }
 
-    public listaModalidadesEventoModal: Array<{}> = [];
+    public listaAtletasEventoModal: Array<{}> = [];
     public listaLocalidadeEventoModal: Array<{}> = [];
+    public listaModalidadesEventoModal: Array<{}> = [];
+    public listaDelegacoesEventoModal: Array<{}> = [];
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.getModalidadesModalEvento();
+    }
 
-    public async getInscDelegModalidadeModal(modalidade) {
+    public async getModalidadesModalEvento() {
         this.listaModalidadesEventoModal = [];
-        const path = this.paths.inscricaodelegacao + `/m${modalidade}&t${this.tenant}`;
+        const formGetModalidadesEvento = new FormData();
+        formGetModalidadesEvento.append("tipo_request", "listaModalidadeInscricao");
+        formGetModalidadesEvento.append("id_evento", this.data.idEventoModal);
+        this.listaModalidadesEventoModal = await this.postInfo(this.paths.geral, formGetModalidadesEvento, this.data.token);
+    }
 
+    public async getAtletasDelegacaoEvento(delegacao) {
+        this.listaAtletasEventoModal = [];
+
+        const path = this.paths.equipeinscricao + `/t${delegacao}`;
         let resposta = await this.getInfo(path, this.data.token);
+        if (resposta.status == 200) {
+            this.listaAtletasEventoModal = resposta.data.data;
+        }
+        console.log(this.listaAtletasEventoModal);
+        
+
+        // const path = this.paths.inscricaodelegacao + `/m${modalidade}&t${this.tenant}`;
+
+        // let resposta = await this.getInfo(path, this.data.token);
 
         if (resposta.status == 200) {
-            this.listaModalidadesEventoModal = resposta.data.data;
+            this.listaAtletasEventoModal = resposta.data.data;
             this.mensagemTitulo = "Delegações Inscritas na Modalidade";
             this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
-            this.listaModalidadesEventoModal.forEach((modEvento) => {
+            this.listaAtletasEventoModal.forEach((modEvento) => {
                 this.mensagemAlerta += "<p class='sa-p'>" + modEvento["id_delegacao"]["nm_delegacao"] + " <span class='text-small'>(" + modEvento["id_delegacao"]["municipio"]["nm_municipio"] + "/" + modEvento["id_delegacao"]["municipio"]["estado"]["sg_estado"] + ")</span> </p>";
             });
             this.mensagemAlerta += "</div>";
@@ -754,23 +775,22 @@ export class EventosModal extends ControllerComponent {
         }
     }
 
-    public async getLocalMunicipio(id_municipio, id_evento){
+    public async getLocalMunicipio(id_municipio, id_evento) {
         this.listaLocalidadeEventoModal = [];
         const path = this.paths.localidadeevento + `/m${id_municipio}&t${id_evento}`;
 
         let resposta = await this.getInfo(path, this.data.token);
 
-        if(resposta.status == 200){
+        if (resposta.status == 200) {
             this.listaLocalidadeEventoModal = resposta.data.data;
             this.mensagemTitulo = "Localidades de Evento";
             this.mensagemAlerta = "<div class='col-md-8 text-left mx-auto'>";
-            this.listaLocalidadeEventoModal.forEach(locEvento => {
-                this.mensagemAlerta += "<p class='sa-p'>" + locEvento['id_localidade']['ds_localidade'].toUpperCase() + " <span class='text-small'>(" + locEvento['id_localidade']['ds_endereco'] + ","+ locEvento['id_localidade']['ds_bairro'] +")</span> </p>";
+            this.listaLocalidadeEventoModal.forEach((locEvento) => {
+                this.mensagemAlerta += "<p class='sa-p'>" + locEvento["id_localidade"]["ds_localidade"].toUpperCase() + " <span class='text-small'>(" + locEvento["id_localidade"]["ds_endereco"] + "," + locEvento["id_localidade"]["ds_bairro"] + ")</span> </p>";
             });
             this.mensagemAlerta += "</div>";
             await this.showSwal("custom-html");
-        }
-        else{
+        } else {
             this.mensagemTitulo = "Localidades de Evento";
             this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma localidade disponível para este município.</p></div>";
             await this.showSwal("custom-html");
@@ -811,27 +831,25 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
         this.getDelegacoes();
     }
 
-    public async getMunicipio(metodo, item) {
+    public async getMunicipio() {
         this.selectMunicipioInscricao = "";
-
-        let resposta;
-        if (metodo == "criar") {
-            const path = this.paths.municipio + `/${this.selectEstadoInscricao}`;
-            resposta = await this.getInfo(path, this.data.token);
-        } else if (metodo == "editar") {
-            const path = this.paths.municipio + `/${item}`;
-            resposta = await this.getInfo(path, this.data.token);
-        }
-
-        if (resposta.status == 200) {
-            this.listaMunicipiosModalInscricao = resposta.data.data;
-        }
+        this.listaMunicipiosModalInscricao = [];
+        this.listaDelegacao.forEach((element) => {
+            if (element["id_municipio"]["id_estado"] == this.selectEstadoInscricao) {
+                let objetoListaMunicipiosInscricaoDelegacao = {
+                    id_municipio: element["id_municipio"]["id"],
+                    nm_municipio: element["id_municipio"]["nm_municipio"],
+                    sg_estado: element["id_municipio"]["estado"]["sg_estado"],
+                };
+                this.listaMunicipiosModalInscricao.push(objetoListaMunicipiosInscricaoDelegacao);
+            }
+        });
+        // }
     }
 
     public async getDelegacoes() {
         let resposta = await this.getInfo(this.paths.delegacao, this.data.token);
         this.listaDelegacao = resposta.data.data;
-        console.log(this.listaDelegacao);
     }
 
     public setCheckbox(id, isChecked) {
@@ -863,7 +881,6 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
 
     public async filtrar() {
         await this.getInscricaoDelegacao();
-        console.log(this.selectModalidadeInscricao);
 
         if (this.selectModalidadeInscricao != "") {
             this.habilitarBotaoEnviar = true;
