@@ -742,35 +742,31 @@ export class EventosModal extends ControllerComponent {
         formGetModalidadesEvento.append("tipo_request", "listaModalidadeInscricao");
         formGetModalidadesEvento.append("id_evento", this.data.idEventoModal);
         this.listaModalidadesEventoModal = await this.postInfo(this.paths.geral, formGetModalidadesEvento, this.data.token);
+        
     }
 
     public async getAtletasDelegacaoEvento(delegacao) {
         this.listaAtletasEventoModal = [];
+        
 
-        const path = this.paths.equipeinscricao + `/t${delegacao}`;
+        const path = this.paths.equipeinscricao + `/t${delegacao.id_inscricao}`;
         let resposta = await this.getInfo(path, this.data.token);
         if (resposta.status == 200) {
             this.listaAtletasEventoModal = resposta.data.data;
         }
-        console.log(this.listaAtletasEventoModal);
         
-
-        // const path = this.paths.inscricaodelegacao + `/m${modalidade}&t${this.tenant}`;
-
-        // let resposta = await this.getInfo(path, this.data.token);
-
-        if (resposta.status == 200) {
-            this.listaAtletasEventoModal = resposta.data.data;
-            this.mensagemTitulo = "Delegações Inscritas na Modalidade";
+        if (this.listaAtletasEventoModal.length > 0) {
+            // this.listaAtletasEventoModal = resposta.data.data;
+            this.mensagemTitulo = "Atletas inscritos na modalidade:";
             this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
-            this.listaAtletasEventoModal.forEach((modEvento) => {
-                this.mensagemAlerta += "<p class='sa-p'>" + modEvento["id_delegacao"]["nm_delegacao"] + " <span class='text-small'>(" + modEvento["id_delegacao"]["municipio"]["nm_municipio"] + "/" + modEvento["id_delegacao"]["municipio"]["estado"]["sg_estado"] + ")</span> </p>";
+            this.listaAtletasEventoModal.forEach((modEvento) => {                
+                this.mensagemAlerta += "<p class='sa-p pl-5 pr-5'>" + modEvento["id_atleta"]["nm_atleta"] + " <span class='text-small'>(" + modEvento["id_atleta"]["nm_apelido"]+ ")</span> </p>";
             });
             this.mensagemAlerta += "</div>";
             await this.showSwal("custom-html");
         } else {
-            this.mensagemTitulo = "Delegações Inscritas na Modalidade";
-            this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhuma delegação inscrita para esta modalidade.</p></div>";
+            this.mensagemTitulo = "Atletas inscritos na modalidade";
+            this.mensagemAlerta = "<div class='col-md-12 text-center mx-auto'><p class='sa-p'>Nenhum atleta inscrito para esta modalidade.</p></div>";
             await this.showSwal("custom-html");
         }
     }
