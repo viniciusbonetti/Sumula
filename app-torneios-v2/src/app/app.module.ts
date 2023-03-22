@@ -50,6 +50,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutes } from './app.routing';
 import { DialogModule } from '@angular/cdk/dialog';
+import { ControllerModule } from './controller/controller.module';
 
 @NgModule({
   exports: [
@@ -102,6 +103,7 @@ export class MaterialModule {}
 
         MaterialModule,
         SidebarModule,
+        ControllerModule,
         NavbarModule,
         FooterModule,
         FixedpluginModule,

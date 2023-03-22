@@ -1,9 +1,10 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef, Directive } from '@angular/core';
-import { ROUTES } from '../.././sidebar/sidebar.component';
+// import { ROUTES } from '../.././controller/controller.component';
 import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { ControllerComponent, ROUTES } from 'src/app/controller/controller.component';
 const misc: any = {
     navbar_menu_visible: 0,
     active_collapse: true,
@@ -16,7 +17,7 @@ declare var $: any;
     templateUrl: 'navbar.component.html'
 })
 
-export class NavbarComponent implements OnInit {
+export class NavbarComponent extends ControllerComponent implements OnInit {
     private listTitles: any[];
     location: Location;
     mobile_menu_visible: any = 0;
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit {
     @ViewChild('app-navbar-cmp', {static: false}) button: any;
 
     constructor(location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
+        super();
         this.location = location;
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;

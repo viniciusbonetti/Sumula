@@ -3,6 +3,74 @@ import axios from "axios";
 import { SweetAlertComponent } from "../components/sweetalert/sweetalert.component";
 declare var $: any;
 
+//Metadata
+export interface RouteInfo {
+    path: string;
+    title: string;
+    type: string;
+    icontype: string;
+    collapse?: string;
+    children?: ChildrenItems[];
+}
+
+export interface ChildrenItems {
+    path: string;
+    title: string;
+    ab: string;
+    type?: string;
+}
+
+//Menu Items
+export const ROUTES: RouteInfo[] = [
+    {
+        path: "/login",
+        title: "Login",
+        type: "page",
+        icontype: ""
+    },
+    {
+        path: "/dashboard",
+        title: "Dashboard",
+        type: "link",
+        icontype: "dashboard",
+    },
+    {
+        path: "/projeto-x",
+        title: "ProjetoX",
+        type: "sub",
+        icontype: "apps",
+        collapse: "projeto-x",
+        children: [
+            { path: "tenant", title: "Tenant", ab: "T" },
+            { path: "usuarios-tenant", title: "Usuários Tenant", ab: "UT" },
+        ],
+    },
+    {
+        path: "/cco",
+        title: "CCO",
+        type: "sub",
+        icontype: "grid_on",
+        collapse: "cco",
+        children: [
+            { path: "cargos", title: "Cargos", ab: "C" },
+            { path: "modalidades", title: "Modalidades", ab: "M" },
+            { path: "eventos", title: "Eventos", ab: "E" },
+            { path: "localidades", title: "Localidades", ab: "L" },
+            { path: "inscricao-atleta", title: "Inscrição Atleta", ab: "I A" },
+        ],
+    },
+    {
+        path: "/tecnico",
+        title: "Técnico",
+        type: "sub",
+        icontype: "grid_on",
+        collapse: "tecnico",
+        children: [
+            { path: "delegacao", title: "Delegação", ab: "D" },
+            { path: "atleta", title: "Atleta", ab: "A" },
+        ],
+    },
+];
 @Component({
     selector: "controller",
     templateUrl: "./controller.component.html",
