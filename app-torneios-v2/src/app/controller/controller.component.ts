@@ -43,6 +43,7 @@ export const ROUTES: RouteInfo[] = [
         children: [
             { path: "tenant", title: "Tenant", ab: "T" },
             { path: "usuarios-tenant", title: "Usuários Tenant", ab: "UT" },
+            { path: "configuracoes-acessos", title: "Configurações de acessos", ab: "CA" },
         ],
     },
     {
@@ -56,7 +57,7 @@ export const ROUTES: RouteInfo[] = [
             { path: "modalidades", title: "Modalidades", ab: "M" },
             { path: "eventos", title: "Eventos", ab: "E" },
             { path: "localidades", title: "Localidades", ab: "L" },
-            { path: "inscricao-atleta", title: "Inscrição Atleta", ab: "I A" },
+            { path: "inscricao-atleta", title: "Inscrição Atleta", ab: "IA" },
         ],
     },
     {
@@ -79,6 +80,8 @@ export const ROUTES: RouteInfo[] = [
 @Injectable()
 export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public baseUrl = "http://dornez.vps-kinghost.net/api";
+    // public baseUrl = "http://187.95.144.34:8395/api";
+
     public tenant = localStorage.getItem("tenant");
     
     public paths = {

@@ -26,7 +26,6 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
 
     async ngOnInit() {
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
-        console.log(ROUTES);
         
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector(".sidebar .sidebar-wrapper");
