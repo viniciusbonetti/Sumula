@@ -80,7 +80,7 @@ export const ROUTES: RouteInfo[] = [
 @Injectable()
 export class ControllerComponent extends SweetAlertComponent implements OnInit {
     public baseUrl = "http://dornez.vps-kinghost.net/api";
-    // public baseUrl = "http://187.95.144.34:8395/api";
+    //public baseUrl = "http://127.0.0.1:8000/api";
 
     public tenant = localStorage.getItem("tenant");
     
