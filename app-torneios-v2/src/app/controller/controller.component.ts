@@ -109,6 +109,9 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         geral:"/geral",
     }
 
+    public listaMenu = {};
+    public entries;
+
     public axiosResponse:boolean = false;
 
     public num = "";

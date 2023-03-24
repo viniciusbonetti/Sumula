@@ -71,7 +71,7 @@ export class DashboardComponent extends ControllerComponent implements OnInit, A
     // constructor(private navbarTitleService: NavbarTitleService) { }
     public ngOnInit() {
         this.getEstado();
-        this.getMenu();
+        // this.getMenu();
         this.tableData = {
             headerRow: ["ID", "Name", "Salary", "Country", "City"],
             dataRows: [
@@ -215,13 +215,5 @@ export class DashboardComponent extends ControllerComponent implements OnInit, A
         let listaEstados = await this.getInfo(this.paths.estado, this.setToken);
         this.listaEstados = listaEstados.data.data;
         localStorage.setItem("listaEstados", JSON.stringify(this.listaEstados));
-    }
-
-    public async getMenu() {
-        const formData = new FormData();
-        formData.append('tipo_request', 'listaOpcoes');
-        formData.append('id_usuario', '8');
-        let listaMenuUsuario = await this.postInfo(this.paths.geral, formData, this.setToken);
-        console.log(listaMenuUsuario);
     }
 }

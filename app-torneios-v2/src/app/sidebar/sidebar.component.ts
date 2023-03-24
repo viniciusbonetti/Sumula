@@ -16,6 +16,7 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
     public userInfo = {};
     public menuItems: any[];
     public userInicial= '';
+
     ps: any;
     isMobileMenu() {
         if ($(window).width() > 991) {
@@ -25,21 +26,18 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
     }
 
     async ngOnInit() {
-        this.menuItems = ROUTES.filter((menuItem) => menuItem);
-        
+        await this.getMenu();
+        this.menuItems = this.entries.filter((menuItem) => menuItem);
+                
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector(".sidebar .sidebar-wrapper");
             this.ps = new PerfectScrollbar(elemSidebar);
         }
         const path = '/user/'+this.userId;
-        // this.userInfo = await this.getInfo(path, this.setToken);
         let info = await this.getInfo(path, this.setToken);
-        
         this.userInfo = info.data.data.nm_usuario;        
-        
         this.userInicial= this.userInfo[0].toLowerCase();
         
-
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(function(value, key) {
             if(value.classList.contains('active')){
@@ -52,8 +50,8 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
                 }
             }
         });
-
     }
+
     updatePS(): void {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             this.ps.update();
@@ -65,5 +63,20 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
             bool = true;
         }
         return bool;
+    }
+
+    public async getMenu() {
+        const formData = new FormData();
+        formData.append('tipo_request', 'listaOpcoes');
+        formData.append('id_usuario', '8');
+        let listaMenuUsuario = await this.postInfo(this.paths.geral, formData, this.setToken);
+        this.listaMenu = listaMenuUsuario;
+
+        console.log('lista back');
+        console.log(this.listaMenu);
+
+        this.entries = Object.values(this.listaMenu);
+        console.log('lista front');
+        console.log(this.entries);
     }
 }
