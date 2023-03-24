@@ -78,5 +78,11 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
         this.entries = Object.values(this.listaMenu);
         console.log('lista front');
         console.log(this.entries);
+
+        const formDataAcesso = new FormData();
+        formDataAcesso.append('tipo_request', 'listaAcesso');
+        formDataAcesso.append('id_usuario', '8');
+        let listaAcessoUsuario = await this.postInfo(this.paths.geral, formDataAcesso, this.setToken);
+        console.log(listaAcessoUsuario);
     }
 }
