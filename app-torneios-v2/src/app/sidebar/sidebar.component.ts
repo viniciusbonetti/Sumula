@@ -27,7 +27,7 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
 
     async ngOnInit() {
         await this.getMenu();
-        this.menuItems = this.entries.filter((menuItem) => menuItem);
+        this.menuItems = this.menu.filter((menuItem) => menuItem);
                 
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector(".sidebar .sidebar-wrapper");
@@ -72,17 +72,11 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
         let listaMenuUsuario = await this.postInfo(this.paths.geral, formData, this.setToken);
         this.listaMenu = listaMenuUsuario;
 
-        console.log('lista back');
-        console.log(this.listaMenu);
+        // console.log('lista back');
+        // console.log(this.listaMenu);
 
-        this.entries = Object.values(this.listaMenu);
-        console.log('lista front');
-        console.log(this.entries);
-
-        const formDataAcesso = new FormData();
-        formDataAcesso.append('tipo_request', 'listaAcesso');
-        formDataAcesso.append('id_usuario', '8');
-        let listaAcessoUsuario = await this.postInfo(this.paths.geral, formDataAcesso, this.setToken);
-        console.log(listaAcessoUsuario);
+        this.menu = Object.values(this.listaMenu);
+        // console.log('lista front');
+        // console.log(this.menu);
     }
 }

@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="d-flex align-items-center justify-content-between">
-                            <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo evento</button>
+                            <button mat-raised-button class="btn btn-sm d-flex align-items-center ml-3" (click)="cadastrar()" *ngIf="acessosEvento.gravar"><i class="fa-light fa-square-plus fa-2x mr-1"></i> Novo evento</button>
                             <mat-form-field class="float-right col-md-3">
                                 <input matInput placeholder="Pesquisar..." type="text" name="searchTable" (keyup)="searchTable($event)" />
                             </mat-form-field>
@@ -44,7 +44,7 @@
                                             <button (click)="editarEvento(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-square-list fa-2x text-warning"></i>
                                             </button>
-                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'">
+                                            <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'" *ngIf="acessosEvento.editar">
                                                 <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEvento(item, 'editar')"></i>
                                             </button>
                                             <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'">

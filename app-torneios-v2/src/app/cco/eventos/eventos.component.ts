@@ -86,13 +86,30 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public idEditarEvento = "";
     public idEvento = "";
     public idRegistroModalidade = "";
+    public acessosEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
 
     constructor(public dialog: MatDialog) {
         super();
     }
 
-    ngOnInit(): void {
-        this.getEventos();
+    async ngOnInit() {
+        await this.acessosUsuario();
+        await this.getEventos();
+    }
+
+    public async acessosUsuario() {
+        const formDataAcesso = new FormData();
+        formDataAcesso.append('tipo_request', 'listaAcesso');
+        formDataAcesso.append('id_usuario', '8');
+        let listaAcessoUsuario = await this.postInfo(this.paths.geral, formDataAcesso, this.setToken);
+        this.acessos = listaAcessoUsuario;
+        // console.log('lista acessos');
+        // console.log(this.acessos);
+        
+        this.acessosEvento = this.acessos.find((obj) => {
+            return obj.tab === 'eventos';
+        });
+        console.log(this.acessosEvento.editar);
     }
 
     public cadastrar() {
@@ -742,25 +759,23 @@ export class EventosModal extends ControllerComponent {
         formGetModalidadesEvento.append("tipo_request", "listaModalidadeInscricao");
         formGetModalidadesEvento.append("id_evento", this.data.idEventoModal);
         this.listaModalidadesEventoModal = await this.postInfo(this.paths.geral, formGetModalidadesEvento, this.data.token);
-        
     }
 
     public async getAtletasDelegacaoEvento(delegacao) {
         this.listaAtletasEventoModal = [];
-        
 
         const path = this.paths.equipeinscricao + `/t${delegacao.id_inscricao}`;
         let resposta = await this.getInfo(path, this.data.token);
         if (resposta.status == 200) {
             this.listaAtletasEventoModal = resposta.data.data;
         }
-        
+
         if (this.listaAtletasEventoModal.length > 0) {
             // this.listaAtletasEventoModal = resposta.data.data;
             this.mensagemTitulo = "Atletas inscritos na modalidade:";
             this.mensagemAlerta = "<div class='col-md-6 text-left mx-auto'>";
-            this.listaAtletasEventoModal.forEach((modEvento) => {                
-                this.mensagemAlerta += "<p class='sa-p pl-5 pr-5'>" + modEvento["id_atleta"]["nm_atleta"] + " <span class='text-small'>(" + modEvento["id_atleta"]["nm_apelido"]+ ")</span> </p>";
+            this.listaAtletasEventoModal.forEach((modEvento) => {
+                this.mensagemAlerta += "<p class='sa-p pl-5 pr-5'>" + modEvento["id_atleta"]["nm_atleta"] + " <span class='text-small'>(" + modEvento["id_atleta"]["nm_apelido"] + ")</span> </p>";
             });
             this.mensagemAlerta += "</div>";
             await this.showSwal("custom-html");

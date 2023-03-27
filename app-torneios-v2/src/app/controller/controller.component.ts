@@ -110,7 +110,8 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
     }
 
     public listaMenu = {};
-    public entries;
+    public menu;
+    public acessos;
 
     public axiosResponse:boolean = false;
 
