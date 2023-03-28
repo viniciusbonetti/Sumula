@@ -59,12 +59,15 @@
                                     <a class="nav-link tabHeader active" href="#usuario" data-toggle="tab" role="tab" (click)="tabs('')"> USUÁRIOS </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#tenants" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> TENANTS </a>
+                                    <a class="nav-link tabHeader" href="#usuariotenants" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> TENANTS </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link tabHeader" href="#usuarioperfil" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> PERFIS </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="tab-content">
                             <div class="tab-pane active" id="usuario">
                                 <div class="col-md-12 d-flex flex-column align-items-center">
@@ -101,12 +104,12 @@
                                     <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar">Próximo <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="tenants">
+                            <div class="tab-pane" id="usuariotenants">
                                 <div>
                                     <mat-label>Tenant</mat-label>
                                     <ul class="d-flex flex-wrap flex-column lista-checkbox m-0">
                                         <li style="list-style: none" class="lista-checkbox-item" *ngFor="let item of listaTenant; let i = index">
-                                            <mat-checkbox type="checkbox" name="id_tenant" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event)">
+                                            <mat-checkbox type="checkbox" name="id_tenant" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, 'tenant')">
                                                 {{ item.nm_tenant | uppercase }}
                                             </mat-checkbox>
                                         </li>
@@ -117,6 +120,34 @@
                                     <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoVoltar()"><i class="fa-solid fa-square-arrow-left fa-2x ml-1"></i> Voltar</button>
                                     <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('post')" *ngIf="!editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
                                     <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="botaoAvancar('put')" *ngIf="editar"><i class="fa-solid fa-floppy-disk fa-2x mr-1"></i> Salvar</button>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="usuarioperfil">
+                                <div class="table-responsive">
+                                    <table class="table text-center table-hover">
+                                        <thead>
+                                            <th class="col-2"></th>
+                                            <th class="col-6">PERFIL</th>
+                                            <th class="col-4">INFORMAÇÕES</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of listaPerfisAtivos">
+                                                <td>
+                                                    <li style="list-style: none" class="lista-checkbox-item">
+                                                        <mat-checkbox type="checkbox" name="id_perfil" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, 'perfis')">
+                                                        </mat-checkbox>
+                                                    </li>
+                                                </td>
+                                                <td> {{ item.nm_perfil }} </td>
+                                                <td>botao da modal</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="pl-5 pr-5 d-flex justify-content-between align-items-center">
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-orange" (click)="toHome()"> HOME</button>
+                                    <button mat-raised-button class="btn btn-sm d-flex align-items-center btn-info" (click)="sendPerfilUsuario()">ENVIAR <i class="fa-solid fa-square-arrow-right fa-2x mr-1"></i></button>
                                 </div>
                             </div>
                         </div>

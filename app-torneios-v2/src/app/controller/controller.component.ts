@@ -106,6 +106,7 @@ export class ControllerComponent extends SweetAlertComponent implements OnInit {
         localidades:"/localidade",
         localidadeevento:"/localidadeevento",
         equipeinscricao:"/equipeinscricao",
+        perfil:"/perfil",
         geral:"/geral",
     }
 
