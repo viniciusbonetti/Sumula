@@ -41,13 +41,13 @@
                                             <button style="background: none; border: none" matTooltip="Increver delegações" [matTooltipPosition]="'below'">
                                                 <i class="fa-solid fa-users-medical text-info" (click)="incricaoDelegacaoEvento(item)"></i>
                                             </button>
-                                            <button (click)="editarEvento(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'below'">
+                                            <button (click)="editarEvento(item, 'mostrar')" style="background: none; border: none" matTooltip="Ficha técnica" [matTooltipPosition]="'below'" *ngIf="acessosEvento.ler">
                                                 <i class="fa-solid fa-square-list fa-2x text-warning"></i>
                                             </button>
                                             <button style="background: none; border: none" matTooltip="Editar" [matTooltipPosition]="'below'" *ngIf="acessosEvento.editar">
                                                 <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEvento(item, 'editar')"></i>
                                             </button>
-                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'">
+                                            <button style="background: none; border: none" matTooltip="Excluir" [matTooltipPosition]="'below'" *ngIf="acessosEvento.excluir">
                                                 <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'evento')"></i>
                                             </button>
                                         </td>
@@ -68,17 +68,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link tabHeader active" href="#eventos" data-toggle="tab" role="tab" (click)="tabs('')"> EVENTO </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#modalidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
+                                <li class="nav-item" *ngIf="acessosModalidadesEvento.ler">
+                                    <a class="nav-link tabHeader" href="#modalidadesevento" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('1')"> MODALIDADES </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#ccos" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('2')"> CARGOS </a>
+                                <li class="nav-item" *ngIf="acessosCcosEvento.ler">
+                                    <a class="nav-link tabHeader" href="#ccosevento" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('2')"> CARGOS </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#municipios" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('3')"> MUNICÍPIOS </a>
+                                <li class="nav-item" *ngIf="acessosMunicipiosEvento.ler">
+                                    <a class="nav-link tabHeader" href="#municipiosevento" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('3')"> MUNICÍPIOS </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link tabHeader" href="#localidades" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('4')"> LOCALIDADES </a>
+                                <li class="nav-item" *ngIf="acessosLocalidadesEvento.ler">
+                                    <a class="nav-link tabHeader" href="#localidadesevento" data-toggle="tab" role="tab" [disabled]="!ativarTabs" (click)="tabs('4')"> LOCALIDADES </a>
                                 </li>
                             </ul>
                         </div>
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="modalidades">
+                            <div class="tab-pane" id="modalidadesevento">
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
@@ -127,7 +127,7 @@
                                             <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
-                                            <tr class="tabela-ocupante">
+                                            <tr class="tabela-ocupante" *ngIf="acessosModalidadesEvento.gravar">
                                                 <td></td>
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
@@ -229,10 +229,10 @@
 
                                                 <td>
                                                     <div *ngIf="!item.editarModalidadeEvento">
-                                                        <button style="background: none; border: none">
+                                                        <button style="background: none; border: none" *ngIf="acessosModalidadesEvento.editar">
                                                             <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="mostrarEditarModalidade(item, listaModalidadesEvento)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
                                                         </button>
-                                                        <button style="background: none; border: none">
+                                                        <button style="background: none; border: none" *ngIf="acessosModalidadesEvento.excluir">
                                                             <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'modalidades')" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
                                                         </button>
                                                     </div>
@@ -255,7 +255,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="ccos">
+                            <div class="tab-pane" id="ccosevento">
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
@@ -267,7 +267,7 @@
                                             <th class="col-md-2"></th>
                                         </thead>
                                         <tbody>
-                                            <tr class="tabela-ocupante">
+                                            <tr class="tabela-ocupante" *ngIf="acessosCcosEvento.gravar">
                                                 <td></td>
                                                 <td class="cadastrar-ocupante">
                                                     <mat-form-field appearance="fill">
@@ -388,10 +388,10 @@
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarEncarregados">
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item, listaOcupantes)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarEncarregados(item, listaOcupantes)" matTooltip="Editar" [matTooltipPosition]="'below'" *ngIf="acessosCcosEvento.editar"></i>
                                                         </button>
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'cargos')" matTooltip="Excluir" [matTooltipPosition]="'below'" *ngIf="acessosCcosEvento.excluir"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarEncarregados">
@@ -413,7 +413,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="municipios">
+                            <div class="tab-pane" id="municipiosevento">
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
                                         <thead class="text-primary col-md-12">
@@ -423,7 +423,7 @@
                                             <th class="col-md-3"></th>
                                         </thead>
                                         <tbody>
-                                            <tr class="tabela-ocupante">
+                                            <tr class="tabela-ocupante" *ngIf="acessosMunicipiosEvento.gravar">
                                                 <td></td>
                                                 <td>
                                                     <mat-form-field class="" appearance="fill">
@@ -491,10 +491,10 @@
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarMunicipios">
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item, listaMunicipiosEvento)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarMunicipiosEvento(item, listaMunicipiosEvento)" matTooltip="Editar" [matTooltipPosition]="'below'" *ngIf="acessosMunicipiosEvento.editar"></i>
                                                         </button>
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'municipios')" matTooltip="Excluir" [matTooltipPosition]="'below'" *ngIf="acessosMunicipiosEvento.excluir"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarMunicipios">
@@ -516,8 +516,8 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="localidades">
-                                <div class="row p-3">
+                            <div class="tab-pane" id="localidadesevento">
+                                <div class="row p-3" *ngIf="acessosLocalidadesEvento.gravar">
                                     <div class="col-md-4">
                                         <mat-form-field class="" appearance="fill">
                                             <mat-label>Estado</mat-label>
@@ -545,27 +545,26 @@
                                             <mat-label>Localidades</mat-label>
                                             <select matNativeControl required name="id_localidade" [(ngModel)]="localidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'criar')" [disabled]="mostrarEditarLocalidade" required>
                                                 <option disabled value="">Selecione a localidade</option>
-                                                <option *ngFor="let itemSelectCriar of listaLocalidades;" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.ds_localidade | uppercase }} </option>
+                                                <option *ngFor="let itemSelectCriar of listaLocalidades" value="{{ itemSelectCriar.id }}">{{ itemSelectCriar.ds_localidade | uppercase }}</option>
                                             </select>
                                         </mat-form-field>
                                         <span class="form-error id_localidade"></span>
                                     </div>
-                                    
+
                                     <div class="col-md-9">
                                         <p *ngIf="!localEndereco"><b>SELECIONE UMA LOCALIDADE PARA VER O ENDEREÇO</b></p>
-                                        <p *ngIf="localEndereco"><b>Endereço:</b> {{localEndereco}} </p>
+                                        <p *ngIf="localEndereco"><b>Endereço:</b> {{ localEndereco }}</p>
                                     </div>
 
                                     <div class="col-md-3 d-flex justify-content-center">
                                         <button style="background: none; border: none" matTooltip="Salvar" [matTooltipPosition]="'below'">
-                                            <i class="fa-solid fa-square-check text-success" style="font-size: 1.5em;" (click)="cadastrarLocalidadeEvento('post')"></i>
+                                            <i class="fa-solid fa-square-check text-success" style="font-size: 1.5em" (click)="cadastrarLocalidadeEvento('post')"></i>
                                         </button>
                                         <button style="background: none; border: none" matTooltip="Limpar" [matTooltipPosition]="'below'">
-                                            <i class="fa-solid fa-rectangle-xmark text-danger" style="font-size: 1.5em;" (click)="limparFormLocalidadeEvento()"></i>
+                                            <i class="fa-solid fa-rectangle-xmark text-danger" style="font-size: 1.5em" (click)="limparFormLocalidadeEvento()"></i>
                                         </button>
                                     </div>
                                 </div>
-
 
                                 <div class="table-responsive">
                                     <table class="table text-center table-hover">
@@ -613,7 +612,7 @@
                                                             <mat-label>Localidades</mat-label>
                                                             <select matNativeControl name="id_localidade" [(ngModel)]="editarLocalidadeSelect" (ngModelChange)="setEnderecoLocalidade($event, 'editar')" required>
                                                                 <option disabled value="">Selecione a localidade</option>
-                                                                <option *ngFor="let itemSelectEditar of listaLocalidades;" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.ds_localidade | uppercase }} </option>
+                                                                <option *ngFor="let itemSelectEditar of listaLocalidades" value="{{ itemSelectEditar.id }}">{{ itemSelectEditar.ds_localidade | uppercase }}</option>
                                                             </select>
                                                         </mat-form-field>
                                                         <span class="form-error id_localidade"></span>
@@ -621,17 +620,17 @@
 
                                                     <div class="col-md-12">
                                                         <p *ngIf="!editarLocalEndereco"><b>SELECIONE UMA LOCALIDADE PARA VER O ENDEREÇO</b></p>
-                                                        <p *ngIf="editarLocalEndereco"><b>Endereço:</b> {{editarLocalEndereco}} </p>
+                                                        <p *ngIf="editarLocalEndereco"><b>Endereço:</b> {{ editarLocalEndereco }}</p>
                                                     </div>
                                                 </td>
 
                                                 <td>
                                                     <div *ngIf="!item.mostrarEditarLocalidade">
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarLocalidadeEvento(item, listaLocalidadesEvento)" matTooltip="Editar" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-pen-to-square fa-2x text-info" (click)="editarLocalidadeEvento(item, listaLocalidadesEvento)" matTooltip="Editar" [matTooltipPosition]="'below'" *ngIf="acessosLocalidadesEvento.editar"></i>
                                                         </button>
                                                         <button style="background: none; border: none">
-                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'localidades')" matTooltip="Excluir" [matTooltipPosition]="'below'"></i>
+                                                            <i class="fa-solid fa-trash-xmark fa-2x text-danger" (click)="excluir(item, 'localidades')" matTooltip="Excluir" [matTooltipPosition]="'below'" *ngIf="acessosLocalidadesEvento.excluir"></i>
                                                         </button>
                                                     </div>
                                                     <div *ngIf="item.mostrarEditarLocalidade">

@@ -51,7 +51,7 @@
                 <div *ngIf="listaDelegacaoFiltrada.length ">
                     <ul class="d-flex flex-wrap flex-column lista-checkbox m-0 p-0" style="list-style: none;">
                         <li class="lista-checkbox-item" *ngFor="let item of listaDelegacaoFiltrada">
-                            <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)"> {{item.nm_delegacao}} <span class="text-small">({{ item.id_municipio.estado.sg_estado }})</span> </mat-checkbox>
+                            <mat-checkbox name="id_modalidade[]" [(ngModel)]="item.checked" (change)="setCheckbox(item.id, $event, i)" [disabled]="!mostrarBotaoEnviar" > {{item.nm_delegacao}} <span class="text-small">({{ item.id_municipio.estado.sg_estado }})</span> </mat-checkbox>
                         </li>
                     </ul>
                 </div>
@@ -63,11 +63,13 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
-        <div *ngIf="!editarInscricaoDelegacao">
-            <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('post')" [disabled]="!habilitarBotaoEnviar">Enviar</button>
-        </div>
-        <div *ngIf="editarInscricaoDelegacao">
-            <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('put')" [disabled]="!habilitarBotaoEnviar">Enviar</button>
+        <div *ngIf="mostrarBotaoEnviar">
+            <div *ngIf="!editarInscricaoDelegacao">
+                <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('post')" [disabled]="!habilitarBotaoEnviar">Enviar</button>
+            </div>
+            <div *ngIf="editarInscricaoDelegacao">
+                <button mat-raised-button [mat-dialog-close]="true" class="btn-info" (click)="sendInscricaoDelegacao('put')" [disabled]="!habilitarBotaoEnviar">Enviar</button>
+            </div>
         </div>
     </mat-dialog-actions>
 </div>

@@ -128,16 +128,16 @@ export class AtletaComponent extends ControllerComponent implements OnInit {
                 await this.sendFormAtleta("post");
             }
         } else if (this.num == "1") {
-            if (this.checkboxAtleta.length > 0) {
+            // if (this.checkboxAtleta.length > 0) {
                 if (this.editar) {
                     this.sendModalidadesAtleta("put");
                 } else {
                     this.sendModalidadesAtleta("post");
                 }
                 this.num = "2";
-            } else {
-                this.sendModalidadesAtleta("post");
-            }
+            // } else {
+            //     this.sendModalidadesAtleta("post");
+            // }
         } else if (this.num == "2") {
             if (this.listaDocumentoAtleta.length > 0) {
                 this.num = "3";

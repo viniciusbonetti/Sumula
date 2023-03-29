@@ -82,6 +82,6 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-raised-button mat-dialog-close class="btn-danger">Cancel</button>
-        <button mat-raised-button [mat-dialog-close]="true" class="btn-info">Editar</button>
+        <button mat-raised-button [mat-dialog-close]="true" class="btn-info" [disabled]="!data.acessosModalEvento['editar']">Editar</button>
     </mat-dialog-actions>
 </div>

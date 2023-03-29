@@ -10,6 +10,7 @@ export interface DialogDataFicha {
     fimEventoModal: string;
     encarregadosEventoModal: string;
     municipiosEventoModal: string;
+    acessosModalEvento: Array<{}>;
 }
 
 export interface DialogDataInscricaoDelegacao {
@@ -18,6 +19,7 @@ export interface DialogDataInscricaoDelegacao {
     idTenantModal: string;
     nomeEventoModal: string;
     listaModalidadesEventoModalInscricao: string;
+    acessosModalInscricaoDelegacao: Array<{}>;
 }
 
 @Component({
@@ -87,6 +89,11 @@ export class EventosComponent extends ControllerComponent implements OnInit {
     public idEvento = "";
     public idRegistroModalidade = "";
     public acessosEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
+    public acessosInscricaoDelegacao:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
+    public acessosModalidadesEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
+    public acessosCcosEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
+    public acessosMunicipiosEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
+    public acessosLocalidadesEvento:{tab: string, gravar: boolean, ler: boolean, editar: boolean, excluir: boolean} = {tab: '', gravar: false, ler: false, editar: false, excluir: false};
 
     constructor(public dialog: MatDialog) {
         super();
@@ -103,13 +110,27 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         formDataAcesso.append('id_usuario', '8');
         let listaAcessoUsuario = await this.postInfo(this.paths.geral, formDataAcesso, this.setToken);
         this.acessos = listaAcessoUsuario;
-        // console.log('lista acessos');
-        // console.log(this.acessos);
         
+
+        //controlador de acessos
         this.acessosEvento = this.acessos.find((obj) => {
             return obj.tab === 'eventos';
         });
-        console.log(this.acessosEvento.editar);
+        this.acessosInscricaoDelegacao = this.acessos.find((obj) => {
+            return obj.tab === 'inscricaodelegacao';
+        });
+        this.acessosModalidadesEvento = this.acessos.find((obj) => {
+            return obj.tab === 'modalidadesevento';
+        });
+        this.acessosCcosEvento = this.acessos.find((obj) => {
+            return obj.tab === 'ccosevento';
+        });
+        this.acessosMunicipiosEvento = this.acessos.find((obj) => {
+            return obj.tab === 'municipiosevento';
+        });
+        this.acessosLocalidadesEvento = this.acessos.find((obj) => {
+            return obj.tab === 'localidadesevento';
+        });
     }
 
     public cadastrar() {
@@ -574,6 +595,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         }
 
         if (this.axiosResponse == true) {
+            this.mostrarEditarLocalidade = false;
             this.limparFormLocalidadeEvento();
             this.getLocalidadesEvento();
         }
@@ -693,6 +715,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
                 fimEventoModal: item.dt_fim,
                 encarregadosEventoModal: this.listaOcupantes,
                 municipiosEventoModal: this.listaMunicipiosEvento,
+                acessosModalEvento: this.acessosEvento,
             },
         });
 
@@ -722,6 +745,7 @@ export class EventosComponent extends ControllerComponent implements OnInit {
                 idTenantModal: this.tenant,
                 nomeEventoModal: item.nm_evento,
                 listaModalidadesEventoModalInscricao: this.listaModalidadesEvento,
+                acessosModalInscricaoDelegacao: this.acessosInscricaoDelegacao,
             },
         });
 
@@ -834,12 +858,22 @@ export class InscricaoDelegacaoModal extends ControllerComponent {
     // booleans
     public editarInscricaoDelegacao: boolean = false;
     public habilitarBotaoEnviar: boolean = false;
+    public mostrarBotaoEnviar: boolean = false;
 
     // misc
     public mensagemModalInscricao: string = "Para selecionar as delegações, selecione uma modalidade";
 
     ngOnInit() {
         this.getDelegacoes();
+        this.setAcessosInscricaoDelegacao();
+        console.log(this.data.acessosModalInscricaoDelegacao);
+        
+    }
+
+    public setAcessosInscricaoDelegacao(){
+        if(this.data.acessosModalInscricaoDelegacao['gravar'] || this.data.acessosModalInscricaoDelegacao[`editar`]){
+            this.mostrarBotaoEnviar = true;
+        }
     }
 
     public async getMunicipio() {
