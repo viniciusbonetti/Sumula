@@ -131,6 +131,8 @@ export class EventosComponent extends ControllerComponent implements OnInit {
         this.acessosLocalidadesEvento = this.acessos.find((obj) => {
             return obj.tab === 'localidadesevento';
         });
+        console.log(this.acessos);
+        
     }
 
     public cadastrar() {

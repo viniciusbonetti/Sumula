@@ -76,7 +76,7 @@ export class SidebarComponent extends ControllerComponent implements OnInit {
         // console.log(this.listaMenu);
 
         this.menu = Object.values(this.listaMenu);
-        // console.log('lista front');
-        // console.log(this.menu);
+        console.log('lista front');
+        console.log(this.menu);
     }
 }
